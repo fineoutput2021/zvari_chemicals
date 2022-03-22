@@ -17,6 +17,14 @@ class Farmer_details extends CI_finecontrol
     {
         if (!empty($this->session->userdata('admin_data'))) {
             $data['farmer_name']=$this->load->get_var('farmer_name');
+            $territory=$this->session->userdata('territory_id');
+
+
+            $this->db->select('*');
+            $this->db->from('tbl_territory');
+            $this->db->where('id', $territory);
+            $territory_data= $this->db->get()->row();
+            $territory_name=$territory_data->name;
 
             // echo SITE_NAME;
             // echo $this->session->userdata('image');
@@ -25,6 +33,7 @@ class Farmer_details extends CI_finecontrol
             $this->db->select('*');
             $this->db->from('tbl_farmer_details');
             //$this->db->where('id',$usr);
+            $this->db->like('place', $territory_name);
             $data['farmer_data']= $this->db->get();
 
 

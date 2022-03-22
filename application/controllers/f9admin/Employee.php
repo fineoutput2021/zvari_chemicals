@@ -19,6 +19,13 @@ class Employee extends CI_finecontrol
     {
         if (!empty($this->session->userdata('admin_data'))) {
             $data['employee_name']=$this->load->get_var('employee_name');
+            $designation=$this->session->userdata('designation_id');
+            $state=$this->session->userdata('state_id');
+            $territory=$this->session->userdata('territory_id');
+            // echo $designation;
+            // echo  $state;
+            // echo $territory;
+            // die();
 
             // echo SITE_NAME;
             // echo $this->session->userdata('image');
@@ -27,12 +34,22 @@ class Employee extends CI_finecontrol
             $this->db->select('*');
             $this->db->from('tbl_employee');
             //$this->db->where('id',$usr);
+            if (!empty($state)) {
+                $this->db->where('state_id', $state);
+            }
+            if (!empty($territory)) {
+                $this->db->where('territory_id', $territory);
+            }
+            $this->db->where('position_id >', $designation);
             $this->db->order_by('date', 'desc');
             $data['employee_data']= $this->db->get();
 
 
+
+
+
             $this->load->view('admin/common/header_view', $data);
-            $this->load->view('admin/Employee/view_employee');
+            $this->load->view('admin/employee/view_employee');
             $this->load->view('admin/common/footer_view');
         } else {
             redirect("login/admin_login", "refresh");
@@ -48,6 +65,20 @@ class Employee extends CI_finecontrol
             // echo $this->session->userdata('image');
             // echo $this->session->userdata('position');
             // exit;
+            $this->db->select('*');
+            $this->db->from('tbl_state');
+            //$this->db->where('id',$usr);
+            $data['state_data']= $this->db->get();
+
+            $this->db->select('*');
+            $this->db->from('tbl_territory');
+            //$this->db->where('id',$usr);
+            $data['territory_data']= $this->db->get();
+
+            $this->db->select('*');
+            $this->db->from('tbl_position');
+            //$this->db->where('id',$usr);
+            $data['position_data']= $this->db->get();
 
 
             $this->load->view('admin/common/header_view', $data);
@@ -72,7 +103,7 @@ class Employee extends CI_finecontrol
                 $this->form_validation->set_rules('email', 'email', 'xss_clean');
                 $this->form_validation->set_rules('password', 'password', 'xss_clean');
                 $this->form_validation->set_rules('state', 'state', 'xss_clean');
-                $this->form_validation->set_rules('category', 'category', 'xss_clean');
+                $this->form_validation->set_rules('position_id', 'position_id', 'xss_clean');
                 $this->form_validation->set_rules('territory', 'territory', 'xss_clean');
                 $this->form_validation->set_rules('km_details', 'km_details', 'xss_clean');
                 $this->form_validation->set_rules('tour_details', 'tour_details', 'xss_clean');
@@ -91,9 +122,9 @@ class Employee extends CI_finecontrol
 
                     $name=$this->input->post('name');
                     $phone=$this->input->post('phone');
-                    $state=$this->input->post('state');
-                    $category=$this->input->post('category');
-                    $territory=$this->input->post('territory');
+                    $state=$this->input->post('state_id');
+                    $position_id=$this->input->post('position_id');
+                    $territory=$this->input->post('territory_id');
                     $tour=$this->input->post('tour_details');
                     $km=$this->input->post('km_details');
                     $sales=$this->input->post('sales_details');
@@ -135,13 +166,10 @@ class Employee extends CI_finecontrol
                         $data_insert = array('name'=>$name,
                     'phone'=>$phone,
                     'email'=>$email,
-                    'category'=>$category,
+                    'position_id'=>$position_id,
                     'password'=>$password,
-                    'state'=>$state,
-                    'territory'=>$territory,
-                    'tour_details'=>$tour,
-                    'km_details'=>$km,
-                    'sales_details'=>$sales,
+                    'state_id'=>$state,
+                    'territory_id'=>$territory,
                     'ip' =>$ip,
                     'image'=>$nnnn,
                     'added_by' =>$addedby,
@@ -178,34 +206,21 @@ class Employee extends CI_finecontrol
                             $data_insert = array('name'=>$name,
                     'phone'=>$phone,
                     'email'=>$email,
-                    'category'=>$category,
+                    'position_id'=>$position_id,
                     'password'=>$password,
-                    'state'=>$state,
-                    'territory'=>$territory,
-                    'tour_details'=>$tour,
-                    'km_details'=>$km,
-                    'sales_details'=>$sales,
-                    'ip' =>$ip,
-                    'image'=>$nnnn,
-                    'added_by' =>$addedby,
-                    'is_active' =>1,
-                    'date'=>$cur_date
+                    'state_id'=>$state,
+                    'territory_id'=>$territory,
+                    'image'=>$nnnn
                     );
                         } else {
                             $data_insert = array('name'=>$name,
                 'phone'=>$phone,
                 'email'=>$email,
-                'category'=>$category,
+                'position_id'=>$position_id,
                 'password'=>$password,
-                'state'=>$state,
-                'territory'=>$territory,
-                'tour_details'=>$tour,
-                'km_details'=>$km,
-                'sales_details'=>$sales,
-                'ip' =>$ip,
-                'added_by' =>$addedby,
-                'is_active' =>1,
-                'date'=>$cur_date
+                'state_id'=>$state,
+                'territory_id'=>$territory
+
                 );
                         }
 
@@ -218,7 +233,7 @@ class Employee extends CI_finecontrol
                     if ($last_id!=0) {
                         $this->session->set_flashdata('emessage', 'Data updated successfully');
 
-                        redirect("dcadmin/employee/view_employee", "refresh");
+                        redirect("dcadmin/Employee/view_employee", "refresh");
                     } else {
                         $this->session->set_flashdata('emessage', 'Sorry error occured');
                         redirect($_SERVER['HTTP_REFERER']);
@@ -249,9 +264,24 @@ class Employee extends CI_finecontrol
             $data['id']=$idd;
 
             $this->db->select('*');
+            $this->db->from('tbl_state');
+            $this->db->where('is_active', 1);
+            $data['state_data']= $this->db->get();
+
+            $this->db->select('*');
+            $this->db->from('tbl_territory');
+            $this->db->where('is_active', 1);
+            $data['territory_data']= $this->db->get();
+
+            $this->db->select('*');
             $this->db->from('tbl_employee');
             $this->db->where('id', $id);
             $data['employee_data']= $this->db->get()->row();
+
+            $this->db->select('*');
+            $this->db->from('tbl_position');
+            //$this->db->where('id',$usr);
+            $data['position_data']= $this->db->get();
 
 
             $this->load->view('admin/common/header_view', $data);
@@ -282,7 +312,7 @@ class Employee extends CI_finecontrol
 
                 $zapak=$this->db->delete('tbl_employee', array('id' => $id));
                 if ($zapak!=0) {
-                    redirect("dcadmin/employee/view_employee", "refresh");
+                    redirect("dcadmin/Employee/view_employee", "refresh");
                 } else {
                     echo "Error";
                     exit;
@@ -319,7 +349,7 @@ class Employee extends CI_finecontrol
                 $zapak=$this->db->update('tbl_employee', $data_update);
 
                 if ($zapak!=0) {
-                    redirect("dcadmin/employee/view_employee", "refresh");
+                    redirect("dcadmin/Employee/view_employee", "refresh");
                 } else {
                     echo "Error";
                     exit;
@@ -335,7 +365,7 @@ class Employee extends CI_finecontrol
                 $zapak=$this->db->update('tbl_employee', $data_update);
 
                 if ($zapak!=0) {
-                    redirect("dcadmin/employee/view_employee", "refresh");
+                    redirect("dcadmin/Employee/view_employee", "refresh");
                 } else {
                     $data['e']="Error Occured";
                     // exit;
@@ -344,6 +374,25 @@ class Employee extends CI_finecontrol
             }
         } else {
             $this->load->view('admin/login/index');
+        }
+    }
+    public function territory_change()
+    {
+        if (!empty($this->session->userdata('admin_data'))) {
+            $data['employee_name']=$this->load->get_var('employee_name');
+            $sid=$_GET['isl'];
+
+            $this->db->select('*');
+            $this->db->from('tbl_territory');
+            $this->db->where('state_id', $sid);
+            $teri_data= $this->db->get();
+            $res=[];
+            foreach ($teri_data->result() as $data) {
+                $res[]=array("id"=>$data->id,'name'=>$data->name);
+            }
+            echo json_encode($res);
+        } else {
+            redirect("login/admin_login", "refresh");
         }
     }
 }

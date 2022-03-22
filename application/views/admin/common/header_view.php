@@ -2,7 +2,9 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title><?php echo SITE_NAME ?> | Admin  <?php if(isset($headerTitle)){ echo"- ".$headerTitle; } ?></title>
+    <title><?php echo SITE_NAME ?> | Admin  <?php if (isset($headerTitle)) {
+    echo"- ".$headerTitle;
+} ?></title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="<?php echo base_url() ?>assets/admin/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -154,7 +156,7 @@
 
       <header class="main-header">
         <!-- Logo -->
-        <a href="<?=base_url().ADMIN_URL ?>/home" class="logo"><b><? echo SITE_NAME; ?></b></a>
+        <a href="<?=base_url().ADMIN_URL ?>/home" class="logo"><b><?php echo SITE_NAME ?></b></a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
@@ -168,44 +170,38 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-<?
-                  if(!empty($imgr)){
-?>
-<img src="<? echo base_url() ?>assets/uploads/team/<? echo $imgr; ?>" class="img-circle" style="width:30px;height:30px;" alt="User Image"/>
-<?
-                  }
-                  else{
-?>
-<img src="<? echo base_url() ?>assets/admin/team/avatar.png" class="img-circle" style="width:20px;height:20px;" alt="User Image"/>
-<?
-
-
+<?php
+                  if (!empty($imgr)) {
+                      ?>
+<img src="<?php echo base_url() ?>assets/uploads/team/<?php echo $imgr; ?>" class="img-circle" style="width:30px;height:30px;" alt="User Image"/>
+<?php
+                  } else {
+                      ?>
+<img src="<?php echo base_url() ?>assets/admin/team/avatar.png" class="img-circle" style="width:20px;height:20px;" alt="User Image"/>
+<?php
                   }
                   ?>
 
-                  <span class="hidden-xs">  <? print_r($user_name); ?> </span>
+                  <span class="hidden-xs">  <?php print_r($user_name); ?> </span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-<?
-                    if(!empty($imgr)){
-?>
-            <img src="<? echo base_url() ?>assets/uploads/team/<? echo $imgr; ?>" class="img-circle" style="width:70px;height:70px;" alt="User Image"/>
-<?
-                    }
-                    else{
-?>
-<img src="<? echo base_url() ?>assets/admin/team/avatar.png" class="img-circle" style="width:70px;height:70px;" alt="User Image"/>
-<?
-
-
+<?php
+                    if (!empty($imgr)) {
+                        ?>
+            <img src="<?php echo base_url() ?>assets/uploads/team/<?php echo $imgr; ?>" class="img-circle" style="width:70px;height:70px;" alt="User Image"/>
+<?php
+                    } else {
+                        ?>
+<img src="<?php echo base_url() ?>assets/admin/team/avatar.png" class="img-circle" style="width:70px;height:70px;" alt="User Image"/>
+<?php
                     }
                     ?>
 
                     <p>
-                      <? print_r($user_name); ?>
-                      <small> <? print_r($position); ?> </small>
+                      <?php print_r($user_name); ?>
+                      <small> <?php print_r($position); ?> </small>
                     </p>
                   </li>
                   <!-- Menu Body -->
@@ -223,10 +219,10 @@
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="<? echo base_url().ADMIN_URL ?>/system/profile" class="btn btn-default btn-flat">Profile</a>
+                      <a href="<?php echo base_url().ADMIN_URL ?>/system/profile" class="btn btn-default btn-flat">Profile</a>
                     </div>
                     <div class="pull-right">
-                      <a href="<? echo base_url() ?>login/logout" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="<?php echo base_url() ?>login/logout" class="btn btn-default btn-flat">Sign out</a>
                     </div>
                   </li>
                 </ul>
@@ -242,37 +238,36 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-            <?
-              if(!empty($imgr)){
-?>
-      <img src="<? echo base_url() ?>assets/uploads/team/<? echo $imgr; ?>" class="img-circle" alt="User Image"/>
-<?
-              }
-              else{
-?>
-<img src="<? echo base_url() ?>assets/admin/team/avatar.png" class="img-circle" alt="User Image"/>
-<?
-
-
+            <?php
+              if (!empty($imgr)) {
+                  ?>
+      <img src="<?php echo base_url() ?>assets/uploads/team/<?php echo $imgr; ?>" class="img-circle" alt="User Image"/>
+<?php
+              } else {
+                  ?>
+<img src="<?php echo base_url() ?>assets/admin/team/avatar.png" class="img-circle" alt="User Image"/>
+<?php
               }
               ?>
 
             </div>
             <div class="pull-left info">
-              <p> <? print_r($user_name); ?></p>
+              <p> <?php print_r($user_name); ?></p>
 
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
           </div>
+
           <!-- search form -->
-          <form action="#" method="get" class="sidebar-form">
+
+          <!-- <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
               <input type="text" name="q" class="form-control" placeholder="Search..."/>
               <span class="input-group-btn">
                 <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
               </span>
             </div>
-          </form>
+          </form> -->
           <!-- /.search form -->
 
           <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -280,61 +275,53 @@
             <li class="header">MAIN NAVIGATION</li>
 
 
-            <?
+            <?php
 // print_r($sidebar);
 // exit;
-            foreach($sidebar as $sd){
-
-
-
-                            ?>
+            foreach ($sidebar as $sd) {
+                ?>
                             <li class="treeview">
-                              <a href="<?
+                              <a href="<?php
                               $this->db->select('*');
-                              $this->db->from('tbl_admin_sidebar2');
-                              $this->db->where('main_id',$sd['id']);
-                              $dsaww= $this->db->get();
-                              $dawwa=$dsaww->row();
-                              if(empty($dawwa)){
-                                echo base_url().ADMIN_URL."/".$sd['url'].'">';?>
+                $this->db->from('tbl_admin_sidebar2');
+                $this->db->where('main_id', $sd['id']);
+                $dsaww= $this->db->get();
+                $dawwa=$dsaww->row();
+                if (empty($dawwa)) {
+                    echo base_url().ADMIN_URL."/".$sd['url'].'">'; ?>
                                 <i class="fa fa-files-o"></i>
-                                <span><? echo $sd['name'] ?></span>
+                                <span><?php echo $sd['name'] ?></span>
                                 <span class="label label-primary pull-right"></span>
                                 </a>
 
                               </li>
-                              <?
-                              }
-                              else{
-                                echo '#"> <i class="fa fa-files-o"></i>
+                              <?php
+                } else {
+                    echo '#"> <i class="fa fa-files-o"></i>
                                 <span>'.$sd['name'].'</span>
                                 <span class="label label-primary pull-right"></span>
                               </a>
                               <ul class="treeview-menu">';
-                              $this->db->select('*');
-                              $this->db->from('tbl_admin_sidebar2');
-                              $this->db->where('main_id',$sd['id']);
-                              $dsa= $this->db->get();
-                            foreach($dsa->result() as $data) { ?>
+                    $this->db->select('*');
+                    $this->db->from('tbl_admin_sidebar2');
+                    $this->db->where('main_id', $sd['id']);
+                    $dsa= $this->db->get();
+                    foreach ($dsa->result() as $data) { ?>
 
 
-                              <li><a href="<? echo base_url().ADMIN_URL ?>/<? echo $data->url; ?>"><i class="fa fa-circle-o"></i><?php echo $data->name; ?></a></li>
-                              <?
-                              }
-                              ?>
+                              <li><a href="<?php echo base_url().ADMIN_URL ?>/<?php echo $data->url; ?>"><i class="fa fa-circle-o"></i><?php echo $data->name; ?></a></li>
+                              <?php
+                              } ?>
                             </ul>
                           </li>
-                          <?
-
-
-                          }
-                            ?>
+                          <?php
+                } ?>
 
 
 
 
-                            <?
-                          }
+                            <?php
+            }
 
 
               ?>

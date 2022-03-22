@@ -8,7 +8,7 @@
       		<section class="content">
       		<div class="row">
              <div class="col-lg-12">
-      				   <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/employee/add_employee" role="button" style="margin-bottom:12px;"> Add Employee</a>
+      				   <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Employee/add_employee" role="button" style="margin-bottom:12px;"> Add Employee</a>
                               <div class="panel panel-default">
                                   <div class="panel-heading">
                                       <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View Employee</h3>
@@ -42,10 +42,7 @@
                                                   <th>Email</th>
                                                   <th>State</th>
                                                   <th>Territory</th>
-                                                  <th>Category of Employee</th>
-                                                  <th>Tour Details</th>
-                                                  <th>Kilometer Details</th>
-                                                  <th>Sales Details</th>
+                                                  <th>Designation</th>
                                                   <th>Image</th>
                                                   <th>Status</th>
                                                   <th>Action</th>
@@ -58,13 +55,31 @@
                             <td><?php echo $data->name ?></td>
                             <td><?php echo $data->phone ?></td>
                             <td><?php echo $data->email ?></td>
-                            <td><?php echo $data->state ?></td>
-                            <td><?php echo $data->territory ?></td>
-                            <td><?php echo $data->category ?></td>
-                            <td><?php echo $data->tour_details ?></td>
-                            <td><?php echo $data->km_details ?></td>
-                            <td><?php echo $data->sales_details ?></td>
-
+                            <td><?php
+                                $this->db->select('*');
+                                $this->db->from('tbl_state');
+                                $this->db->where('id', $data->state_id);
+                                $state_data=$this->db->get()->row();
+                                 echo $state_data->name;
+                                 ?></td>
+                            <td><?php
+                                $this->db->select('*');
+                                $this->db->from('tbl_territory');
+                                $this->db->where('id', $data->territory_id);
+                                $territory_data=$this->db->get()->row();
+                                 echo $territory_data->name;
+                                 ?></td>
+                            <td><?php
+                            $this->db->select('*');
+                            $this->db->from('tbl_position');
+                            $this->db->where('id', $data->position_id);
+                            $position_data=$this->db->get()->row();
+                            if (!empty($position_data)) {
+                                echo $position_data->name;
+                            } else {
+                                echo "NA";
+                            }
+                             ?></td>
                             <td>
                                 <?php if ($data->image!="") {  ?>
           <img id="slide_img_path" height=50 width=100  src="<?php echo base_url()."assets/uploads/employee/".$data->image ?>" >
@@ -88,11 +103,12 @@
 <ul class="dropdown-menu" role="menu">
 
 <?php if ($data->is_active==1) { ?>
-<li><a href="<?php echo base_url() ?>dcadmin/employee/updateemployeeStatus/<?php echo base64_encode($data->id) ?>/inactive">Inactive</a></li>
+<li><a href="<?php echo base_url() ?>dcadmin/Employee/updateemployeeStatus/<?php echo base64_encode($data->id) ?>/inactive">Inactive</a></li>
 <?php } else { ?>
-<li><a href="<?php echo base_url() ?>dcadmin/employee/updateemployeeStatus/<?php echo base64_encode($data->id) ?>/active">Active</a></li>
+<li><a href="<?php echo base_url() ?>dcadmin/Employee/updateemployeeStatus/<?php echo base64_encode($data->id) ?>/active">Active</a></li>
 <?php		}   ?>
-<li><a href="<?php echo base_url() ?>dcadmin/employee/update_employee/<?php echo base64_encode($data->id) ?>">Edit</a></li>
+<li><a href="<?php echo base_url() ?>dcadmin/Employee/update_employee/<?php echo base64_encode($data->id) ?>">Edit</a></li>
+<li><a href="<?php echo base_url() ?>dcadmin/Employee_details/view_employee_details/<?php echo base64_encode($data->id) ?>">Employee Details</a></li>
 <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li>
 </ul>
 </div>
@@ -100,7 +116,7 @@
 
 <div style="display:none" id="cnfbox<?php echo $i ?>">
 <p> Are you sure delete this </p>
-<a href="<?php echo base_url() ?>dcadmin/employee/delete_employee/<?php echo base64_encode($data->id); ?>" class="btn btn-danger" >Yes</a>
+<a href="<?php echo base_url() ?>dcadmin/Employee/delete_employee/<?php echo base64_encode($data->id); ?>" class="btn btn-danger" >Yes</a>
 <a href="javasript:;" class="cans btn btn-default" mydatas="<?php echo $i ?>" >No</a>
 </div>
 </td>

@@ -143,17 +143,11 @@ class Slider_panel extends CI_finecontrol
                 //  }
                 //     }
                 if (!empty($nnnn)) {
-                    $data_insert = array('image'=>$nnnn,
-                                  'added_by' =>$addedby,
-                                  'ip'=>$ip,
-                                  'is_active'=>1,
-                                  'date'=>$cur_date
+                    $data_insert = array('image'=>$nnnn
+
                                   );
                 } else {
-                    $data_insert = array('added_by' =>$addedby,
-                            'ip'=>$ip,
-                            'is_active'=>1,
-                            'date'=>$cur_date
+                    $data_insert = array(
                             );
                 }
 
@@ -165,7 +159,7 @@ class Slider_panel extends CI_finecontrol
             if ($last_id!=0) {
                 $this->session->set_flashdata('emessage', 'Data inserted successfully');
 
-                redirect("dcadmin/slider_panel/view_images", "refresh");
+                redirect("dcadmin/Slider_panel/view_images", "refresh");
             } else {
                 $this->session->set_flashdata('emessage', 'Sorry error occured');
                 redirect($_SERVER['HTTP_REFERER']);
@@ -233,7 +227,7 @@ class Slider_panel extends CI_finecontrol
 
                 $zapak=$this->db->delete('tbl_slider_panel', array('id' => $id));
                 if ($zapak!=0) {
-                    redirect("dcadmin/slider_panel/view_images", "refresh");
+                    redirect("dcadmin/Slider_panel/view_images", "refresh");
                 } else {
                     echo "Error";
                     exit;
@@ -269,7 +263,7 @@ class Slider_panel extends CI_finecontrol
                 $zapak=$this->db->update('tbl_slider_panel', $data_update);
 
                 if ($zapak!=0) {
-                    redirect("dcadmin/slider_panel/view_images", "refresh");
+                    redirect("dcadmin/Slider_panel/view_images", "refresh");
                 } else {
                     echo "Error";
                     exit;
@@ -285,7 +279,7 @@ class Slider_panel extends CI_finecontrol
                 $zapak=$this->db->update('tbl_slider_panel', $data_update);
 
                 if ($zapak!=0) {
-                    redirect("dcadmin/slider_panel/view_images", "refresh");
+                    redirect("dcadmin/Slider_panel/view_images", "refresh");
                 } else {
                     $data['e']="Error Occured";
                     // exit;

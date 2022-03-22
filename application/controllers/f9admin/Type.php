@@ -15,7 +15,7 @@ class Type extends CI_finecontrol
         $this->load->library('upload');
     }
 
-    public function view_type()
+    public function view_type($idd)
     {
         if (!empty($this->session->userdata('admin_data'))) {
             $data['type_name']=$this->load->get_var('type_name');
@@ -24,10 +24,12 @@ class Type extends CI_finecontrol
             // echo $this->session->userdata('image');
             // echo $this->session->userdata('position');
             // exit;
+            $id=base64_decode($idd);
+            $data['id']=$idd;
 
             $this->db->select('*');
             $this->db->from('tbl_type');
-            //$this->db->where('id',$usr);
+            $this->db->where('product_id', $id);
             $data['type']= $this->db->get();
 
             $this->db->select('*');
@@ -37,7 +39,7 @@ class Type extends CI_finecontrol
 
 
             $this->load->view('admin/common/header_view', $data);
-            $this->load->view('admin/Type/view_type');
+            $this->load->view('admin/type/view_type');
             $this->load->view('admin/common/footer_view');
         } else {
             redirect("login/admin_login", "refresh");
@@ -62,8 +64,9 @@ class Type extends CI_finecontrol
             $data['type_data']= $this->db->get();
 
 
+
             $this->load->view('admin/common/header_view', $data);
-            $this->load->view('admin/Type/add_type');
+            $this->load->view('admin/type/add_type');
             $this->load->view('admin/common/footer_view');
         } else {
             redirect("login/admin_login", "refresh");
@@ -123,6 +126,7 @@ class Type extends CI_finecontrol
                     'spgst'=>$spgst,
                     'ip' =>$ip,
                     'added_by' =>$addedby,
+                    'stock' =>1,
                     'is_active' =>1,
                     'date'=>$cur_date
 
@@ -161,11 +165,7 @@ class Type extends CI_finecontrol
                     'gst'=>$gst,
                     'sp'=>$sp,
                     'gstprice'=>$gstprice,
-                    'spgst'=>$spgst,
-                    'ip' =>$ip,
-                    'added_by' =>$addedby,
-                    'is_active' =>1,
-                    'date'=>$cur_date
+                    'spgst'=>$spgst
                     );
 
 
@@ -226,7 +226,7 @@ class Type extends CI_finecontrol
 
 
             $this->load->view('admin/common/header_view', $data);
-            $this->load->view('admin/Type/update_type');
+            $this->load->view('admin/type/update_type');
             $this->load->view('admin/common/footer_view');
         } else {
             redirect("login/admin_login", "refresh");
@@ -247,7 +247,8 @@ class Type extends CI_finecontrol
             if ($this->load->get_var('position')=="Super Admin") {
                 $zapak=$this->db->delete('tbl_type', array('id' => $id));
                 if ($zapak!=0) {
-                    redirect("dcadmin/type/view_type", "refresh");
+                    $this->session->set_flashdata('smessage', 'Status Updated Successfully');
+                    redirect($_SERVER['HTTP_REFERER']);
                 } else {
                     $this->session->set_flashdata('emessage', 'Sorry error occured');
                     redirect($_SERVER['HTTP_REFERER']);
@@ -282,7 +283,8 @@ class Type extends CI_finecontrol
                 $zapak=$this->db->update('tbl_type', $data_update);
 
                 if ($zapak!=0) {
-                    redirect("dcadmin/Type/view_type", "refresh");
+                    $this->session->set_flashdata('smessage', 'Status Updated Successfully');
+                    redirect($_SERVER['HTTP_REFERER']);
                 } else {
                     echo "Error";
                     exit;
@@ -298,7 +300,58 @@ class Type extends CI_finecontrol
                 $zapak=$this->db->update('tbl_type', $data_update);
 
                 if ($zapak!=0) {
-                    redirect("dcadmin/Type/view_type", "refresh");
+                    $this->session->set_flashdata('smessage', 'Status Updated Successfully');
+                    redirect($_SERVER['HTTP_REFERER']);
+                } else {
+                    $data['e']="Error Occured";
+                    // exit;
+                    $this->load->view('errors/error500admin', $data);
+                }
+            }
+        } else {
+            $this->load->view('admin/login/index');
+        }
+    }
+    public function updatestockStatus($idd, $t)
+    {
+        if (!empty($this->session->userdata('admin_data'))) {
+            $data['type_name']=$this->load->get_var('type_name');
+
+            // echo SITE_NAME;
+            // echo $this->session->userdata('image');
+            // echo $this->session->userdata('position');
+            // exit;
+            $id=base64_decode($idd);
+
+            if ($t=="instock") {
+                $data_update = array(
+         'stock'=>1
+
+         );
+
+                $this->db->where('id', $id);
+                $zapak=$this->db->update('tbl_type', $data_update);
+
+                if ($zapak!=0) {
+                    $this->session->set_flashdata('smessage', 'Status Updated Successfully');
+                    redirect($_SERVER['HTTP_REFERER']);
+                } else {
+                    echo "Error";
+                    exit;
+                }
+            }
+            if ($t=="outofstock") {
+                $data_update = array(
+          'stock'=>0
+
+          );
+
+                $this->db->where('id', $id);
+                $zapak=$this->db->update('tbl_type', $data_update);
+
+                if ($zapak!=0) {
+                    $this->session->set_flashdata('smessage', 'Status Updated Successfully');
+                    redirect($_SERVER['HTTP_REFERER']);
                 } else {
                     $data['e']="Error Occured";
                     // exit;

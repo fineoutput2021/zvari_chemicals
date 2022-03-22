@@ -136,7 +136,7 @@ class Category extends CI_finecontrol
                     }
                     if ($last_id!=0) {
                         $this->session->set_flashdata('smessage', 'Data inserted successfully');
-                        redirect("dcadmin/category/view_category", "refresh");
+                        redirect("dcadmin/Category/view_category", "refresh");
                     } else {
                         $this->session->set_flashdata('emessage', 'Sorry error occured');
                         redirect($_SERVER['HTTP_REFERER']);
@@ -175,7 +175,7 @@ class Category extends CI_finecontrol
                 $zapak=$this->db->update('tbl_category', $data_update);
 
                 if ($zapak!=0) {
-                    redirect("dcadmin/category/view_category", "refresh");
+                    redirect("dcadmin/Category/view_category", "refresh");
                 } else {
                     $this->session->set_flashdata('emessage', 'Sorry error occured');
                     redirect($_SERVER['HTTP_REFERER']);
@@ -191,7 +191,7 @@ class Category extends CI_finecontrol
                 $zapak=$this->db->update('tbl_category', $data_update);
 
                 if ($zapak!=0) {
-                    redirect("dcadmin/category/view_category", "refresh");
+                    redirect("dcadmin/Category/view_category", "refresh");
                 } else {
                     $this->session->set_flashdata('emessage', 'Sorry error occured');
                     redirect($_SERVER['HTTP_REFERER']);
@@ -218,7 +218,7 @@ class Category extends CI_finecontrol
             if ($this->load->get_var('position')=="Super Admin") {
                 $zapak=$this->db->delete('tbl_category', array('id' => $id));
                 if ($zapak!=0) {
-                    redirect("dcadmin/category/view_category", "refresh");
+                    redirect("dcadmin/Category/view_category", "refresh");
                 } else {
                     $this->session->set_flashdata('emessage', 'Sorry error occured');
                     redirect($_SERVER['HTTP_REFERER']);

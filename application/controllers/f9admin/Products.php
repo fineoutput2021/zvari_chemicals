@@ -26,7 +26,7 @@ class Products extends CI_finecontrol
             // exit;
             $this->db->select('*');
             $this->db->from('tbl_products');
-            //$this->db->where('id',$usr);
+            //$this->db->where('id', $id);
             $data['products_data']= $this->db->get();
 
 
@@ -355,11 +355,7 @@ class Products extends CI_finecontrol
                     'mode_of_action'=>$mode_of_action,
                     'major_crops'=>$major_crops,
                     'target_disease'=>$target_disease,
-                    'dose'=>$dose,
-                    'ip' =>$ip,
-                    'added_by' =>$addedby,
-                    'is_active' =>1,
-                    'date'=>$cur_date
+                    'dose'=>$dose
                     );
 
 
@@ -420,7 +416,7 @@ class Products extends CI_finecontrol
 
 
             $this->load->view('admin/common/header_view', $data);
-            $this->load->view('admin/Products/update_products');
+            $this->load->view('admin/products/update_products');
             $this->load->view('admin/common/footer_view');
         } else {
             redirect("login/admin_login", "refresh");

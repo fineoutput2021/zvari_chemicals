@@ -32,14 +32,14 @@
 
           <div class="panel-body">
             <div class="col-lg-10">
-              <form action=" <?php echo base_url(); ?>dcadmin/slider_panel/add_image_data/<?php echo base64_encode(2); ?>/<?=$id;?>" method="POST" id="slide_frm" enctype="multipart/form-data">
+              <form action=" <?php echo base_url(); ?>dcadmin/Slider_panel/add_image_data/<?php echo base64_encode(2); ?>/<?=$id;?>" method="POST" id="slide_frm" enctype="multipart/form-data">
                 <div class="table-responsive">
                   <table class="table table-hover">
-                                    <tr>
-                                          <td> <strong>Image</strong> <span style="color:red;">*</span></strong> </td>
-                                          <td> <input type="file" name="image" class="form-control" placeholder="" />
-                                            <img id="slide_img_path" height=50 width=100  src="<?php echo base_url()."assets/uploads/slider_panel/".$image_data->image ?>" >
-                                        </tr>
+                    <tr>
+                      <td> <strong>Image</strong> <span style="color:red;">*</span></strong> </td>
+                      <td> <input type="file" name="image" class="form-control" placeholder="" />
+                        <img id="slide_img_path" height=50 width=100 src="<?php echo base_url()."assets/uploads/slider_panel/".$image_data->image ?>">
+                    </tr>
 
 
 

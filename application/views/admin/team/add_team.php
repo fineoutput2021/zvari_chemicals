@@ -18,18 +18,18 @@
                                 <h3 class="panel-title"><i class="fa fa-money fa-fw"></i> Add New Team</h3>
                             </div>
                             <div class="panel-body">
-                    		<? if(!empty($this->session->flashdata('smessage'))){ ?>
+                    		<?php if (!empty($this->session->flashdata('smessage'))) { ?>
                         <div class="alert alert-success alert-dismissible fade in">
-                          <strong><? echo $this->session->flashdata('smessage'); ?></strong>
+                          <strong><?php echo $this->session->flashdata('smessage'); ?></strong>
                         </div>
-                      <? }
-                       if(!empty($this->session->flashdata('emessage'))){ ?>
+                      <?php }
+                       if (!empty($this->session->flashdata('emessage'))) { ?>
                       <div class="alert alert-danger alert-dismissible fade in">
-                        <strong><? echo $this->session->flashdata('emessage'); ?></strong>
+                        <strong><?php echo $this->session->flashdata('emessage'); ?></strong>
                       </div>
-                    <? } ?>
+                    <?php } ?>
                                 <div class="col-lg-10">
-                                   <form action="<?php echo base_url() ?>admin/system/add_team_data" method="POST" id="slide_frm" enctype="multipart/form-data">
+                                   <form action="<?php echo base_url() ?>dcadmin/System/add_team_data" method="POST" id="slide_frm" enctype="multipart/form-data">
                                 <div class="table-responsive">
                                     <table class="table table-hover">
 
@@ -61,6 +61,33 @@
                                </td>
                         </tr>
                         <tr>
+                          <td> <strong>State</strong> <span style="color:red;">*</span></strong> </td>
+                          <td> <select class="form-control" name="state_id" required id="state">
+                              <option value="">------Select State---------</option>
+                              <?php $i=1; foreach ($state_data->result() as $data) { ?>
+                              <option value="<?=$data->id?>"><?=$data->name?></option>
+                              <?php $i++; } ?>
+                            </select> </td>
+                        </tr>
+                        <tr>
+                          <td> <strong>Territory</strong> <span style="color:red;">*</span></strong> </td>
+                          <td> <select class="form-control" name="territory_id" required id="territory">
+                              <option value="">------Select Territory---------</option>
+                              <?php $i=1; foreach ($territory_data->result() as $data) { ?>
+                              <option value="<?=$data->id?>"><?=$data->name?></option>
+                              <?php $i++; } ?>
+                            </select> </td>
+                        </tr>
+                        <tr>
+                          <td> <strong>Designation</strong> <span style="color:red;">*</span></strong> </td>
+                          <td> <select class="form-control" name="designation_id" required id="designation">
+                              <option value="">------Select Designation---------</option>
+                              <?php $i=1; foreach ($designation_data->result() as $data) { ?>
+                              <option value="<?=$data->id?>"><?=$data->name?></option>
+                              <?php $i++; } ?>
+                            </select> </td>
+                        </tr>
+                        <tr>
     <td> <strong>Password</strong>  <span style="color:red;">*</span></strong> </td>
     <td>
 
@@ -72,8 +99,8 @@
                   <td>
             <div class="form-group">
 
-  <select class="form-control" name="power" required>
-      <option value=1">Please select Type</option>
+  <select class="form-control" name="power" required >
+      <option value="1">Please select Type</option>
     <option value="1">Super Admin</option>
     <option value="2">Admin</option>
     <option value="3">Manager</option>
@@ -90,13 +117,13 @@
   <div class="checkbox">
     <label><input type="checkbox" name="service" value="999">All</label>
   </div>
-  <? foreach ($side->result() as $s) {
-    ?>
+  <?php foreach ($side->result() as $s) {
+                           ?>
     <div class="checkbox">
-      <label><input type="checkbox" name="services[]" value="<? echo $s->id; ?>"><? echo $s->name; ?></label>
+      <label><input type="checkbox" name="services[]" value="<?php echo $s->id; ?>"><?php echo $s->name; ?></label>
     </div>
-    <?
-  } ?>
+    <?php
+                       } ?>
 
 </div>
 </td>
@@ -140,7 +167,7 @@
 
 
 	  	<script type="text/javascript" src="<?php echo base_url() ?>assets/slider/ajaxupload.3.5.js"></script>
-				<link href="<? echo base_url() ?>assets/cowadmin/css/jqvmap.css" rel='stylesheet' type='text/css' />
+				<link href="<?php echo base_url() ?>assets/cowadmin/css/jqvmap.css" rel='stylesheet' type='text/css' />
 
 
 
@@ -149,3 +176,45 @@
 </style>
 <!-- <script type="text/javascript" src="<?php echo base_url() ?>assets/slider/ajaxupload.3.5.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ?>assets/slider/rs.js"></script>	  -->
+
+<script>
+  $(document).ready(function() {
+    $("#state").change(function() {
+      var vf = $(this).val();
+      var yr = $("#territory option:selected").val();
+      if (vf == "") {
+        return false;
+
+      } else {
+        $('#territory option').remove();
+        var opton = "<option value=''>Please Select </option>";
+        $.ajax({
+          url: base_url + "dcadmin/Employee/territory_change?isl=" + vf,
+          data: '',
+          type: "get",
+          success: function(html) {
+            if (html != "NA") {
+              var s = jQuery.parseJSON(html);
+              $.each(s, function(i) {
+                opton += '<option value="' + s[i]['id'] + '">' + s[i]['name'] + '</option>';
+              });
+              $('#territory').append(opton);
+              //$('#city').append("<option value=''>Please Select State</option>");
+
+              //var json = $.parseJSON(html);
+              //var ayy = json[0].name;
+              //var ayys = json[0].pincode;
+            } else {
+              alert('No territory Found');
+              return false;
+            }
+
+          }
+
+        })
+      }
+
+
+    })
+  });
+</script>
