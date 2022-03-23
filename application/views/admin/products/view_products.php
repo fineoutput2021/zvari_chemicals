@@ -8,7 +8,12 @@
   <section class="content">
     <div class="row">
       <div class="col-lg-12">
+        <?if ($this->session->userdata('position')=="Super Admin") {
+    ?>
+
         <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Products/add_products" role="button" style="margin-bottom:12px;"> Add Products</a>
+        <?php
+}?>
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View team</h3>
@@ -114,16 +119,19 @@
                           <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span></button>
                             <ul class="dropdown-menu" role="menu">
-
+                              <?if ($this->session->userdata('position')=="Super Admin") {
+                                 ?>
                               <?php if ($data->is_active==1) { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Products/updateproductsStatus/<?php echo base64_encode($data->id) ?>/inactive">Inactive</a></li>
                               <?php } else { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Products/updateproductsStatus/<?php echo base64_encode($data->id) ?>/active">Active</a></li>
-                              <?php		}   ?>
+                              <?php		} ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Products/update_products/<?php echo base64_encode($data->id) ?>">Edit</a></li>
                               <li><a href="<?php echo base_url() ?>dcadmin/Type/view_type/<?php echo base64_encode($data->id) ?>" />Type</a></li>
 
                               <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li>
+                              <?php
+                             } else {?><li><a href="<?php echo base_url() ?>dcadmin/Type/view_type/<?php echo base64_encode($data->id) ?>" />Type</a></li><?}?>
                             </ul>
                           </div>
                         </div>

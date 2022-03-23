@@ -29,7 +29,6 @@
             </div>
             <?php } ?>
 
-
             <div class="panel-body">
               <div class="box-body table-responsive no-padding">
                 <table class="table table-bordered table-hover table-striped" id="userTable">
@@ -44,7 +43,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $i=1; foreach ($farmer_data->result() as $data) { ?>
+                    <?php $i=1; foreach ($farmer_data->result() as $data) {
+                                                          if ($this->session->userdata('position')!="Super Admin") {
+                                                              $this->db->select('*');
+                                                              $this->db->from('tbl_employee');
+                                                              $this->db->where('id', $data->employee_id);
+                                                              $emp_data= $this->db->get()->row();
+
+                                                              $state_id=$this->session->userdata('state_id');
+                                                              $territory_id=$this->session->userdata('territory_id');
+
+                                                              if ($emp_data->state_id==$state_id && $emp_data->territory_id==$territory_id) {?>
                     <tr>
                       <td><?php echo $i ?> </td>
                       <td><?php echo $data->name ?></td>
@@ -57,7 +66,7 @@
                         <p class="label bg-yellow">Inactive</p>
 
 
-                        <?php		}   ?>
+                      <?php		} ?>
                       </td>
 
                       <!-- <td>
@@ -80,7 +89,47 @@
 </div>
 </td> -->
                     </tr>
-                    <?php $i++; } ?>
+                    <?php $i++;
+                                                          }
+                                                          } else {?>
+                                                          <tr>
+                                                            <td><?php echo $i ?> </td>
+                                                            <td><?php echo $data->name ?></td>
+                                                            <td><?php echo $data->phone ?></td>
+                                                            <td><?php echo $data->place ?></td>
+                                                            <td><?php if ($data->is_active==1) { ?>
+                                                              <p class="label bg-green">Active</p>
+
+                                                              <?php } else { ?>
+                                                              <p class="label bg-yellow">Inactive</p>
+
+
+                                                            <?php		} ?>
+                                                            </td>
+
+                                                            <!-- <td>
+                                      <div class="btn-group" id="btns<?php echo $i ?>">
+                                      <div class="btn-group">
+                                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span></button>
+                                      <ul class="dropdown-menu" role="menu">
+
+
+                                      <li><a href="<?php echo base_url() ?>admin/home/update_team/<?php echo base64_encode($data->id) ?>">Edit</a></li>
+                                      <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li>
+                                      </ul>
+                                      </div>
+                                      </div>
+
+                                      <div style="display:none" id="cnfbox<?php echo $i ?>">
+                                      <p> Are you sure delete this </p>
+                                      <a href="<?php echo base_url() ?>admin/home/delete_team/<?php echo base64_encode($data->id); ?>" class="btn btn-danger" >Yes</a>
+                                      <a href="javasript:;" class="cans btn btn-default" mydatas="<?php echo $i ?>" >No</a>
+                                      </div>
+                                      </td> -->
+                                                          </tr>
+                                                          <?php $i++;
+                                                       }
+                                                      } ?>
                   </tbody>
                 </table>
 
@@ -134,5 +183,3 @@
 
   });
 </script>
-<!-- <script type="text/javascript" src="<?php echo base_url() ?>assets/slider/ajaxupload.3.5.js"></script>
-      <script type="text/javascript" src="<?php echo base_url() ?>assets/slider/rs.js"></script>	  -->

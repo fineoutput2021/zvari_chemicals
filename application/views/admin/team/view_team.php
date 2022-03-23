@@ -12,7 +12,12 @@
   <section class="content">
     <div class="row">
       <div class="col-lg-12">
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>admin/system/add_team" role="button" style="margin-bottom:12px;"> Add Team</a>
+        <?if ($this->session->userdata('position')=="Super Admin") {
+    ?>
+
+        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/System/add_team" role="button" style="margin-bottom:12px;"> Add Team</a>
+        <?php
+}?>
         <div class="panel panel-default">
           <?php if (!empty($this->session->flashdata('smessage'))) { ?>
           <div class="alert alert-success alert-dismissible">
@@ -67,8 +72,8 @@
                                                     if (!empty($state_data)) {
                                                         echo $state_data->name;
                                                     } else {
-                                                         echo "NA";
-                                                     }
+                                                        echo "NA";
+                                                    }
                                                      ?></td>
                       <td><?php
                                                          $this->db->select('*');
@@ -78,8 +83,8 @@
                                                          if (!empty($territory_data)) {
                                                              echo $territory_data->name;
                                                          } else {
-                                                              echo "NA";
-                                                          }
+                                                             echo "NA";
+                                                         }
                                                           ?></td>
                       <td><?php
                                                               $this->db->select('*');
@@ -89,8 +94,8 @@
                                                               if (!empty($designation_data)) {
                                                                   echo $designation_data->name;
                                                               } else {
-                                                                   echo "NA";
-                                                               }
+                                                                  echo "NA";
+                                                              }
                                                                ?></td>
                       <td><?php  $pos=$data->power;
                                                 if ($pos==1) {
@@ -149,14 +154,17 @@
                           <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span></button>
                             <ul class="dropdown-menu" role="menu">
-
+                              <?if ($this->session->userdata('position')=="Super Admin") {
+                                                    ?>
                               <?php if ($data->is_active==1) { ?>
                               <li><a href="<?php echo base_url() ?>admin/system/updateteamStatus/<?php echo base64_encode($data->id) ?>/inactive">Inactive</a></li>
                               <?php } else { ?>
                               <li><a href="<?php echo base_url() ?>admin/system/updateteamStatus/<?php echo base64_encode($data->id) ?>/active">Active</a></li>
-                              <?php		}   ?>
+                              <?php		} ?>
 
                               <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete User</a></li>
+                              <?
+                                                }?>
                             </ul>
                           </div>
                         </div>

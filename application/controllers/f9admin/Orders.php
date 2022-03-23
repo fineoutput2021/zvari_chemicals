@@ -97,69 +97,8 @@ class Orders extends CI_finecontrol
         }
     }
 
-    //-------update trackung ----------
-    public function update_tracking_view($id)
-    {
-        if (!empty($this->session->userdata('admin_data'))) {
-            $data['id'] = $id;
-
-            $this->load->view('admin/common/header_view', $data);
-            $this->load->view('admin/orders/update_tracking');
-            $this->load->view('admin/common/footer_view');
-        } else {
-            redirect("login/admin_login", "refresh");
-        }
-    }
-
-    //------------- update tracking data -- ----------
-    public function update_tracking_data()
-    {
-        if (!empty($this->session->userdata('admin_data'))) {
-            $this->load->helper(array('form', 'url'));
-            $this->load->library('form_validation');
-            $this->load->helper('security');
-            if ($this->input->post()) {
-                $this->form_validation->set_rules('id', 'id', 'required|xss_clean|trim');
-                $this->form_validation->set_rules('tracking_url', 'tracking_url', 'required|xss_clean|trim');
-                $this->form_validation->set_rules('tracking_no', 'tracking_no', 'required|xss_clean|trim');
 
 
-                if ($this->form_validation->run()== true) {
-                    $id=base64_decode($this->input->post('id'));
-                    $tracking_url=$this->input->post('tracking_url');
-                    $tracking_no=$this->input->post('tracking_no');
-
-                    $data_update = array(
-                      'tracking_url'=>$tracking_url,
-                      'tracking_no'=>$tracking_no,
-                                );
-                    $this->db->where('id', $id);
-                    $zapak=$this->db->update('tbl_order1', $data_update);
-                    if (!empty($zapak)) {
-                        $this->session->set_flashdata('smessage', 'Successfully Updated');
-
-                        redirect("dcadmin/Orders/view_dispatched_orders");
-                    } else {
-                        $this->session->set_flashdata('emessage', 'Some error occured');
-                        redirect($_SERVER['HTTP_REFERER']);
-                    }
-                } else {
-                    $this->session->set_flashdata('emessage', validation_errors());
-                    redirect($_SERVER['HTTP_REFERER']);
-                }
-            } else {
-                $this->session->set_flashdata('emessage', 'Please insert some data, No data available');
-                redirect($_SERVER['HTTP_REFERER']);
-            }
-
-
-            $this->load->view('admin/common/header_view', $data);
-            $this->load->view('admin/dash');
-            $this->load->view('admin/common/footer_view');
-        } else {
-            redirect("login/admin_login", "refresh");
-        }
-    }
 
     public function view_completed_orders()
     {
@@ -320,64 +259,8 @@ class Orders extends CI_finecontrol
         }
     }
 
-    // //-------view dispatch review -------
-    // public function view_dispatch_remarks($id)
-    // {
-    //     if (!empty($this->session->userdata('admin_data'))) {
-    //         $data['id'] = $id;
-    //         $this->load->view('admin/common/header_view', $data);
-    //         $this->load->view('admin/orders/dispatch_remarks');
-    //         $this->load->view('admin/common/footer_view');
-    //     } else {
-    //         redirect("login/admin_login", "refresh");
-    //     }
-    // }
-
-    //----------dispatch update -----------
-    public function dispatch_order()
-    {
-        if (!empty($this->session->userdata('admin_data'))) {
-            $this->load->helper(array('form', 'url'));
-            $this->load->library('form_validation');
-            $this->load->helper('security');
-            if ($this->input->post()) {
-                $this->form_validation->set_rules('id', 'id', 'required|xss_clean|trim');
-                $this->form_validation->set_rules('remarks', 'remarks', 'xss_clean|trim');
-
-                if ($this->form_validation->run()== true) {
-                    $id=base64_decode($this->input->post('id'));
-                    $remarks=$this->input->post('remarks');
-
-                    $data_update = array(
-                      'order_status'=>3,
-                      'remarks'=>$remarks,
-                                );
-                    $this->db->where('id', $id);
-                    $zapak=$this->db->update('tbl_order1', $data_update);
-                    if (!empty($zapak)) {
-                        $this->session->set_flashdata('smessage', 'Successfully updated');
-                        redirect("dcadmin/Orders/view_accept_orders");
-                    } else {
-                        $this->session->set_flashdata('emessage', 'Some error occured');
-                        redirect($_SERVER['HTTP_REFERER']);
-                    }
-                } else {
-                    $this->session->set_flashdata('emessage', validation_errors());
-                    redirect($_SERVER['HTTP_REFERER']);
-                }
-            } else {
-                $this->session->set_flashdata('emessage', 'Please insert some data, No data available');
-                redirect($_SERVER['HTTP_REFERER']);
-            }
 
 
-            $this->load->view('admin/common/header_view', $data);
-            $this->load->view('admin/dash');
-            $this->load->view('admin/common/footer_view');
-        } else {
-            redirect("login/admin_login", "refresh");
-        }
-    }
 
 
 

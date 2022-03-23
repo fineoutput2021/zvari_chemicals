@@ -77,12 +77,15 @@
                           <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> More Details <span class="caret"></span></button>
                             <ul class="dropdown-menu" role="menu">
+                              <?if ($this->session->userdata('position')=="Super Admin") {
+                          ?>
 
                               <?php if ($data->attendance==1) { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Employee_details/updateemployeeStatus/<?php echo base64_encode($data->id) ?>/inactive">Absent</a></li>
                               <?php } else { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Employee_details/updateemployeeStatus/<?php echo base64_encode($data->id) ?>/active">Present</a></li>
-                              <?php		}   ?>
+                            <?php		} ?><?
+                      }?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Tour/view_tour/<?php echo base64_encode($data->employee_id) ?>">Tour Details</a></li>
                               <li><a href="<?php echo base_url() ?>dcadmin/Tour_photos/view_tour_photos/<?php echo base64_encode($data->employee_id) ?>">Photos Uploaded</a></li>
                               <li><a href="<?php echo base_url() ?>dcadmin/Tour_km/view_tour_km/<?php echo base64_encode($data->employee_id) ?>">Kilometers Travelled</a></li>

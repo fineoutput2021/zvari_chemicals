@@ -359,10 +359,7 @@ class Apicontroller extends CI_finecontrol
             $this->form_validation->set_rules('quantity', 'quantity', 'xss_clean|trim');
 
 
-            if ($this->form_validation->run()== true) {
-
-
-             // $address_id=$this->input->post('addr_id');
+            if ($this->form_validation->run() == true) {
                 $token_id=$this->input->post('token_id');
                 $email=$this->input->post('email');
                 $authentication=$this->input->post('authentication');
@@ -378,14 +375,19 @@ class Apicontroller extends CI_finecontrol
                 $this->db->where('email', $email);
                 $emp_data= $this->db->get()->row();
 
+
                 if (!empty($email)) {
                     if ($emp_data->password==md5($authentication)) {
+                        $employee_id=$emp_data->id;
+
                         $this->db->select('*');
-                        $this->db->from('tbl_employee');
-                        $this->db->where('email', $email);
-                        $employee= $this->db->get()->row();
-                        $employee_id=$employee->id;
-                        $data_insert = array('employee_id'=>$employee_id,
+                        $this->db->from('tbl_cart');
+                        $this->db->where('product_id', $product_id);
+                        $this->db->where('employee_id', $employee_id);
+                        $cart_data= $this->db->get()->row();
+
+                        if (empty($cart_data)) {
+                            $data_insert = array('employee_id'=>$employee_id,
                         'product_id'=>$product_id,
                         'type_id'=>$type_id,
                         'quantity'=>$quantity,
@@ -393,17 +395,24 @@ class Apicontroller extends CI_finecontrol
                         'date'=>$cur_date
     );
 
-                        $last_id=$this->base_model->insert_table("tbl_cart", $data_insert, 1) ;
-                        $res = array('message'=>"Data inserted",
+                            $last_id=$this->base_model->insert_table("tbl_cart", $data_insert, 1) ;
+                            $res = array('message'=>"success",
                           'status'=>200
                           );
 
-                        echo json_encode($res);
-                        if (!empty($last_id)) {
-                        } else {
-                            $res = array('message'=>"Some error occured",
+                            echo json_encode($res);
+                            if (!empty($last_id)) {
+                            } else {
+                                $res = array('message'=>"Some error occured",
                             'status'=>201
                             );
+
+                                echo json_encode($res);
+                            }
+                        } else {
+                            $res = array('message'=>'Product is already in your cart',
+                    'status'=>201
+                    );
 
                             echo json_encode($res);
                         }
@@ -411,7 +420,13 @@ class Apicontroller extends CI_finecontrol
                 }
                 //----------add_to_cart using token id--------------
                 else {
-                    $data_insert = array('token_id'=>$token_id,
+                    $this->db->select('*');
+                    $this->db->from('tbl_cart');
+                    $this->db->where('product_id', $product_id);
+                    $this->db->where('token_id', $token_id);
+                    $cart_data= $this->db->get()->row();
+                    if (empty($cart_data)) {
+                        $data_insert = array('token_id'=>$token_id,
                           'product_id'=>$product_id,
                           'type_id'=>$type_id,
                           'quantity'=>$quantity,
@@ -419,30 +434,44 @@ class Apicontroller extends CI_finecontrol
                           'date'=>$cur_date
     );
 
-                    $last_id=$this->base_model->insert_table("tbl_cart", $data_insert, 1) ;
-                    $res = array('message'=>"Data inserted",
+                        $last_id=$this->base_model->insert_table("tbl_cart", $data_insert, 1) ;
+                        $res = array('message'=>"success",
                       'status'=>200
                       );
 
-                    echo json_encode($res);
-                    if (!empty($last_id)) {
-                    } else {
-                        $res = array('message'=>"Some error occured",
+                        echo json_encode($res);
+                        if (!empty($last_id)) {
+                        } else {
+                            $res = array('message'=>"Some error occured",
                       'status'=>201
                       );
+
+                            echo json_encode($res);
+                        }
+                    } else {
+                        $res = array('message'=>"Product is already in your cart",
+            'status'=>201
+            );
 
                         echo json_encode($res);
                     }
                 }
             } else {
-                $res = array('message'=>"Please insert some data",
+                $res = array('message'=>validation_errors(),
             'status'=>201
             );
 
                 echo json_encode($res);
             }
+        } else {
+            $res = array('message'=>"Please insert some data",
+            'status'=>201
+            );
+
+            echo json_encode($res);
         }
     }
+
     //==================Update Cart============================================
     public function update_cart()
     {
@@ -478,74 +507,73 @@ class Apicontroller extends CI_finecontrol
                 $emp_data= $this->db->get()->row();
 
                 if (!empty($email)) {
-                    if ($emp_data->password==md5($authentication)) {
-                        $this->db->select('*');
-                        $this->db->from('tbl_employee');
-                        $this->db->where('email', $email);
-                        $employee= $this->db->get()->row();
-                        $employee_id=$employee->id;
-                        $data_insert = array('employee_id'=>$employee_id,
+                    $this->db->select('*');
+                    $this->db->from('tbl_employee');
+                    $this->db->where('email', $email);
+                    $employee= $this->db->get()->row();
+                    $employee_id=$employee->id;
+                    $data_insert = array('employee_id'=>$employee_id,
                       'product_id'=>$product_id,
                       'type_id'=>$type_id,
                       'quantity'=>$quantity,
                       'ip' =>$ip,
                       'date'=>$cur_date
   );
-                        $this->db->where('employee_id', $employee_id);
-                        $this->db->where('product_id', $product_id);
-                        $this->db->where('type_id', $type_id);
-                        $last_id=$this->db->update("tbl_cart", $data_insert) ;
-                        $res = array('message'=>"Data Updated",
+                    $this->db->where('employee_id', $employee_id);
+                    $this->db->where('product_id', $product_id);
+                    $this->db->where('type_id', $type_id);
+                    $last_id=$this->db->update("tbl_cart", $data_insert) ;
+                    $res = array('message'=>"success",
                         'status'=>200
                         );
 
-                        echo json_encode($res);
-                        if (!empty($last_id)) {
-                        } else {
-                            $res = array('message'=>"Some error occured",
+                    echo json_encode($res);
+                    if (!empty($last_id)) {
+                    } else {
+                        $res = array('message'=>"Some error occured",
                           'status'=>201
                           );
 
-                            echo json_encode($res);
-                        }
+                        echo json_encode($res);
                     }
                 }
-                //----------update_cart using token id--------------
-                else {
-                    $data_insert = array('token_id'=>$token_id,
+            }
+            //----------update_cart using token id--------------
+            else {
+                $data_insert = array('token_id'=>$token_id,
                         'product_id'=>$product_id,
                         'type_id'=>$type_id,
                         'quantity'=>$quantity,
                         'ip' =>$ip,
                         'date'=>$cur_date
   );
-                    $this->db->where('token_id', $token_id);
-                    $this->db->where('product_id', $product_id);
-                    $this->db->where('type_id', $type_id);
-                    $last_id=$this->db->update("tbl_cart", $data_insert) ;
-                    $res = array('message'=>"Data Updated",
+                $this->db->where('token_id', $token_id);
+                $this->db->where('product_id', $product_id);
+                $this->db->where('type_id', $type_id);
+                $last_id=$this->db->update("tbl_cart", $data_insert) ;
+                $res = array('message'=>"Data Updated",
                             'status'=>200
                             );
 
-                    echo json_encode($res);
-                    if (!empty($last_id)) {
-                    } else {
-                        $res = array('message'=>"Some error occured",
+                echo json_encode($res);
+                if (!empty($last_id)) {
+                } else {
+                    $res = array('message'=>"Some error occured",
                     'status'=>201
                     );
 
-                        echo json_encode($res);
-                    }
+                    echo json_encode($res);
                 }
-            } else {
-                $res = array('message'=>"Please insert some data",
+            }
+        } else {
+            $res = array('message'=>"Please insert some data",
           'status'=>201
           );
 
-                echo json_encode($res);
-            }
+            echo json_encode($res);
         }
     }
+
     //========================Delete Cart===================
     public function delete_cart()
     {
@@ -562,9 +590,6 @@ class Apicontroller extends CI_finecontrol
 
 
             if ($this->form_validation->run()== true) {
-
-
-         // $address_id=$this->input->post('addr_id');
                 $token_id=$this->input->post('token_id');
                 $email=$this->input->post('email');
                 $authentication=$this->input->post('authentication');
@@ -615,7 +640,7 @@ class Apicontroller extends CI_finecontrol
                         }
                     }
                 }
-                //----------update_cart using token id--------------
+                //----------delete_cart using token id--------------
                 else {
                     $zapak=$this->db->delete('tbl_cart', array('token_id'=>$token_id,
                     'product_id'=>$product_id,
@@ -635,7 +660,7 @@ class Apicontroller extends CI_finecontrol
                         echo json_encode($res);
                     }
 
-                    if (!empty($last_id)) {
+                    if (!empty($zapak)) {
                     } else {
                         $res = array('message'=>"Some error occured",
                   'status'=>201
@@ -653,36 +678,523 @@ class Apicontroller extends CI_finecontrol
             }
         }
     }
-    public function view_cart($id)
+    //================view cart==========================================
+    public function view_cart()
     {
-        $this->db->select('*');
-        $this->db->from('tbl_cart');
-        $this->db->where('id', $id);
-        $cart_data= $this->db->get()->row();
-        $cart=[];
-        $this->db->select('*');
-        $this->db->from('tbl_employee');
-        $this->db->where('id', $cart_data->employee_id);
-        $employee= $this->db->get()->row();
-        $this->db->select('*');
-        $this->db->from('tbl_products');
-        $this->db->where('id', $cart_data->product_id);
-        $product= $this->db->get()->row();
-        $this->db->select('*');
-        $this->db->from('tbl_type');
-        $this->db->where('id', $cart_data->type_id);
-        $type= $this->db->get()->row();
-        $cart[]= array('token_id'=>$cart_data->token_id,
-          'employee name'=>$employee->name,
-              'product name'=>$product->product_name,
-                  'type'=>$type->name,
-                      'quantity'=>$cart_data->quantity
-      );
-        $res = array('message'=>"success",
-'status'=>200,
-'data'=>$cart,
-);
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('token_id', 'token_id', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('email', 'email', 'xss_clean|trim');
+            $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
 
-        echo json_encode($res);
+            if ($this->form_validation->run()== true) {
+
+              //-------------view_cart using email--------------------------------
+                $token_id=$this->input->post('token_id');
+                $email=$this->input->post('email');
+                $authentication=$this->input->post('authentication');
+
+                $this->db->select('*');
+                $this->db->from('tbl_employee');
+                $this->db->where('email', $email);
+                $emp_data= $this->db->get()->row();
+
+                if (!empty($email)) {
+                    if ($emp_data->password==md5($authentication)) {
+                        $this->db->select('*');
+                        $this->db->from('tbl_employee');
+                        $this->db->where('email', $email);
+                        $employee= $this->db->get()->row();
+                        $employee_id=$employee->id;
+                        $employee_name=$employee->name;
+                        $cart=[];
+                        $this->db->select('*');
+                        $this->db->from('tbl_cart');
+                        $this->db->where('employee_id', $employee_id);
+                        $cart_data= $this->db->get();
+                        foreach ($cart_data->result() as $data) {
+                            $this->db->select('*');
+                            $this->db->from('tbl_type');
+                            $this->db->where('id', $data->type_id);
+                            $type= $this->db->get()->row();
+                            $this->db->select('*');
+                            $this->db->from('tbl_products');
+                            $this->db->where('id', $data->product_id);
+                            $product= $this->db->get()->row();
+                            $cart[] = array('id'=>$data->id,
+                            'product_name'=>$product->product_name,
+                            'type_name'=>$type->name,
+                            'quantity'=>$data->quantity
+                          );
+                        }
+
+
+                        $res = array('message'=>"success",
+                        'status'=>200,
+                        'data'=>$cart,
+                        );
+
+                        echo json_encode($res);
+                        if (!empty($token_id)) {
+                        } else {
+                            $res = array('message'=>"Some error occured",
+                          'status'=>201
+                          );
+
+                            echo json_encode($res);
+                        }
+                    }
+                }
+                //----------view_cart using token id--------------
+                else {
+                    $cart=[];
+                    $this->db->select('*');
+                    $this->db->from('tbl_cart');
+                    $this->db->where('token_id', $token_id);
+                    $cart_data= $this->db->get();
+                    foreach ($cart_data->result() as $data) {
+                        $this->db->select('*');
+                        $this->db->from('tbl_type');
+                        $this->db->where('id', $data->type_id);
+                        $type= $this->db->get()->row();
+                        $this->db->select('*');
+                        $this->db->from('tbl_products');
+                        $this->db->where('id', $data->product_id);
+                        $product= $this->db->get()->row();
+                        $cart[] = array('id'=>$data->id,
+                      'product name'=>$product->product_name,
+                      'type name'=>$type->name,
+                      'quantity'=>$data->quantity
+                    );
+                    }
+
+
+                    $res = array('message'=>"success",
+                  'status'=>200,
+                  'data'=>$cart,
+                  );
+
+                    echo json_encode($res);
+                    if (!empty($cart)) {
+                    } else {
+                        $res = array('message'=>"Some error occured",
+                    'status'=>201
+                    );
+
+                        echo json_encode($res);
+                    }
+                }
+            } else {
+                $res = array('message'=>"Please insert some data",
+          'status'=>201
+          );
+
+                echo json_encode($res);
+            }
+        }
+    }
+    //================ Cart amount calculate==================================
+    public function calculate()
+    {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('authentication', 'required|password', 'xss_clean|trim');
+            $this->form_validation->set_rules('name', 'required', 'xss_clean|trim');
+            $this->form_validation->set_rules('shop_name', 'required', 'xss_clean|trim');
+            $this->form_validation->set_rules('phone', 'required', 'xss_clean|trim');
+            $this->form_validation->set_rules('place', 'required', 'xss_clean|trim');
+
+            if ($this->form_validation->run()== true) {
+                $email=$this->input->post('email');
+                $authentication=$this->input->post('authentication');
+                $name=$this->input->post('name');
+                $shop_name=$this->input->post('shop_name');
+                $phone=$this->input->post('phone');
+                $place=$this->input->post('place');
+                $ip = $this->input->ip_address();
+                date_default_timezone_set("Asia/Calcutta");
+                $cur_date=date("Y-m-d H:i:s");
+
+
+                $this->db->select('*');
+                $this->db->from('tbl_employee');
+                $this->db->where('email', $email);
+                $employee_data= $this->db->get()->row();
+                if (!empty($employee_data)) {
+                    if ($employee_data->password==md5($authentication)) {
+                        $id=$employee_data->id;
+                        $order_placed=[];
+                        $order1=[];
+                        $order2=[];
+                        $this->db->select('*');
+                        $this->db->from('tbl_cart');
+                        $this->db->where('employee_id', $id);
+                        $cart_data = $this->db->get();
+                        $final_amount = 0;
+                        foreach ($cart_data->result() as $data) {
+                            $quantity = $data->quantity;
+                            $this->db->select('*');
+                            $this->db->from('tbl_type');
+                            $this->db->where('id', $data->type_id);
+                            $type_data = $this->db->get()->row();
+                            $spgst = $type_data->spgst;
+                            $total_amt = $quantity*$spgst;
+                            $final_amount = $final_amount + $total_amt;
+                        }
+                        $product_id = $data->product_id;
+                        $type_id = $data->type_id;
+                        $txn_id = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstvwxyz"), 0, 12);
+                        $order1 = array('employee_id'=>$id,
+                      'total_amount'=>$final_amount,
+                      'name'=>$name,
+                      'phone'=>$phone,
+                      'shop_name'=>$shop_name,
+                      'place'=>$place,
+                      'txn_id'=>$txn_id,
+                      'ip'=>$ip,
+                      'date'=>$cur_date
+                    );
+                        $last_id=$this->base_model->insert_table("tbl_order1", $order1, 1);
+                        if (!empty($last_id)) {
+                            foreach ($cart_data->result() as $data2) {
+                                $this->db->select('*');
+                                $this->db->from('tbl_type');
+                                $this->db->where('id', $data2->type_id);
+                                $type = $this->db->get()->row();
+                                // print_r($type);
+                                // exit;
+                                $order2 = array('main_id'=>$last_id,
+                      'product_id'=>$data2->product_id,
+                      'type_id'=>$data2->type_id,
+                      'quantity'=> $data2->quantity,
+                      'mrp'=> $type->mrp,
+                      'selling_price'=> $type->sp,
+                      'total_amount'=> $data2->quantity * $type->sp,
+                      'type_amt_gst'=> $type->gstprice,
+                      'gst_percentage'=> $type->gst,
+                      'type_amt'=> $type->mrp,
+                      'gst'=> $type->gstprice
+                    );
+                                $least_id=$this->base_model->insert_table("tbl_order2", $order2, 1);
+                            }
+                        } else {
+                            $res = array('message'=>"Some error occured. Please try again",
+                'status'=>201
+                );
+
+                            echo json_encode($res);
+                        }
+
+                        $order_placed = array('txn_id'=>$txn_id,
+                    'total_amount'=>$final_amount
+
+                    );
+                        $res = array('message'=>"success",
+                      'status'=>200,
+                      'data'=>$order_placed
+                      );
+
+                        echo json_encode($res);
+
+                        if (!empty($last_id && $least_id && $order_placed)) {
+                        } else {
+                            $res = array('message'=>"Some error occured",
+                    'status'=>201
+                    );
+
+                            echo json_encode($res);
+                        }
+                    } else {
+                        $res = array('message'=>"Incorrect username or Password",
+          'status'=>201
+          );
+
+                        echo json_encode($res);
+                    }
+                } else {
+                    $res = array('message'=>"Email not found",
+      'status'=>201
+    );
+
+                    echo json_encode($res);
+                }
+            } else {
+                $res = array('message'=>validation_errors(),
+          'status'=>201
+          );
+
+                echo json_encode($res);
+            }
+        } else {
+            $res = array('message'=>"Some error occured",
+        'status'=>201
+        );
+
+            echo json_encode($res);
+        }
+    }
+    //===================checkout==========================================
+    public function checkout()
+    {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('txn_id', 'txn_id', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('image', 'image', 'xss_clean|trim');
+
+            if ($this->form_validation->run()== true) {
+                $txn_id=$this->input->post('txn_id');
+
+                $img1='image';
+                $file_check=($_FILES['image']['error']);
+                if ($file_check!=4) {
+                    $image_upload_folder = FCPATH . "assets/uploads/checkout/";
+                    if (!file_exists($image_upload_folder)) {
+                        mkdir($image_upload_folder, DIR_WRITE_MODE, true);
+                    }
+                    $new_file_name="transaction".date("Ymdhms");
+                    $this->upload_config = array(
+                                                'upload_path'   => $image_upload_folder,
+                                                'file_name' => $new_file_name,
+                                                'allowed_types' =>'xlsx|csv|xls|pdf|doc|docx|txt|jpg|jpeg|png',
+                                                'max_size'      => 25000
+                                        );
+                    $this->upload->initialize($this->upload_config);
+                    if (!$this->upload->do_upload($img1)) {
+                        $upload_error = $this->upload->display_errors();
+                        // echo json_encode($upload_error);
+                        echo $upload_error;
+                    } else {
+                        $file_info = $this->upload->data();
+
+                        $videoNAmePath = "assets/uploads/checkout/".$new_file_name.$file_info['file_ext'];
+                        $file_info['new_name']=$videoNAmePath;
+                        $nnnn=$file_info['file_name'];
+                    }
+                }
+
+                $this->db->select('*');
+                $this->db->from('tbl_order1');
+                $this->db->where('txn_id', $txn_id);
+                $order= $this->db->get()->row();
+                $check=[];
+
+                if (!empty($nnnn)) {
+                    $data_insert = array('image'=>$nnnn,
+                              'payment_type'=>1,
+                              'payment_status'=>1,
+                              'order_status'=>1,
+          );
+
+                    $this->db->where('txn_id', $txn_id);
+                    $last_id=$this->db->update("tbl_order1", $data_insert) ;
+                    $check=array('order_id'=>$order->id,
+                      'total amount'=>$order->total_amount
+                    );
+                    $res = array('message'=>"success",
+                                'status'=>200,
+                                'data'=>$check
+                                );
+
+                    echo json_encode($res);
+                } else {
+                    $data_insert = array(
+                              'payment_type'=>1,
+                              'payment_status'=>1,
+                              'order_status'=>1,
+          );
+
+                    $this->db->where('txn_id', $txn_id);
+                    $last_id=$this->db->update("tbl_order1", $data_insert) ;
+                    $check=array('order_id'=>$order->id,
+                      'total amount'=>$order->total_amount
+                    );
+                    $res = array('message'=>"success",
+                                'status'=>200,
+                                'data'=>$check
+                                );
+
+                    echo json_encode($res);
+                }
+                if (!empty($last_id)) {
+                } else {
+                    $res = array('message'=>"Some error occured, try again.",
+                                'status'=>201
+                                );
+
+                    echo json_encode($res);
+                }
+            } else {
+                $res = array('message'=>validation_errors(),
+          'status'=>201
+          );
+                echo json_encode($res);
+            }
+        } else {
+            $res = array('message'=>"Some error occured",
+          'status'=>201
+          );
+            echo json_encode($res);
+        }
+    }
+    //=================view_Order details======================================
+    public function my_orders()
+    {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
+
+            if ($this->form_validation->run()== true) {
+                $email=$this->input->post('email');
+                $authentication=$this->input->post('authentication');
+
+                $this->db->select('*');
+                $this->db->from('tbl_employee');
+                $this->db->where('email', $email);
+                $employee_data= $this->db->get()->row();
+                if (!empty($employee_data)) {
+                    if ($employee_data->password==md5($authentication)) {
+                        $id=$employee_data->id;
+                        $this->db->select('*');
+                        $this->db->from('tbl_order1');
+                        $this->db->where('employee_id', $id);
+                        $order_data= $this->db->get();
+                        $order1=[];
+                        $products=[];
+                        foreach ($order_data->result() as $data) {
+                            $this->db->select('*');
+                            $this->db->from('tbl_order2');
+                            $this->db->where('main_id', $data->id);
+                            $order2_data= $this->db->get();
+
+                            foreach ($order2_data->result() as $data2) {
+                                $this->db->select('*');
+                                $this->db->from('tbl_products');
+                                $this->db->where('id', $data2->product_id);
+                                $product= $this->db->get()->row();
+                                $this->db->select('*');
+                                $this->db->from('tbl_type');
+                                $this->db->where('id', $data2->type_id);
+                                $type= $this->db->get()->row();
+                                $products[]= array(
+                                'product_name'=>$product->product_name,
+                                'quantity'=>$data2->quantity,
+                                'type'=>$type->name,
+                                'mrp'=>$data2->mrp,
+                              );
+                            }
+                        }
+                        $order1[]= array('order_id'=>$data->id,
+                          'total_amount'=>$data->total_amount,
+                          'product_details'=>$products,
+                        );
+                        $res = array('message'=>"success",
+                        'status'=>200,
+                        'data'=>$order1
+                );
+                        echo json_encode($res);
+                    } else {
+                        $res = array('message'=>"Incorrect password",
+                'status'=>201
+                );
+                        echo json_encode($res);
+                    }
+                } else {
+                    $res = array('message'=>"Please insert data",
+      'status'=>201
+      );
+                    echo json_encode($res);
+                }
+            } else {
+                $res = array('message'=>validation_errors(),
+        'status'=>201
+        );
+                echo json_encode($res);
+            }
+        } else {
+            $res = array('message'=>"Some error occured",
+    'status'=>201
+    );
+            echo json_encode($res);
+        }
+    }
+    //=============farmer_details add===========================================
+    public function farmer_details()
+    {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('name', 'name', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('phone', 'phone', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('place', 'place', 'required|xss_clean|trim');
+
+            if ($this->form_validation->run()== true) {
+                $name=$this->input->post('name');
+                $phone=$this->input->post('phone');
+                $place=$this->input->post('place');
+                $email=$this->input->post('email');
+                $authentication=$this->input->post('authentication');
+                $ip = $this->input->ip_address();
+                date_default_timezone_set("Asia/Calcutta");
+                $cur_date=date("Y-m-d");
+
+                $this->db->select('*');
+                $this->db->from('tbl_employee');
+                $this->db->where('email', $email);
+                $employee= $this->db->get()->row();
+                $id=$employee->id;
+                if (!empty($employee)) {
+                    if ($employee->password==md5($authentication)) {
+                        $data_insert = array('employee_id'=>$id,
+                  'name'=>$name,
+                  'phone'=>$phone,
+                  'place'=>$place,
+                  'is_active'=>1,
+                  'date'=>$cur_date,
+                  'ip'=>$ip
+                );
+                        $last_id=$this->base_model->insert_table("tbl_farmer_details", $data_insert, 1) ;
+                        if (!empty($last_id)) {
+                            $res = array('message'=>'success',
+                      'status'=>200
+                    );
+                            echo json_encode($res);
+                        } else {
+                            $res = array('message'=>"Some error occured",
+                    'status'=>201
+                    );
+                            echo json_encode($res);
+                        }
+                    } else {
+                        $res = array('message'=>"Incorrect password",
+                  'status'=>201
+                  );
+                        echo json_encode($res);
+                    }
+                } else {
+                    $res = array('message'=>"Invalid email",
+                'status'=>201
+                );
+                    echo json_encode($res);
+                }
+            } else {
+                $res = array('message'=>validation_errors(),
+    'status'=>201
+    );
+                echo json_encode($res);
+            }
+        }
     }
 }

@@ -92,6 +92,8 @@
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
         Action <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
+          <?if ($this->session->userdata('position')=="Super Admin") {
+            ?>
 
         <?php if ($data->is_active==1) { ?>
         <li><a href="<?php echo base_url() ?>dcadmin/Banner_image/updatebanner_imageStatus/<?php echo
@@ -102,7 +104,11 @@
         <?php } ?>
         <li><a href="<?php echo base_url() ?>dcadmin/Banner_image/update_banner_image/<?php echo
         base64_encode($data->id) ?>">Edit</a></li>
-        <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li>
+        <!-- <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li> -->
+        <?
+        } else {
+            echo "No actions available";
+        }?>
         </ul>
         </div>
         </div>

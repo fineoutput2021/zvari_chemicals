@@ -7,7 +7,11 @@
   <section class="content">
     <div class="row">
       <div class="col-lg-12">
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Type/add_type" role="button" style="margin-bottom:12px;"> Add Type</a>
+        <?if ($this->session->userdata('position')=="Super Admin") {
+    ?>
+
+        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Type/add_type" role="button" style="margin-bottom:12px;"> Add Type</a><?php
+}?>
         <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Products/view_products" role="button" style="margin-bottom:12px;"> Back</a>
 
         <div class="panel panel-default">
@@ -91,18 +95,22 @@
                           <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span></button>
                             <ul class="dropdown-menu" role="menu">
+                              <?if ($this->session->userdata('position')=="Super Admin") {
+                               ?>
                               <?php if ($data->stock==1) { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Type/updatestockStatus/<?php echo base64_encode($data->id) ?>/outofstock">Out Of Stock</a></li>
                               <?php } else { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Type/updatestockStatus/<?php echo base64_encode($data->id) ?>/instock">Instock</a></li>
-                              <?php		}   ?>
+                              <?php		} ?>
                               <?php if ($data->is_active==1) { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Type/updatetypeStatus/<?php echo base64_encode($data->id) ?>/inactive">Inactive</a></li>
                               <?php } else { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Type/updatetypeStatus/<?php echo base64_encode($data->id) ?>/active">Active</a></li>
-                              <?php		}   ?>
+                              <?php		} ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Type/update_type/<?php echo base64_encode($data->id) ?>">Edit</a></li>
                               <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li>
+                              <?php
+                           }?>
                             </ul>
                           </div>
                         </div>

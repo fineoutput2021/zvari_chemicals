@@ -78,13 +78,19 @@
                           <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span></button>
                             <ul class="dropdown-menu" role="menu">
+                              <?if ($this->session->userdata('position')=="Super Admin") {
+                          ?>
 
                               <?php if ($data->is_active==1) { ?>
                                 <li><a href="<?php echo base_url() ?>dcadmin/Leave_req/updateleave_reqStatus/<?php echo base64_encode($data->id) ?>/accept">Accept</a></li>
                               <li><a href="<?php echo base_url() ?>dcadmin/Leave_req/updateleave_reqStatus/<?php echo base64_encode($data->id) ?>/reject">Reject</a></li>
                               <?php } else { ?>
                               <li>NA</li>
-                              <?php		}   ?>
+                              <?php		} ?>
+                              <?php
+                      } else {
+                          echo "No actions available";
+                      }  ?>
                             </ul>
                           </div>
                         </div>

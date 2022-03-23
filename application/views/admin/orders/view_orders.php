@@ -43,13 +43,10 @@
                       <th>#</th>
                       <th>Order ID</th>
                       <th>Employee Name</th>
-                      <th>User</th>
                       <th>Mobile Number</th>
                       <th>Shop Name</th>
                       <th>Village/City</th>
                       <th>Total Amount</th>
-                      <th>Shipping Charge</th>
-                      <th>Final Amount</th>
                       <th>Image</th>
                       <th>Date</th>
                       <th>Orders Status</th>
@@ -76,11 +73,7 @@
                           echo "NA";
                       }
                       ?></td>
-                      <td><?php if (!empty($data->name)) {
-                          echo $data->name;
-                      } else {
-                          echo "No Data";
-                      }?></td>
+
                       <td><?php if (!empty($data->phone)) {
                           echo $data->phone;
                       } else {
@@ -104,21 +97,14 @@
                           echo "NA";
                       }?></td>
 
-                      <td><?php if (!empty($data->delivery_charge)) {
-                          echo "£".$data->delivery_charge;
-                      } else {
-                          echo "NA";
-                      }?></td>
-                      <td><?php if (!empty($data->final_amount)) {
-                          echo "£".$data->final_amount;
-                      } else {
+
+
+                      <td><?php if (!empty($data->image)) {?>
+                        <img src="<?=base_url()?>assets/uploads/checkout/<?=$data->image?>" width="100px" height="70px">
+                        <?} else {
                           echo "No Data";
-                      }?></td>
-                      <td><?php if (!empty($data->image)) {
-                          echo $data->image;
-                      } else {
-                          echo "No Data";
-                      }?></td>
+                      }?>
+                      </td>
                       <td>
                         <?php
     $newdate = new DateTime($data->date);
@@ -143,6 +129,8 @@
                           <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span></button>
                             <ul class="dropdown-menu" role="menu">
+                              <?if ($this->session->userdata('position')=="Super Admin") {
+        ?>
 
                               <?php if ($data->order_status==1) { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/orders/update_order_status/<?php echo base64_encode($data->id) ?>/accept">Accept</a></li>
@@ -167,8 +155,13 @@
                               <?php		} elseif ($data->order_status==5) { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/orders/view_product_details/<?php echo base64_encode($data->id) ?>">View details</a></li>
                               <li><a href="<?php echo base_url() ?>dcadmin/orders/view_order_bill/<?php echo base64_encode($data->id) ?>">View Bill</a></li>
-                              <?php		}   ?>
+                              <?php		} ?>
+                              <?php
+    } else {?>
+                              <li><a href="<?php echo base_url() ?>dcadmin/orders/view_product_details/<?php echo base64_encode($data->id) ?>">View details</a></li>
+                              <li><a href="<?php echo base_url() ?>dcadmin/orders/view_order_bill/<?php echo base64_encode($data->id) ?>">View Bill</a></li>
 
+                              <?}?>
                             </ul>
                           </div>
                         </div>

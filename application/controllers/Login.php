@@ -169,9 +169,9 @@ class Login extends CI_Controller
             $this->session->unset_userdata('power');
             $this->session->unset_userdata('services');
             $this->session->unset_userdata('image');
-            $this->session->unset_userdata('designation_id', $designation);
-            $this->session->unset_userdata('state_id', $state);
-            $this->session->unset_userdata('territory_id', $territory);
+            $this->session->unset_userdata('designation_id');
+            $this->session->unset_userdata('state_id');
+            $this->session->unset_userdata('territory_id');
 
 
             redirect("login/admin_login", "refresh");

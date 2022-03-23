@@ -44,7 +44,6 @@ Order Details
                       <th>Quantity</th>
                       <th>Selling Price</th>
                       <th>Type Amount</th>
-                      <th>Type Amount GST</th>
                       <th>GST</th>
                       <th>GST Percentage</th>
                       <th>Total Amount</th>
@@ -55,32 +54,30 @@ Order Details
                               $this->db->select('*');
                               $this->db->from('tbl_products');
                               $this->db->where('id', $data->product_id);
-                              $prodata= $this->db->get()->row(); ?>
+                              $product= $this->db->get()->row(); ?>
 <tr>
 <td><?php echo $i ?> </td>
-<td><?php if (!empty($prodata->name)) {
-                                  echo $prodata->name;
+<td><?php if (!empty($product->product_name)) {
+                                  echo $product->product_name;
                               } ?></td>
 <td><?php if (!empty($data->quantity)) {
                                   echo $data->quantity;
                               } ?></td>
 <td><?php if (!empty($data->selling_price)) {
-                                  echo "£".$data->selling_price;
+                                  echo "₹".$data->selling_price;
                               } ?></td>
 <td><?php if (!empty($data->type_amt)) {
                                   echo $data->type_amt;
                               } ?></td>
-<td><?php if (!empty($type_amt_gst)) {
-                                  echo $prodata->type_amt_gst;
-                              } ?></td>
+
 <td><?php if (!empty($data->gst)) {
                                   echo $data->gst;
                               } ?></td>
 <td><?php if (!empty($data->gst_percentage)) {
-                                  echo "£".$data->gst_percentage;
+                                  echo "₹".$data->gst_percentage;
                               } ?></td>
 <td><?php if (!empty($data->total_amount)) {
-                                  echo "£".$data->total_amount;
+                                  echo "₹".$data->total_amount;
                               } ?></td>
 
 
