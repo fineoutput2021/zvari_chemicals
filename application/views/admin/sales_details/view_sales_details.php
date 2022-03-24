@@ -1,16 +1,17 @@
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      Employee details
+      Sales Details
     </h1>
+
   </section>
   <section class="content">
     <div class="row">
       <div class="col-lg-12">
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Employee/view_employee" role="button" style="margin-bottom:12px;"> Back</a>
+        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Employee_details/view_employee_details/<?=$id;?>" role="button" style="margin-bottom:12px;"> Back</a>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View employee details</h3>
+            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View sales details</h3>
           </div>
           <div class="panel panel-default">
 
@@ -36,51 +37,81 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Name</th>
-                      <th>Day Start</th>
-                      <th>Day End</th>
-
+                      <th>Order ID</th>
+                      <th>Employee Name</th>
+                      <th>Mobile Number</th>
+                      <th>Shop Name</th>
+                      <th>Village/City</th>
+                      <th>Total Amount</th>
+                      <th>Image</th>
                       <th>Date</th>
-                      <th>Attendance</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $i=1; foreach ($attendance_data->result() as $data) { ?>
+                    <?php $i=1; foreach ($orders_data->result() as $data) { ?>
                     <tr>
                       <td><?php echo $i ?> </td>
+                      <td><?php if (!empty($data->id)) {
+                                                          echo $data->id;
+                                                      } else {
+                                                          echo "No Data";
+                                                      }?></td>
                       <td><?php
                       $this->db->select('*');
                       $this->db->from('tbl_employee');
                       $this->db->where('id', $data->employee_id);
-                      $employee_data= $this->db->get()->row();
-                      echo $employee_data->name;
-                      ?>
-                     </td>
-                     <td><?php echo $data->start ?></td>
-                     <td><?php echo $data->end ?></td>
+                      $employee= $this->db->get()->row();
+                      if (!empty($employee)) {
+                          echo $employee->name;
+                      } else {
+                          echo "NA";
+                      }
+                      ?></td>
 
-                      <td><?php echo $data->date ?></td>
-                      <td><?php if ($data->attendance==1) { ?>
-                        <p class="label bg-green">Present</p>
+                      <td><?php if (!empty($data->phone)) {
+                          echo $data->phone;
+                      } else {
+                          echo "No Data";
+                      }?></td>
+                      <td><?php if (!empty($data->shop_name)) {
+                          echo $data->shop_name;
+                      } else {
+                          echo "No Data";
+                      }?></td>
+                      <td><?php if (!empty($data->place)) {
+                          echo $data->place;
+                      } else {
+                          echo "No Data";
+                      }?></td>
 
-                        <?php } else { ?>
-                        <p class="label bg-red">Absent</p>
+
+                      <td><?php if (!empty($data->total_amount)) {
+                          echo "₹".$data->total_amount;
+                      } else {
+                          echo "NA";
+                      }?></td>
 
 
-                        <?php		}   ?>
+
+                      <td><?php if (!empty($data->image)) {?>
+                        <img src="<?=base_url()?>assets/uploads/checkout/<?=$data->image?>" width="100px" height="70px">
+                        <?} else {
+                          echo "No Data";
+                      }?>
                       </td>
                       <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span></button>
-                            <ul class="dropdown-menu" role="menu">
-                              <li><a href="<?php echo base_url() ?>dcadmin/Tour/view_tour/<?php echo base64_encode($data->employee_id) ?>">Tour Details</a></li>
-                              <li><a href="<?php echo base_url() ?>dcadmin/Tour_photos/view_tour_photos/<?php echo base64_encode($data->employee_id) ?>">Photos Uploaded</a></li>
-                              <li><a href="<?php echo base_url() ?>dcadmin/Tour_km/view_tour_km/<?php echo base64_encode($data->employee_id) ?>">Kilometers Travelled</a></li>
-                              <li><a href="<?php echo base_url() ?>dcadmin/Sales_details/view_sales_details/<?php echo base64_encode($data->employee_id) ?>">Sales details</a></li>
-                              <!-- <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li> -->
-                            </ul>
-                          </div>
+                        <?php
+    $newdate = new DateTime($data->date);
+    echo $newdate->format('F j, Y, g:i a');   #d-m-Y  // March 10, 2001, 5:16 pm
+    ?>
+                      </td>
+
+
+                      <td>
+
+                        <a class="btn btn-default cticket" href="<?php echo base_url() ?>dcadmin/Oders/view_product_details/<?php echo base64_encode($data->id) ?>" role="button" style="margin-bottom:12px;"> View details</a>
+
                       </td>
                     </tr>
                     <?php $i++; } ?>

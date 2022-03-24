@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <html lang="en">
-<input type="hidden" value="<?php if(!empty($order1_data)){ echo $order1_data->final_amount; }?>" id="tot_amnt">
+<input type="hidden" value="<?php if(!empty($order1_data)){ echo $order1_data->total_amount; }?>" id="tot_amnt">
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <!-- Css file include -->
 <link rel="stylesheet" type="text/css" href="css/style.css">
-	<title>Royal Homes Bill</title>
+	<title>Zvari Chemicals Bill</title>
 </head>
 <body style="padding-top:75px;">
 <div class="container main_container">
@@ -26,11 +26,11 @@
 <div class="container">
 	<div class="row">
 		<div class="col-sm-6"><span class="font-weight-bold ">Sold By</span><br>
-<span class="seller_details">Royal Home <br>
+<span class="seller_details">Zvari Chemicals <br>
 
- PO Box 283577<br>Dubai, UAE
+ <!-- PO Box 283577<br>Dubai, UAE -->
 <br><br>
-		www.royalhomes.com<br></span>
+		www.zvarichemicals.com<br></span>
 		</div>
 
 		<div class="col-sm-6 billing_content"><span class="font-weight-bold ">Billing Address:</span><br>
@@ -97,13 +97,13 @@ $this->db->from('tbl_products');
 $this->db->where('id',$data->product_id);
 $product_data= $this->db->get()->row();
 if(!empty($product_data)){
-echo $product_name= $product_data->productname;
+echo $product_name= $product_data->product_name;
 }
         ?></td>
 
-        <td >£<?if(!empty($data->mrp)){echo $data->mrp;}?></td>
+        <td >₹<?if(!empty($data->mrp)){echo $data->mrp;}?></td>
         <td ><?php echo $data->quantity;?></td>
-        <td><?php echo "£".$data->total_amount;?></td>
+        <td><?php echo "₹".$data->total_amount;?></td>
       </tr>
   <?php $i++;} }?>
 
@@ -113,32 +113,14 @@ echo $product_name= $product_data->productname;
         <th class="product_table" ><?php if(!empty($order1_data)){ echo ""; }?></th>
         <th class="product_table" colspan="2"><?php if(!empty($order1_data)){ echo ""; }?></th>
 
-        <th class="product_table"><?php if(!empty($order1_data)){ echo "£".$order1_data->total_amount; }?></th>
+        <th class="product_table"><?php if(!empty($order1_data)){ echo "₹".$order1_data->total_amount; }?></th>
       </tr>
-      <tr>
-        <th>Shipping charge:</th>
 
-        <th class="product_table" ><?php if(!empty($order1_data)){ echo ""; }?></th>
-        <th class="product_table" colspan="2"><?php if(!empty($order1_data)){ echo ""; }?></th>
-
-        <th class="product_table"><?php if(!empty($order1_data)){ echo "+ £".$order1_data->delivery_charge; }?></th>
-      </tr>
-      <tr>
-        <th>Promocode discount:</th>
-
-        <th class="product_table" ><?php if(!empty($order1_data)){ echo ""; }?></th>
-        <th class="product_table" colspan="2"><?php if(!empty($order1_data)){ echo ""; }?></th>
-        <th class="product_table"><?php if(!empty($order1_data->promocode_id)){ echo "- £".$order1_data->p_discount; }else{"NA";}?></th>
-      </tr>
 
       <tr>
       </tr>
 
-      <tr>
-        <th colspan="4">SubTotal</th>
-        <th class="product_table">£<?php if(!empty($order1_data)){ echo  $order1_data->final_amount; }?></th>
 
-      </tr>
     </tbody>
     </table>
 
