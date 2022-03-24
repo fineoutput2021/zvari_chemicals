@@ -54,31 +54,32 @@
                       <tr>
                         <td> <strong>MRP</strong> <span style="color:red;">*</span></strong> </td>
                         <td>
-                          <input type="text" name="mrp" class="form-control" placeholder="" required value="" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td> <strong>GST</strong> <span style="color:red;">*</span></strong> </td>
-                        <td>
-                          <input type="text" name="gst" class="form-control" placeholder="" required value="" />
+                          <input type="text" name="mrp" id="mrp" class="form-control" placeholder="" required value="" />
                         </td>
                       </tr>
                       <tr>
                         <td> <strong>SP</strong> <span style="color:red;">*</span></strong> </td>
                         <td>
-                          <input type="text" name="sp" class="form-control" placeholder="" required value="" />
+                          <input type="text" name="sp" id="sp" class="form-control" placeholder="" required value="" />
                         </td>
                       </tr>
                       <tr>
+                        <td> <strong>GST(%)</strong> <span style="color:red;">*</span></strong> </td>
+                        <td>
+                          <input type="text" name="gst" id="gst" class="form-control" placeholder="" required value="" />
+                        </td>
+                      </tr>
+
+                      <tr>
                         <td> <strong>GST Price</strong> <span style="color:red;">*</span></strong> </td>
                         <td>
-                          <input type="text" name="gstprice" class="form-control" placeholder="" required value="" />
+                          <input type="text" name="gstprice" id="gstprice" class="form-control" placeholder="" READONLY required />
                         </td>
                       </tr>
                       <tr>
                         <td> <strong>SP GST</strong> <span style="color:red;">*</span></strong> </td>
                         <td>
-                          <input type="text" name="spgst" class="form-control" placeholder="" required value="" />
+                          <input type="text" name="spgst" id="spgst" class="form-control" placeholder="" required value="" READONLY />
                         </td>
                       </tr>
 
@@ -110,4 +111,18 @@
 
 
   <script type="text/javascript" src="<?php echo base_url() ?>assets/slider/ajaxupload.3.5.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#gst').keyup(function(ev) {
+        var sp = $('#sp').val() * 1;
+        var gst = $('#gst').val() * 1;
+        var gst_price = (gst / 100) * sp;
+        var spgst = sp + gst_price;
+        var divobj = document.getElementById('gstprice');
+        var gst_p = document.getElementById('spgst');
+        divobj.value = gst_price;
+        gst_p.value = spgst;
+      });
+    });
+  </script>
   <link href="<?php echo base_url() ?>assets/cowadmin/css/jqvmap.css" rel='stylesheet' type='text/css' />
