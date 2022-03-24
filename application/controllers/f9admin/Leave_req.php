@@ -25,7 +25,8 @@ class Leave_req extends CI_finecontrol
 
             $this->db->select('*');
             $this->db->from('tbl_leave_req');
-            //$this->db->where('id',$usr);
+            $this->db->order_by('is_active','asc');
+            $this->db->order_by('date','desc');
             $data['leave_req_data']= $this->db->get();
 
 
@@ -63,7 +64,7 @@ class Leave_req extends CI_finecontrol
                     exit;
                 }
             }
-            if ($t=="rejecet") {
+            if ($t=="reject") {
                 $data_update = array(
               'is_active'=>3
 

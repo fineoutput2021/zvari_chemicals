@@ -82,7 +82,9 @@
                               <?php		} ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Territory/update_territory/<?php echo base64_encode($data->id) ?>">Edit</a></li>
                               <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li>
-                              <?
+                              <?php
+                           } else {
+                               echo "No Actions available";
                            }?>
                             </ul>
                           </div>

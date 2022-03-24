@@ -3,11 +3,7 @@
     <h1>
       Team
     </h1>
-    <ol class="breadcrumb">
-      <li><a href="<?php echo base_url() ?>admin/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="<?php echo base_url() ?>admin/college"><i class="fa fa-dashboard"></i> All Team </a></li>
-      <li class="active">View Team</li>
-    </ol>
+    
   </section>
   <section class="content">
     <div class="row">
@@ -163,7 +159,9 @@
                               <?php		} ?>
 
                               <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete User</a></li>
-                              <?
+                              <?php
+                                                } else {
+                                                    echo "No Actions available";
                                                 }?>
                             </ul>
                           </div>

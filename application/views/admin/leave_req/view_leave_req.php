@@ -10,7 +10,7 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View team</h3>
+            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View Leave Requests</h3>
           </div>
           <div class="panel panel-default">
 
@@ -84,9 +84,10 @@
                               <?php if ($data->is_active==1) { ?>
                                 <li><a href="<?php echo base_url() ?>dcadmin/Leave_req/updateleave_reqStatus/<?php echo base64_encode($data->id) ?>/accept">Accept</a></li>
                               <li><a href="<?php echo base_url() ?>dcadmin/Leave_req/updateleave_reqStatus/<?php echo base64_encode($data->id) ?>/reject">Reject</a></li>
-                              <?php } else { ?>
-                              <li>NA</li>
-                              <?php		} ?>
+                              <?php
+                                                           } else {
+                                                               echo "No Actions available";
+                                                           } ?>
                               <?php
                       } else {
                           echo "No actions available";

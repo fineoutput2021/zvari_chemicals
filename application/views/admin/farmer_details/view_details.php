@@ -10,7 +10,7 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View Details</h3>
+            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View Farmer Details</h3>
           </div>
           <div class="panel panel-default">
 

@@ -29,6 +29,7 @@ class Employee_details extends CI_finecontrol
             $this->db->select('*');
             $this->db->from('tbl_attendance');
             $this->db->where('employee_id', $id);
+            $this->db->order_by('date', 'desc');
             $data['attendance_data']= $this->db->get();
 
 
@@ -39,4 +40,66 @@ class Employee_details extends CI_finecontrol
             redirect("login/admin_login", "refresh");
         }
     }
+    public function updateemployeeStatus($idd,$t){
+
+             if(!empty($this->session->userdata('admin_data'))){
+
+
+               $data['user_name']=$this->load->get_var('user_name');
+
+               // echo SITE_NAME;
+               // echo $this->session->userdata('image');
+               // echo $this->session->userdata('position');
+               // exit;
+               $id=base64_decode($idd);
+
+               if($t=="active"){
+
+                 $data_update = array(
+             'attendance'=>1
+
+             );
+
+             $this->db->where('id', $id);
+            $zapak=$this->db->update('tbl_attendance', $data_update);
+
+                 if($zapak!=0){
+                 redirect($_SERVER['HTTP_REFERER']);
+                         }
+                         else
+                         {
+                           echo "Error";
+                           exit;
+                         }
+               }
+               if($t=="inactive"){
+                 $data_update = array(
+              'attendance'=>0
+
+              );
+
+              $this->db->where('id', $id);
+              $zapak=$this->db->update('tbl_attendance', $data_update);
+
+                  if($zapak!=0){
+                    redirect($_SERVER['HTTP_REFERER']);                          }
+                          else
+                          {
+
+              $data['e']="Error Occured";
+                              	// exit;
+            	$this->load->view('errors/error500admin',$data);
+                          }
+               }
+
+
+
+           }
+           else{
+
+               $this->load->view('admin/login/index');
+           }
+
+           }
+
 }

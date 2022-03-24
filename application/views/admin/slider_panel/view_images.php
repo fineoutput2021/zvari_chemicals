@@ -16,7 +16,7 @@
 }?>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View Images</h3>
+            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View Slider panel</h3>
           </div>
           <div class="panel panel-default">
 
@@ -84,7 +84,9 @@
                               <?php		} ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Slider_panel/update_images/<?php echo base64_encode($data->id) ?>">Edit</a></li>
                               <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li>
-                              <?
+                              <?php
+                                                      } else {
+                                                          echo "No Actions available";
                                                       }?>
                             </ul>
                           </div>

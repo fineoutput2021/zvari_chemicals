@@ -1197,4 +1197,458 @@ class Apicontroller extends CI_finecontrol
             }
         }
     }
+    //================Tour data==================================================
+    public function tour()
+    {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('field', 'field', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('remarks', 'remarks', 'required|xss_clean|trim');
+
+            if ($this->form_validation->run()== true) {
+                $email=$this->input->post('email');
+                $authentication=$this->input->post('authentication');
+                $field=$this->input->post('field');
+                $remarks=$this->input->post('remarks');
+                $ip = $this->input->ip_address();
+                date_default_timezone_set("Asia/Calcutta");
+                $cur_date=date("Y-m-d H:i:s");
+                $this->db->select('*');
+                $this->db->from('tbl_employee');
+                $this->db->where('email', $email);
+                $employee_data= $this->db->get()->row();
+                $id = $employee_data->id;
+                if (!empty($employee_data)) {
+                    if ($employee_data->password==md5($authentication)) {
+                        $data_insert = array('employee_id'=>$id,
+                        'field'=>$field,
+                        'remarks'=>$remarks,
+                        'date'=>$cur_date,
+                        'ip'=>$ip
+                    );
+                        $last_id=$this->base_model->insert_table("tbl_tour", $data_insert, 1) ;
+                        if (!empty($last_id)) {
+                            $res = array('message'=>'success',
+                            'status'=>200
+                          );
+                            echo json_encode($res);
+                        } else {
+                            $res = array('message'=>"Some error occured",
+                          'status'=>201
+                          );
+                            echo json_encode($res);
+                        }
+                    } else {
+                        $res = array('message'=>"Incorrect password",
+        'status'=>201
+        );
+                        echo json_encode($res);
+                    }
+                } else {
+                    $res = array('message'=>"Account not found",
+    'status'=>201
+    );
+                    echo json_encode($res);
+                }
+            } else {
+                $res = array('message'=>validation_errors(),
+  'status'=>201
+  );
+                echo json_encode($res);
+            }
+        } else {
+            $res = array('message'=>"Some error occured",
+'status'=>201
+);
+            echo json_encode($res);
+        }
+    }
+    //=========Tour km details====================================================
+    public function tour_km()
+    {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('km', 'km', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('vehicle', 'vehicle', 'required|xss_clean|trim');
+
+            if ($this->form_validation->run()== true) {
+                $email=$this->input->post('email');
+                $authentication=$this->input->post('authentication');
+                $km=$this->input->post('km');
+                $vehicle=$this->input->post('vehicle');
+                $ip = $this->input->ip_address();
+                date_default_timezone_set("Asia/Calcutta");
+                $cur_date=date("Y-m-d H:i:s");
+                $this->db->select('*');
+                $this->db->from('tbl_employee');
+                $this->db->where('email', $email);
+                $employee_data= $this->db->get()->row();
+                $id = $employee_data->id;
+                if (!empty($employee_data)) {
+                    if ($employee_data->password==md5($authentication)) {
+                        $data_insert = array('employee_id'=>$id,
+                          'km'=>$km,
+                          'vehicle'=>$vehicle,
+                          'date'=>$cur_date,
+                          'ip'=>$ip
+                      );
+                        $last_id=$this->base_model->insert_table("tbl_tour_km", $data_insert, 1) ;
+                        if (!empty($last_id)) {
+                            $res = array('message'=>'success',
+                              'status'=>200
+                            );
+                            echo json_encode($res);
+                        } else {
+                            $res = array('message'=>"Some error occured",
+                            'status'=>201
+                            );
+                            echo json_encode($res);
+                        }
+                    } else {
+                        $res = array('message'=>"Incorrect password",
+        'status'=>201
+        );
+                        echo json_encode($res);
+                    }
+                } else {
+                    $res = array('message'=>"Account not found",
+    'status'=>201
+    );
+                    echo json_encode($res);
+                }
+            } else {
+                $res = array('message'=>validation_errors(),
+  'status'=>201
+  );
+                echo json_encode($res);
+            }
+        } else {
+            $res = array('message'=>"Some error occured",
+'status'=>201
+);
+            echo json_encode($res);
+        }
+    }
+    //==============Tour photos================================================
+    public function tour_photos()
+    {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('image1', 'image1', 'xss_clean|trim');
+            $this->form_validation->set_rules('image2', 'image2', 'xss_clean|trim');
+            $this->form_validation->set_rules('remarks', 'remarks', 'xss_clean|trim');
+
+            if ($this->form_validation->run()== true) {
+                $email=$this->input->post('email');
+                $authentication=$this->input->post('authentication');
+                $remarks=$this->input->post('remarks');
+                $image1=$this->input->post('image1');
+                $image2=$this->input->post('image2');
+                $ip = $this->input->ip_address();
+                date_default_timezone_set("Asia/Calcutta");
+                $cur_date=date("Y-m-d H:i:s");
+                $this->db->select('*');
+                $this->db->from('tbl_employee');
+                $this->db->where('email', $email);
+                $employee_data= $this->db->get()->row();
+                $id = $employee_data->id;
+                if (!empty($employee_data)) {
+                    if ($employee_data->password==md5($authentication)) {
+                        $img1='image1';
+
+                        $file_check=($_FILES['image1']['error']);
+                        if ($file_check!=4) {
+                            $image_upload_folder = FCPATH . "assets/uploads/tour_photos/";
+                            if (!file_exists($image_upload_folder)) {
+                                mkdir($image_upload_folder, DIR_WRITE_MODE, true);
+                            }
+                            $new_file_name="image1".date("Ymdhms");
+                            $this->upload_config = array(
+                                                        'upload_path'   => $image_upload_folder,
+                                                        'file_name' => $new_file_name,
+                                                        'allowed_types' =>'xlsx|csv|xls|pdf|doc|docx|txt|jpg|jpeg|png',
+                                                        'max_size'      => 25000
+                                                );
+                            $this->upload->initialize($this->upload_config);
+                            if (!$this->upload->do_upload($img1)) {
+                                $upload_error = $this->upload->display_errors();
+                                // echo json_encode($upload_error);
+                                echo $upload_error;
+                            } else {
+                                $file_info = $this->upload->data();
+
+                                $videoNAmePath = "assets/uploads/tour_photos/".$new_file_name.$file_info['file_ext'];
+                                $file_info['new_name']=$videoNAmePath;
+                                // $this->step6_model->updateappIconImage($imageNAmePath,$appInfoId);
+                                $nnnn1=$file_info['file_name'];
+                                // echo json_encode($file_info);
+                            }
+                        }
+                        $img2='image2';
+
+                        $file_check=($_FILES['image2']['error']);
+                        if ($file_check!=4) {
+                            $image_upload_folder = FCPATH . "assets/uploads/tour_photos/";
+                            if (!file_exists($image_upload_folder)) {
+                                mkdir($image_upload_folder, DIR_WRITE_MODE, true);
+                            }
+                            $new_file_name="image2".date("Ymdhms");
+                            $this->upload_config = array(
+                                                                    'upload_path'   => $image_upload_folder,
+                                                                    'file_name' => $new_file_name,
+                                                                    'allowed_types' =>'xlsx|csv|xls|pdf|doc|docx|txt|jpg|jpeg|png',
+                                                                    'max_size'      => 25000
+                                                            );
+                            $this->upload->initialize($this->upload_config);
+                            if (!$this->upload->do_upload($img2)) {
+                                $upload_error = $this->upload->display_errors();
+                                // echo json_encode($upload_error);
+                                echo $upload_error;
+                            } else {
+                                $file_info = $this->upload->data();
+
+                                $videoNAmePath = "assets/uploads/tour_photos/".$new_file_name.$file_info['file_ext'];
+                                $file_info['new_name']=$videoNAmePath;
+                                // $this->step6_model->updateappIconImage($imageNAmePath,$appInfoId);
+                                $nnnn2=$file_info['file_name'];
+                                // echo json_encode($file_info);
+                            }
+                        }
+                        $data_insert = array('employee_id'=>$id,
+                        'image1'=>$nnnn1,
+                        'image2'=>$nnnn2,
+                        'remarks'=>$remarks,
+                        'date'=>$cur_date,
+                        'ip'=>$ip
+                    );
+                        $last_id=$this->base_model->insert_table("tbl_tour_photos", $data_insert, 1) ;
+                        if (!empty($last_id)) {
+                            $res = array('message'=>'success',
+                            'status'=>200
+                          );
+                            echo json_encode($res);
+                        } else {
+                            $res = array('message'=>"Some error occured",
+                          'status'=>201
+                          );
+                            echo json_encode($res);
+                        }
+                    } else {
+                        $res = array('message'=>"Incorrect password",
+        'status'=>201
+        );
+                        echo json_encode($res);
+                    }
+                } else {
+                    $res = array('message'=>"Account not found",
+    'status'=>201
+    );
+                    echo json_encode($res);
+                }
+            } else {
+                $res = array('message'=>validation_errors(),
+  'status'=>201
+  );
+                echo json_encode($res);
+            }
+        } else {
+            $res = array('message'=>"Some error occured",
+'status'=>201
+);
+            echo json_encode($res);
+        }
+    }
+    //====================apply leave request============================================
+    public function apply_leave_req()
+    {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('start', 'start', 'xss_clean|trim');
+            $this->form_validation->set_rules('end', 'end', 'xss_clean|trim');
+
+            if ($this->form_validation->run()== true) {
+                $email=$this->input->post('email');
+                $authentication=$this->input->post('authentication');
+                $start=$this->input->post('start');
+                $end=$this->input->post('end');
+
+                $start1 = date('d-m-Y', strtotime("-1 day", strtotime($start)));
+
+                $req_time=(strtotime($end) - strtotime($start1));
+                $req_time= round($req_time / (60*60*24));
+
+                $ip = $this->input->ip_address();
+                date_default_timezone_set("Asia/Calcutta");
+                $cur_date=date("Y-m-d H:i:s");
+                $this->db->select('*');
+                $this->db->from('tbl_employee');
+                $this->db->where('email', $email);
+                $employee_data= $this->db->get()->row();
+                $id = $employee_data->id;
+                $this->db->select('*');
+                $this->db->from('tbl_leave_req');
+                $this->db->where('employee_id', $id);
+                $leave_req_data= $this->db->get();
+                if (!empty($employee_data)) {
+                    if ($employee_data->password==md5($authentication)) {
+                        $a=0;
+                        foreach ($leave_req_data->result() as $data) {
+                            if ($data->start==$start || $data->end==$end) {
+                                $a=1;
+                            } elseif ($data->start<=$start && $data->end>=$start) {
+                                $a=1;
+                            } elseif ($data->start<=$end && $data->end>=$end) {
+                                $a=1;
+                            } else {
+                                $a=0;
+                            }
+                        }
+                        if ($a==0) {
+                            if ($req_time<4) {
+                                $data_insert = array('employee_id'=>$id,
+                              'start'=>$start,
+                              'end'=>$end,
+                              'is_active'=>1,
+                              'date'=>$cur_date,
+                              'ip'=>$ip
+                            );
+                                $last_id=$this->base_model->insert_table("tbl_leave_req", $data_insert, 1) ;
+                                if (!empty($last_id)) {
+                                    $res = array('message'=>'success',
+                          'status'=>200
+                        );
+                                    echo json_encode($res);
+                                } else {
+                                    $res = array('message'=>"Some error occured",
+                        'status'=>201
+                        );
+                                    echo json_encode($res);
+                                }
+                            } else {
+                                $res = array('message'=>"Cannot request for more than three days leave",
+      'status'=>201
+      );
+                                echo json_encode($res);
+                            }
+                        } else {
+                            $res = array('message'=>"Leave request already sent for the following date",
+    'status'=>201
+    );
+                            echo json_encode($res);
+                        }
+                    } else {
+                        $res = array('message'=>"Incorrect password",
+        'status'=>201
+        );
+                        echo json_encode($res);
+                    }
+                } else {
+                    $res = array('message'=>"Account not found",
+    'status'=>201
+    );
+                    echo json_encode($res);
+                }
+            } else {
+                $res = array('message'=>validation_errors(),
+  'status'=>201
+  );
+                echo json_encode($res);
+            }
+        } else {
+            $res = array('message'=>"Some error occured",
+'status'=>201
+);
+            echo json_encode($res);
+        }
+    }
+    //====================show leave request=====================================================
+    public function show_leave_req()
+    {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->helper('security');
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
+
+            if ($this->form_validation->run()== true) {
+                $email=$this->input->post('email');
+                $authentication=$this->input->post('authentication');
+                $this->db->select('*');
+                $this->db->from('tbl_employee');
+                $this->db->where('email', $email);
+                $employee_data= $this->db->get()->row();
+                $id=$employee_data->id;
+                if (!empty($employee_data)) {
+                    if ($employee_data->password==md5($authentication)) {
+                        $this->db->select('*');
+                        $this->db->from('tbl_leave_req');
+                        $this->db->where('employee_id', $id);
+                        $this->db->order_by('date', 'desc');
+                        $leave_req_data= $this->db->get();
+                        $leave_req=[];
+                        $status="";
+                        foreach ($leave_req_data->result() as $data) {
+                            $is_active=$data->is_active;
+                            if ($is_active==1) {
+                                $status="Pending";
+                            }
+                            if ($is_active==2) {
+                                $status="Accepted";
+                            }
+                            if ($is_active==3) {
+                                $status="Rejected";
+                            }
+                            $leave_req[]=array('from'=>$data->start,
+                        'to'=>$data->end,
+                        'applied on'=>$data->date,
+                        'leave status'=>$status
+                      );
+                        }
+                        $res = array('message'=>"success",
+    'status'=>200,
+    'data'=>$leave_req
+    );
+                        echo json_encode($res);
+                    } else {
+                        $res = array('message'=>"Incorrect password",
+      'status'=>201
+      );
+                        echo json_encode($res);
+                    }
+                } else {
+                    $res = array('message'=>"Account not found",
+  'status'=>201
+  );
+                    echo json_encode($res);
+                }
+            } else {
+                $res = array('message'=>validation_errors(),
+'status'=>201
+);
+                echo json_encode($res);
+            }
+        } else {
+            $res = array('message'=>"Some error occured",
+'status'=>201
+);
+            echo json_encode($res);
+        }
+    }
 }

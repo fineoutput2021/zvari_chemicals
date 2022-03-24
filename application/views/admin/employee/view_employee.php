@@ -114,9 +114,9 @@
 <li><a href="<?php echo base_url() ?>dcadmin/Employee/update_employee/<?php echo base64_encode($data->id) ?>">Edit</a></li>
 <li><a href="<?php echo base_url() ?>dcadmin/Employee_details/view_employee_details/<?php echo base64_encode($data->id) ?>">Employee Details</a></li>
 <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li><?php
-                             } else {
-                                 echo "No Actions available";
-                             }?>
+} else {?>
+                               <li><a href="<?php echo base_url() ?>dcadmin/Employee_details/view_employee_details/<?php echo base64_encode($data->id) ?>">Employee Details</a></li>
+                             <?}?>
 </ul>
 </div>
 </div>

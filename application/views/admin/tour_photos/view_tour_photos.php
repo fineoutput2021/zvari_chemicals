@@ -47,14 +47,14 @@
                       <td><?php echo $i ?> </td>
                       <td>
                         <?php if ($data->image1!="") {  ?>
-                        <img id="slide_img_path1" height=50 width=100 src="<?php echo base_url()."assets/admin/tour_photos/".$data->image1 ?>">
+                        <img id="slide_img_path1" height=50 width=100 src="<?php echo base_url()."assets/uploads/tour_photos/".$data->image1 ?>">
                         <?php } else {  ?>
                         Sorry No image Found
                         <?php } ?>
                       </td>
                       <td>
                         <?php if ($data->image2!="") {  ?>
-                        <img id="slide_img_path2" height=50 width=100 src="<?php echo base_url()."assets/admin/tour_photos/".$data->image2 ?>">
+                        <img id="slide_img_path2" height=50 width=100 src="<?php echo base_url()."assets/uploads/tour_photos/".$data->image2 ?>">
                         <?php } else {  ?>
                         Sorry No image Found
                         <?php } ?>
@@ -93,7 +93,7 @@
 <script src="<?php echo base_url() ?>assets/admin/plugins/datatables/dataTables.bootstrap.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
-    
+
 
     $(document.body).on('click', '.dCnf', function() {
       var i = $(this).attr("mydata");

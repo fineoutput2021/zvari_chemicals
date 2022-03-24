@@ -1,39 +1,37 @@
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      Employee Details
+      Employee details
     </h1>
-
   </section>
   <section class="content">
     <div class="row">
       <div class="col-lg-12">
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Employee/view_employee" role="button" style="margin-bottom:12px;">Back</a>
-
+        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Employee/view_employee" role="button" style="margin-bottom:12px;"> Back</a>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View Employee Details</h3>
+            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View employee details</h3>
           </div>
           <div class="panel panel-default">
 
-            <?php if (!empty($this->session->flashdata('smessage'))) { ?>
+            <? if(!empty($this->session->flashdata('smessage'))){ ?>
             <div class="alert alert-success alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <h4><i class="icon fa fa-check"></i> Alert!</h4>
-              <?php echo $this->session->flashdata('smessage'); ?>
+              <? echo $this->session->flashdata('smessage'); ?>
             </div>
-            <?php }
-                                                      if (!empty($this->session->flashdata('emessage'))) { ?>
+            <? }
+                                     			     if(!empty($this->session->flashdata('emessage'))){ ?>
             <div class="alert alert-danger alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-              <?php echo $this->session->flashdata('emessage'); ?>
+              <? echo $this->session->flashdata('emessage'); ?>
             </div>
-            <?php } ?>
+            <? } ?>
 
 
-            <div class="">
-              <div class=" no-padding">
+            <div class="panel-body">
+              <div class="box-body table-responsive no-padding">
                 <table class="table table-bordered table-hover table-striped" id="userTable">
                   <thead>
                     <tr>
@@ -44,7 +42,7 @@
 
                       <th>Date</th>
                       <th>Status</th>
-                      <th>More</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -73,9 +71,8 @@
                         <?php		}   ?>
                       </td>
                       <td>
-                        <div class="btn-group" id="btns<?php echo $i ?>">
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> More Details <span class="caret"></span></button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span></button>
                             <ul class="dropdown-menu" role="menu">
                               <?if ($this->session->userdata('position')=="Super Admin") {
                           ?>
@@ -84,21 +81,17 @@
                               <li><a href="<?php echo base_url() ?>dcadmin/Employee_details/updateemployeeStatus/<?php echo base64_encode($data->id) ?>/inactive">Absent</a></li>
                               <?php } else { ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Employee_details/updateemployeeStatus/<?php echo base64_encode($data->id) ?>/active">Present</a></li>
-                            <?php		} ?><?
-                      }?>
+                            <?php		} ?>
                               <li><a href="<?php echo base_url() ?>dcadmin/Tour/view_tour/<?php echo base64_encode($data->employee_id) ?>">Tour Details</a></li>
                               <li><a href="<?php echo base_url() ?>dcadmin/Tour_photos/view_tour_photos/<?php echo base64_encode($data->employee_id) ?>">Photos Uploaded</a></li>
                               <li><a href="<?php echo base_url() ?>dcadmin/Tour_km/view_tour_km/<?php echo base64_encode($data->employee_id) ?>">Kilometers Travelled</a></li>
                               <!-- <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li> -->
+                              <?php
+                        }else{?><li><a href="<?php echo base_url() ?>dcadmin/Tour/view_tour/<?php echo base64_encode($data->employee_id) ?>">Tour Details</a></li>
+                        <li><a href="<?php echo base_url() ?>dcadmin/Tour_photos/view_tour_photos/<?php echo base64_encode($data->employee_id) ?>">Photos Uploaded</a></li>
+                        <li><a href="<?php echo base_url() ?>dcadmin/Tour_km/view_tour_km/<?php echo base64_encode($data->employee_id) ?>">Kilometers Travelled</a></li> <?}?>
                             </ul>
                           </div>
-                        </div>
-
-                        <!-- <div style="display:none" id="cnfbox<?php echo $i ?>">
-                          <p> Are you sure delete this </p>
-                          <a href="<?php echo base_url() ?>dcadmin/Employee_details/delete_employee_details/<?php echo base64_encode($data->id); ?>" class="btn btn-danger">Yes</a>
-                          <a href="javasript:;" class="cans btn btn-default" mydatas="<?php echo $i ?>">No</a>
-                        </div> -->
                       </td>
                     </tr>
                     <?php $i++; } ?>
