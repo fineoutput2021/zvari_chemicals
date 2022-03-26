@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2022 at 11:58 AM
+-- Generation Time: Mar 26, 2022 at 06:38 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.15
 
@@ -49,7 +49,8 @@ INSERT INTO `tbl_admin_sidebar` (`id`, `name`, `url`) VALUES
 (10, 'Territory', 'Territory/view_territory'),
 (12, 'Orders', '#'),
 (13, 'Leave Requests', 'Leave_req/view_leave_req'),
-(14, 'Banner Image', 'Banner_image/view_banner_image');
+(14, 'Banner Image', 'Banner_image/view_banner_image'),
+(15, 'Slider Panel 2', 'Slider_panel2/view_images');
 
 -- --------------------------------------------------------
 
@@ -304,6 +305,38 @@ CREATE TABLE `tbl_slider_panel` (
   `is_active` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `tbl_slider_panel`
+--
+
+INSERT INTO `tbl_slider_panel` (`id`, `image`, `added_by`, `date`, `ip`, `is_active`) VALUES
+(1, 'slider_panel_image20220326060335.jpg', '19', '2022-03-26 06:18:21', '::1', '1'),
+(2, 'slider_panel_image20220326060312.jpg', '19', '2022-03-26 06:21:12', '::1', '1'),
+(3, 'slider_panel_image20220326060353.jpg', '19', '2022-03-26 06:21:53', '::1', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_slider_panel2`
+--
+
+CREATE TABLE `tbl_slider_panel2` (
+  `id` int(11) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `added_by` varchar(255) NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `ip` varchar(255) NOT NULL,
+  `is_active` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_slider_panel2`
+--
+
+INSERT INTO `tbl_slider_panel2` (`id`, `image`, `added_by`, `date`, `ip`, `is_active`) VALUES
+(1, 'slider_panel2_image20220326060334.jpg', '19', '2022-03-26 06:25:34', '::1', 1),
+(2, 'slider_panel2_image20220326060347.jpeg', '19', '2022-03-26 06:27:47', '::1', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -426,8 +459,8 @@ CREATE TABLE `tbl_type` (
   `product_id` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
   `mrp` int(11) NOT NULL,
-  `gst` int(11) NOT NULL,
   `sp` int(10) NOT NULL,
+  `gst` int(11) NOT NULL,
   `gstprice` int(11) NOT NULL,
   `spgst` int(11) NOT NULL,
   `ip` int(11) NOT NULL,
@@ -526,6 +559,12 @@ ALTER TABLE `tbl_slider_panel`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_slider_panel2`
+--
+ALTER TABLE `tbl_slider_panel2`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_state`
 --
 ALTER TABLE `tbl_state`
@@ -575,7 +614,7 @@ ALTER TABLE `tbl_type`
 -- AUTO_INCREMENT for table `tbl_admin_sidebar`
 --
 ALTER TABLE `tbl_admin_sidebar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tbl_admin_sidebar2`
@@ -653,7 +692,13 @@ ALTER TABLE `tbl_products`
 -- AUTO_INCREMENT for table `tbl_slider_panel`
 --
 ALTER TABLE `tbl_slider_panel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tbl_slider_panel2`
+--
+ALTER TABLE `tbl_slider_panel2`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_state`

@@ -32,6 +32,24 @@ class Apicontroller extends CI_finecontrol
 
         echo json_encode($res);
     }
+    //=============Home Page Slider 2======================================
+    public function get_slider2()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_slider_panel2');
+        $this->db->where('is_active', 1);
+        $slider_data= $this->db->get();
+        $slider=[];
+        foreach ($slider_data->result() as $data) {
+            $slider[]=array('image'=>base_url().$data->image);
+        }
+        $res = array('message'=>'success',
+        'status'=>200,
+        'data'=>$slider,
+        );
+
+        echo json_encode($res);
+    }
     //==============Category================================================
     public function get_category()
     {
