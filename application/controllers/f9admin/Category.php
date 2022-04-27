@@ -107,7 +107,7 @@ class Category extends CI_finecontrol
                       						{
                       							mkdir($image_upload_folder, DIR_WRITE_MODE, true);
                       						}
-                      						$new_file_name="team".date("Ymdhms");
+                      						$new_file_name="category".date("Ymdhms");
                       						$this->upload_config = array(
                       								'upload_path'   => $image_upload_folder,
                       								'file_name' => $new_file_name,
@@ -164,7 +164,7 @@ class Category extends CI_finecontrol
                         if(!empty($nnnn)){
                           $data_insert = array(
                     'name'=>$name,
-                    'image'=>$nnnn,  
+                    'image'=>$nnnn,
                        );
                      }else{
                        $data_insert = array(
