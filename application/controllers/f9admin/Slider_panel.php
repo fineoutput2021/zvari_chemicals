@@ -105,9 +105,7 @@ class Slider_panel extends CI_finecontrol
                     $file_info = $this->upload->data();
 
                     $videoNAmePath = "assets/uploads/slider_panel/".$new_file_name.$file_info['file_ext'];
-                    $file_info['new_name']=$videoNAmePath;
-                    // $this->step6_model->updateappIconImage($imageNAmePath,$appInfoId);
-                    $nnnn=$file_info['file_name'];
+                    $nnnn=$videoNAmePath;
                     // echo json_encode($file_info);
                 }
             }
@@ -157,7 +155,7 @@ class Slider_panel extends CI_finecontrol
 
 
             if ($last_id!=0) {
-                $this->session->set_flashdata('emessage', 'Data inserted successfully');
+                $this->session->set_flashdata('smessage', 'Data inserted successfully');
 
                 redirect("dcadmin/Slider_panel/view_images", "refresh");
             } else {
@@ -227,6 +225,8 @@ class Slider_panel extends CI_finecontrol
 
                 $zapak=$this->db->delete('tbl_slider_panel', array('id' => $id));
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Data deleted successfully');
+
                     redirect("dcadmin/Slider_panel/view_images", "refresh");
                 } else {
                     echo "Error";
@@ -263,6 +263,7 @@ class Slider_panel extends CI_finecontrol
                 $zapak=$this->db->update('tbl_slider_panel', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Status updated successfully');
                     redirect("dcadmin/Slider_panel/view_images", "refresh");
                 } else {
                     echo "Error";
@@ -279,6 +280,7 @@ class Slider_panel extends CI_finecontrol
                 $zapak=$this->db->update('tbl_slider_panel', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Status updated successfully');
                     redirect("dcadmin/Slider_panel/view_images", "refresh");
                 } else {
                     $data['e']="Error Occured";

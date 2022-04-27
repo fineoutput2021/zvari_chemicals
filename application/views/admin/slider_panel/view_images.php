@@ -53,7 +53,7 @@
                       <td><?php echo $i ?> </td>
                       <td>
                         <?php if ($data->image!="") {  ?>
-                        <img id="slide_img_path" height=50 width=100 src="<?php echo base_url()."assets/uploads/slider_panel/".$data->image ?>">
+                        <img id="slide_img_path" height=50 width=100 src="<?php echo base_url().$data->image ?>">
                         <?php } else {  ?>
                         Sorry No image Found
                         <?php } ?>
@@ -94,7 +94,7 @@
 
                         <div style="display:none" id="cnfbox<?php echo $i ?>">
                           <p> Are you sure delete this </p>
-                          <a href="<?php echo base_url() ?>dcadmin/Type/delete_type/<?php echo base64_encode($data->id); ?>" class="btn btn-danger">Yes</a>
+                          <a href="<?php echo base_url() ?>dcadmin/Slider_panel/delete_images/<?php echo base64_encode($data->id); ?>" class="btn btn-danger">Yes</a>
                           <a href="javasript:;" class="cans btn btn-default" mydatas="<?php echo $i ?>">No</a>
                         </div>
                       </td>

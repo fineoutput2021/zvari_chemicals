@@ -177,7 +177,7 @@ class Type extends CI_finecontrol
 
 
                     if ($last_id!=0) {
-                        $this->session->set_flashdata('emessage', 'Data inserted successfully');
+                        $this->session->set_flashdata('smessage', 'Data inserted successfully');
 
                         redirect("dcadmin/Type/view_type", "refresh");
                     } else {
@@ -247,7 +247,7 @@ class Type extends CI_finecontrol
             if ($this->load->get_var('position')=="Super Admin") {
                 $zapak=$this->db->delete('tbl_type', array('id' => $id));
                 if ($zapak!=0) {
-                    $this->session->set_flashdata('smessage', 'Status Updated Successfully');
+                    $this->session->set_flashdata('smessage', 'Data deleted Successfully');
                     redirect($_SERVER['HTTP_REFERER']);
                 } else {
                     $this->session->set_flashdata('emessage', 'Sorry error occured');

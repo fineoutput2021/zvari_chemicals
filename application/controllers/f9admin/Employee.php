@@ -154,9 +154,7 @@ class Employee extends CI_finecontrol
                             $file_info = $this->upload->data();
 
                             $videoNAmePath = "assets/uploads/employee/".$new_file_name.$file_info['file_ext'];
-                            $file_info['new_name']=$videoNAmePath;
-                            // $this->step6_model->updateappIconImage($imageNAmePath,$appInfoId);
-                            $nnnn=$file_info['file_name'];
+                            $nnnn=$videoNAmePath;
                             // echo json_encode($file_info);
                         }
                     }
@@ -312,6 +310,8 @@ class Employee extends CI_finecontrol
 
                 $zapak=$this->db->delete('tbl_employee', array('id' => $id));
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Data deleted successfully');
+
                     redirect("dcadmin/Employee/view_employee", "refresh");
                 } else {
                     echo "Error";
@@ -349,6 +349,8 @@ class Employee extends CI_finecontrol
                 $zapak=$this->db->update('tbl_employee', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Status updated successfully');
+
                     redirect("dcadmin/Employee/view_employee", "refresh");
                 } else {
                     echo "Error";
@@ -365,6 +367,7 @@ class Employee extends CI_finecontrol
                 $zapak=$this->db->update('tbl_employee', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Status updated successfully');
                     redirect("dcadmin/Employee/view_employee", "refresh");
                 } else {
                     $data['e']="Error Occured";

@@ -62,7 +62,8 @@ class Apicontroller extends CI_finecontrol
         $category=[];
         foreach ($category_data->result() as $data) {
             $category[]=array('id'=>$data->id,
-              'name'=>$data->name);
+              'name'=>$data->name,
+              'image'=>$data->image);
         }
         $res = array('message'=>'success',
         'status'=>200,

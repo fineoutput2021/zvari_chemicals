@@ -98,11 +98,46 @@ class Category extends CI_finecontrol
                     $cur_date=date("Y-m-d H:i:s");
                     $addedby=$this->session->userdata('admin_id');
 
+                    $img1='image';
+
+                                $file_check=($_FILES['image']['error']);
+                                if($file_check!=4){
+                              	$image_upload_folder = FCPATH . "assets/uploads/category/";
+                      						if (!file_exists($image_upload_folder))
+                      						{
+                      							mkdir($image_upload_folder, DIR_WRITE_MODE, true);
+                      						}
+                      						$new_file_name="team".date("Ymdhms");
+                      						$this->upload_config = array(
+                      								'upload_path'   => $image_upload_folder,
+                      								'file_name' => $new_file_name,
+                      								'allowed_types' =>'jpg|jpeg|png',
+                      								'max_size'      => 25000
+                      						);
+                      						$this->upload->initialize($this->upload_config);
+                      						if (!$this->upload->do_upload($img1))
+                      						{
+                      							$upload_error = $this->upload->display_errors();
+                      							// echo json_encode($upload_error);
+                      							echo $upload_error;
+                      						}
+                      						else
+                      						{
+
+                      							$file_info = $this->upload->data();
+
+                      							$videoNAmePath = "assets/uploads/category/".$new_file_name.$file_info['file_ext'];
+                      							$nnnn=$videoNAmePath;
+                      							// echo json_encode($file_info);
+                      						}
+                                }
+
                     $typ=base64_decode($t);
                     $last_id = 0;
                     if ($typ==1) {
                         $data_insert = array(
                   'name'=>$name,
+                  'image'=>$nnnn,
 
                      'ip' =>$ip,
                      'added_by' =>$addedby,
@@ -126,11 +161,17 @@ class Category extends CI_finecontrol
 
 
 
+                        if(!empty($nnnn)){
+                          $data_insert = array(
+                    'name'=>$name,
+                    'image'=>$nnnn,  
+                       );
+                     }else{
+                       $data_insert = array(
+                 'name'=>$name,
+                    );
+                     }
 
-                        $data_insert = array(
-                  'name'=>$name,
-
-                     );
                         $this->db->where('id', $idw);
                         $last_id=$this->db->update('tbl_category', $data_insert);
                     }
@@ -175,6 +216,8 @@ class Category extends CI_finecontrol
                 $zapak=$this->db->update('tbl_category', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Status updated successfully');
+
                     redirect("dcadmin/Category/view_category", "refresh");
                 } else {
                     $this->session->set_flashdata('emessage', 'Sorry error occured');
@@ -191,6 +234,7 @@ class Category extends CI_finecontrol
                 $zapak=$this->db->update('tbl_category', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Status updated successfully');
                     redirect("dcadmin/Category/view_category", "refresh");
                 } else {
                     $this->session->set_flashdata('emessage', 'Sorry error occured');
@@ -218,6 +262,8 @@ class Category extends CI_finecontrol
             if ($this->load->get_var('position')=="Super Admin") {
                 $zapak=$this->db->delete('tbl_category', array('id' => $id));
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Data deleted successfully');
+
                     redirect("dcadmin/Category/view_category", "refresh");
                 } else {
                     $this->session->set_flashdata('emessage', 'Sorry error occured');

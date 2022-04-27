@@ -18,7 +18,7 @@ class Products extends CI_finecontrol
     public function view_products()
     {
         if (!empty($this->session->userdata('admin_data'))) {
-            $data['products_name']=$this->load->get_var('products_name');
+          $data['user_name']=$this->load->get_var('user_name');
 
             // echo SITE_NAME;
             // echo $this->session->userdata('image');
@@ -41,7 +41,7 @@ class Products extends CI_finecontrol
     public function add_products()
     {
         if (!empty($this->session->userdata('admin_data'))) {
-            $data['products_name']=$this->load->get_var('products_name');
+          $data['user_name']=$this->load->get_var('user_name');
 
             // echo SITE_NAME;
             // echo $this->session->userdata('image');
@@ -368,7 +368,7 @@ class Products extends CI_finecontrol
 
 
                     if ($last_id!=0) {
-                        $this->session->set_flashdata('emessage', 'Data inserted successfully');
+                        $this->session->set_flashdata('smessage', 'Data inserted successfully');
 
                         redirect("dcadmin/Products/view_products", "refresh");
                     } else {
@@ -391,7 +391,7 @@ class Products extends CI_finecontrol
     public function update_products($idd)
     {
         if (!empty($this->session->userdata('admin_data'))) {
-            $data['products_name']=$this->load->get_var('products_name');
+          $data['user_name']=$this->load->get_var('user_name');
 
             // echo SITE_NAME;
             // echo $this->session->userdata('image');
@@ -426,7 +426,7 @@ class Products extends CI_finecontrol
     public function delete_products($idd)
     {
         if (!empty($this->session->userdata('admin_data'))) {
-            $data['products_name']=$this->load->get_var('products_name');
+          $data['user_name']=$this->load->get_var('user_name');
 
             // echo SITE_NAME;
             // echo $this->session->userdata('image');
@@ -442,6 +442,7 @@ class Products extends CI_finecontrol
 
                 $zapak=$this->db->delete('tbl_products', array('id' => $id));
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Data deleted successfully');
                     redirect("dcadmin/Products/view_products", "refresh");
                 } else {
                     echo "Error";
@@ -456,4 +457,68 @@ class Products extends CI_finecontrol
             $this->load->view('admin/login/index');
         }
     }
+
+    public function updateproductsStatus($idd,$t){
+
+             if(!empty($this->session->userdata('admin_data'))){
+
+
+               $data['user_name']=$this->load->get_var('user_name');
+
+               // echo SITE_NAME;
+               // echo $this->session->userdata('image');
+               // echo $this->session->userdata('position');
+               // exit;
+               $id=base64_decode($idd);
+
+               if($t=="active"){
+
+                 $data_update = array(
+             'is_active'=>1
+
+             );
+
+             $this->db->where('id', $id);
+            $zapak=$this->db->update('tbl_products', $data_update);
+
+                 if($zapak!=0) {
+                   $this->session->set_flashdata('smessage', 'Status updated successfully');
+                     redirect("dcadmin/Products/view_products", "refresh");                         }
+                         else
+                         {
+                           echo "Error";
+                           exit;
+                         }
+               }
+               if($t=="inactive"){
+                 $data_update = array(
+              'is_active'=>0
+
+              );
+
+              $this->db->where('id', $id);
+              $zapak=$this->db->update('tbl_products', $data_update);
+
+                  if($zapak!=0){
+                    $this->session->set_flashdata('smessage', 'Status updated successfully');
+                      redirect("dcadmin/Products/view_products", "refresh");                          }
+                          else
+                          {
+
+              $data['e']="Error Occured";
+                              	// exit;
+            	$this->load->view('errors/error500admin',$data);
+                          }
+               }
+
+
+
+           }
+           else{
+
+               $this->load->view('admin/login/index');
+           }
+
+           }
+
 }

@@ -124,9 +124,6 @@
                            $file_info = $this->upload->data();
 
                            $videoNAmePath = "assets/uploads/banner_image/".$new_file_name.$file_info['file_ext'];
-                           $file_info['new_name']=$videoNAmePath;
-                           // $this->step6_model->updateappIconImage($imageNAmePath,$appInfoId);
-                           $nnnn=$file_info['file_name'];
                            $nnnn0=$videoNAmePath;
 
                            // echo json_encode($file_info);
@@ -144,7 +141,7 @@
                        if (!file_exists($image_upload_folder)) {
                            mkdir($image_upload_folder, DIR_WRITE_MODE, true);
                        }
-                       $new_file_name="banner_image".date("Ymdhms");
+                       $new_file_name="banner_image2".date("Ymdhms");
                        $this->upload_config = array(
                              'upload_path'   => $image_upload_folder,
                              'file_name' => $new_file_name,
@@ -162,9 +159,6 @@
                            $file_info = $this->upload->data();
 
                            $videoNAmePath = "assets/uploads/banner_image/".$new_file_name.$file_info['file_ext'];
-                           $file_info['new_name']=$videoNAmePath;
-                           // $this->step6_model->updateappIconImage($imageNAmePath,$appInfoId);
-                           $nnnn=$file_info['file_name'];
                            $nnnn1=$videoNAmePath;
 
                            // echo json_encode($file_info);
@@ -224,9 +218,6 @@
                            $file_info = $this->upload->data();
 
                            $videoNAmePath = "assets/uploads/banner_image/".$new_file_name.$file_info['file_ext'];
-                           $file_info['new_name']=$videoNAmePath;
-                           // $this->step6_model->updateappIconImage($imageNAmePath,$appInfoId);
-                           $nnnn=$file_info['file_name'];
                            $nnnn0=$videoNAmePath;
 
                            // echo json_encode($file_info);
@@ -340,6 +331,8 @@
                        $zapak=$this->db->update('tbl_banner_image', $data_update);
 
                        if ($zapak!=0) {
+                         $this->session->set_flashdata('smessage', 'Status updated successfully');
+
                            redirect("dcadmin/Banner_image/view_banner_image", "refresh");
                        } else {
                            $this->session->set_flashdata('emessage', 'Sorry error occured');
@@ -356,6 +349,8 @@
                        $zapak=$this->db->update('tbl_banner_image', $data_update);
 
                        if ($zapak!=0) {
+                         $this->session->set_flashdata('smessage', 'Status updated successfully');
+
                            redirect("dcadmin/Banner_image/view_banner_image", "refresh");
                        } else {
                            $this->session->set_flashdata('emessage', 'Sorry error occured');
@@ -389,6 +384,8 @@
 
                        $zapak=$this->db->delete('tbl_banner_image', array('id' => $id));
                        if ($zapak!=0) {
+                         $this->session->set_flashdata('smessage', 'Data deleted successfully');
+
                            redirect("dcadmin/Banner_image/view_banner_image", "refresh");
                        } else {
                            $this->session->set_flashdata('emessage', 'Sorry error occured');

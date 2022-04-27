@@ -43,6 +43,7 @@
                     <tr>
                       <th>#</th>
                       <th>Name</th>
+                      <th>Image</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -52,6 +53,7 @@
                     <tr>
                       <td><?php echo $i ?> </td>
                       <td><?php echo $data->name ?></td>
+                      <td><img src="<?=base_url().$data->image;?>" width="80px" height="80px"></td>
                       <td><?php if ($data->is_active==1) { ?>
                         <p class="label bg-green">Active</p>
                         <?php } else { ?>

@@ -39,6 +39,12 @@
                       <td> <strong>Name</strong> <span style="color:red;">*</span></strong> </td>
                       <td> <input type="text" name="name" class="form-control" placeholder="" required value="<?=$category_data->name;?>" /> </td>
                     </tr>
+                    <tr>
+                      <td> <strong>Image</strong> <span style="color:red;">*</span></strong> </td>
+                      <td> <input type="file" name="image" class="form-control" placeholder="" />
+                        <img src="<?=base_url().$category_data->image?>" width="80px" height="80px">
+                       </td>
+                    </tr>
 
 
                     <tr>

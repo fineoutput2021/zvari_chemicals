@@ -133,7 +133,7 @@ class Territory extends CI_finecontrol
 
 
                     if ($last_id!=0) {
-                        $this->session->set_flashdata('emessage', 'Data inserted successfully');
+                        $this->session->set_flashdata('smessage', 'Data inserted successfully');
 
                         redirect("dcadmin/Territory/view_territory", "refresh");
                     } else {
@@ -201,6 +201,8 @@ class Territory extends CI_finecontrol
 
                 $zapak=$this->db->delete('tbl_territory', array('id' => $id));
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Data deleted successfully');
+
                     redirect("dcadmin/Territory/view_territory", "refresh");
                 } else {
                     echo "Error";
@@ -236,6 +238,8 @@ class Territory extends CI_finecontrol
                 $zapak=$this->db->update('tbl_territory', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Status updated successfully');
+
                     redirect("dcadmin/Territory/view_territory", "refresh");
                 } else {
                     echo "Error";
@@ -252,6 +256,8 @@ class Territory extends CI_finecontrol
                 $zapak=$this->db->update('tbl_territory', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Status updated successfully');
+
                     redirect("dcadmin/Territory/view_territory", "refresh");
                 } else {
                     $data['e']="Error Occured";

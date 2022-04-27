@@ -58,6 +58,8 @@ class Leave_req extends CI_finecontrol
                 $zapak=$this->db->update('tbl_leave_req', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Leave request accepted!');
+
                     redirect("dcadmin/Leave_req/view_leave_req", "refresh");
                 } else {
                     echo "Error";
@@ -74,6 +76,8 @@ class Leave_req extends CI_finecontrol
                 $zapak=$this->db->update('tbl_leave_req', $data_update);
 
                 if ($zapak!=0) {
+                  $this->session->set_flashdata('smessage', 'Leave request Rejected!');
+
                     redirect("dcadmin/Leave_req/view_leave_req", "refresh");
                 } else {
                     $data['e']="Error Occured";
