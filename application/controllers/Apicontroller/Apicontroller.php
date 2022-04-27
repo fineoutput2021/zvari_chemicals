@@ -221,7 +221,6 @@ class Apicontroller extends CI_finecontrol
     //================Login============================
     public function employee_login()
     {
-        // echo "hii";
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
         $this->load->helper('security');
