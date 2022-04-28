@@ -137,10 +137,30 @@ class Apicontroller extends CI_finecontrol
             'spgst'=> $data1->spgst
           );
         }
-        $image[]= array('image1'=>base_url().$product_data->image1,
-        'image2'=>base_url().$product_data->image2,
-        'image3'=>base_url().$product_data->image3,
-        'image4'=>base_url().$product_data->image4
+        if(!empty($product_data->image1)){
+          $img1=$product_data->image1;
+        }else{
+          $img1="";
+        }
+        if(!empty($product_data->image2)){
+          $img2=$product_data->image2;
+        }else{
+          $img2="";
+        }
+        if(!empty($product_data->image3)){
+          $img3=$product_data->image3;
+        }else{
+          $img3="";
+        }
+        if(!empty($product_data->image4)){
+          $img4=$product_data->image4;
+        }else{
+          $img4="";
+        }
+        $image[]= array(base_url().$img1,
+        base_url().$img2,
+        base_url().$img3,
+        base_url().$img4
       );
         $product[]=array('id'=>$product_data->id,
           'name'=>$product_data->product_name,
