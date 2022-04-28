@@ -35,15 +35,7 @@
                 <form action="<?php echo base_url() ?>dcadmin/Type/add_type_data/<?php echo base64_encode(1); ?>" method="POST" id="slide_frm" enctype="multipart/form-data">
                   <div class="table-responsive">
                     <table class="table table-hover">
-                      <tr>
-                        <td> <strong>Product Name</strong> <span style="color:red;">*</span></strong> </td>
-                        <td> <select class="form-control" name="product_id" required id="category">
-                            <option value="">------select product---------</option>
-                            <?php $i=1; foreach ($product_data->result() as $data) { ?>
-                            <option value="<?=$data->id?>"><?=$data->product_name?></option>
-                            <?php $i++; } ?>
-                          </select> </td>
-                      </tr>
+                      <input type="hidden" name="product_id" value="<?=$id;?>">
 
                       <tr>
                         <td> <strong>Type Name</strong> <span style="color:red;">*</span></strong> </td>

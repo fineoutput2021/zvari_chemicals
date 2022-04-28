@@ -10,7 +10,7 @@
         <?if ($this->session->userdata('position')=="Super Admin") {
     ?>
 
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Type/add_type" role="button" style="margin-bottom:12px;"> Add Type</a><?php
+        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Type/add_type/<?=$id;?>" role="button" style="margin-bottom:12px;"> Add Type</a><?php
 }?>
         <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Products/view_products" role="button" style="margin-bottom:12px;"> Back</a>
 
@@ -42,7 +42,6 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Product Name</th>
                       <th>Type Name</th>
                       <th>MRP</th>
                       <th>GST</th>
@@ -58,13 +57,6 @@
                     <?php $i=1; foreach ($type->result() as $data) { ?>
                     <tr>
                       <td><?php echo $i ?> </td>
-                      <td><?php
-                          $this->db->select('*');
-                          $this->db->from('tbl_products');
-                          $this->db->where('id', $data->product_id);
-                          $products_data=$this->db->get()->row();
-                           echo $products_data->product_name;
-                           ?></td>
                       <td><?php echo $data->name ?></td>
                       <td><?php echo $data->mrp ?></td>
                       <td><?php echo $data->gst ?></td>

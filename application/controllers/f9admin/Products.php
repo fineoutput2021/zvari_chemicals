@@ -71,7 +71,7 @@ class Products extends CI_finecontrol
                 // print_r($this->input->post());
                 // exit;
                 $this->form_validation->set_rules('name', 'name', 'xss_clean');
-                $this->form_validation->set_rules('price', 'price', 'xss_clean');
+                $this->form_validation->set_rules('tech_name', 'tech_name', 'xss_clean');
                 $this->form_validation->set_rules('product_desc', 'product_desc', 'xss_clean');
                 $this->form_validation->set_rules('mode_of_action', 'mode_of_action', 'xss_clean');
                 $this->form_validation->set_rules('major_crops', 'major_crops', 'xss_clean');
@@ -90,7 +90,7 @@ class Products extends CI_finecontrol
                     $addedby=$this->session->userdata('admin_id');
 
                     $name=$this->input->post('name');
-                    $price=$this->input->post('price');
+                    $tech_name=$this->input->post('tech_name');
                     $product_desc=$this->input->post('product_desc');
                     $mode_of_action=$this->input->post('mode_of_action');
                     $major_crops=$this->input->post('major_crops');
@@ -251,7 +251,7 @@ class Products extends CI_finecontrol
                     if ($typ==1) {
                         $data_insert = array('category_id'=>$category_id,
                     'product_name'=>$name,
-                    'price'=>$price,
+                    'tech_name'=>$tech_name,
                     'image1'=>$nnnn3,
                     'image2'=>$nnnn4,
                     'image3'=>$nnnn5,
@@ -346,7 +346,7 @@ class Products extends CI_finecontrol
 
                         $data_insert = array('category_id'=>$category_id,
                     'product_name'=>$name,
-                    'price'=>$price,
+                    'tech_name'=>$tech_name,
                     'image1'=>$nnnn3,
                     'image2'=>$nnnn4,
                     'image3'=>$nnnn5,

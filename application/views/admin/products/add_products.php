@@ -52,6 +52,12 @@
                       </td>
                     </tr>
                     <tr>
+                      <td> <strong>Technical Name</strong> <span style="color:red;">*</span></strong> </td>
+                      <td>
+                        <input type="text" name="tech_name" class="form-control" placeholder="" required value="" />
+                      </td>
+                    </tr>
+                    <tr>
                       <td> <strong>Image1</strong> <span style="color:red;">*</span></strong> </td>
                       <td>
                         <input type="file" name="image1" class="form-control" placeholder="" required value="" />
@@ -74,13 +80,7 @@
                       <td>
                         <input type="file" name="image4" class="form-control" placeholder="" required value="" />
                       </td>
-                    </tr>
-                    <tr>
-                      <td> <strong>Price</strong> <span style="color:red;">*</span></strong> </td>
-                      <td>
-                        <input type="text" name="price" class="form-control" placeholder="" required value="" />
-                      </td>
-                    </tr>
+                    </tr>                    
                     <tr>
                       <td> <strong>Product Description</strong> <span style="color:red;">*</span></strong> </td>
                       <td>

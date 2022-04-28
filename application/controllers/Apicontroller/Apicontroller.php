@@ -84,23 +84,21 @@ class Apicontroller extends CI_finecontrol
         foreach ($product_data->result() as $data) {
             $this->db->select('*');
             $this->db->from('tbl_type');
-            $this->db->where('product_id', $id);
-            $type_data= $this->db->get();
+            $this->db->where('product_id', $data->id);
+            $type_data= $this->db->get()->row();
             $type=[];
-            foreach ($type_data->result() as $data1) {
-                $type[]=array('id'=>$data1->id,
-            'name'=>$data1->name,
-            'mrp'=>$data1->mrp,
-            'gst'=>$data1->gst,
-            'sp'=>$data1->sp,
-            'gstprice'=>$data1->gstprice,
-            'spgst'=> $data1->spgst
+                $type[]=array('id'=>$type_data->id,
+            'name'=>$type_data->name,
+            'mrp'=>$type_data->mrp,
+            'gst'=>$type_data->gst,
+            'sp'=>$type_data->sp,
+            'gstprice'=>$type_data->gstprice,
+            'spgst'=> $type_data->spgst
           );
-            }
             $product[]=array('id'=>$data->id,
           'name'=>$data->product_name,
+          'tech_name'=>$data->tech_name,
           'image1'=>base_url().$data->image1,
-          'price'=>$data->price,
           'product_desc'=>$data->product_desc,
           'mode_of_action'=>$data->mode_of_action,
           'major_crops'=>$data->major_crops,
@@ -142,11 +140,11 @@ class Apicontroller extends CI_finecontrol
         }
         $product[]=array('id'=>$product_data->id,
           'name'=>$product_data->product_name,
+          'tech_name'=>$product_data->tech_name,
           'image1'=>base_url().$product_data->image1,
           'image2'=>base_url().$product_data->image2,
           'image3'=>base_url().$product_data->image3,
           'image4'=>base_url().$product_data->image4,
-          'price'=>$product_data->price,
           'product_desc'=>$product_data->product_desc,
           'mode_of_action'=>$product_data->mode_of_action,
           'major_crops'=>$product_data->major_crops,

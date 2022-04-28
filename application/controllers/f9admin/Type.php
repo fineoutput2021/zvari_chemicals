@@ -45,7 +45,7 @@ class Type extends CI_finecontrol
             redirect("login/admin_login", "refresh");
         }
     }
-    public function add_type()
+    public function add_type($idd)
     {
         if (!empty($this->session->userdata('admin_data'))) {
             $data['type_name']=$this->load->get_var('type_name');
@@ -54,6 +54,9 @@ class Type extends CI_finecontrol
             // echo $this->session->userdata('image');
             // echo $this->session->userdata('position');
             // exit;
+             $id=base64_decode($idd);
+            $data['id']=$idd;
+
             $this->db->select('*');
             $this->db->from('tbl_products');
             $this->db->where('is_active', 1);
@@ -89,17 +92,16 @@ class Type extends CI_finecontrol
                 $this->form_validation->set_rules('gstprice', 'gstprice', 'xss_clean');
                 $this->form_validation->set_rules('spgst', 'spgst', 'xss_clean');
                 $this->form_validation->set_rules('quantity', 'quantity', 'xss_clean');
+                $this->form_validation->set_rules('product_id', 'product_id', 'required|xss_clean');
 
 
                 if ($this->form_validation->run()== true) {
-                    $email=$this->input->post('email');
-                    $passw=$this->input->post('password');
 
                     $ip = $this->input->ip_address();
                     date_default_timezone_set("Asia/Calcutta");
                     $cur_date=date("Y-m-d H:i:s");
 
-                    $product_id=$this->input->post('product_id');
+                    $product_id=base64_decode($this->input->post('product_id'));
                     $name=$this->input->post('name');
                     $mrp=$this->input->post('mrp');
                     $gst=$this->input->post('gst');
@@ -108,6 +110,7 @@ class Type extends CI_finecontrol
                     $spgst=$this->input->post('spgst');
                     $quantity=$this->input->post('quantity');
 
+                    // echo $product_id."hi";die();
 
 
 
@@ -141,25 +144,8 @@ class Type extends CI_finecontrol
                         $this->db->from('tbl_type');
                         $this->db->where('id', $idw);
                         $da= $this->db->get()->row();
-                        // $this->db->select('*');
-//     $this->db->from('tbl_minor_category');
-//    $this->db->where('name',$name);
-//     $damm= $this->db->get();
-//    foreach($damm->result() as $da) {
-//      $uid=$da->id;
-                        // if($uid==$idw)
-                        // {
-//
-                        //  }
-                        // else{
-//    echo "Multiple Entry of Same Name";
-//       exit;
-                        //  }
-//     }
 
-
-
-                        $data_insert = array('product_id'=>$product_id,
+                        $data_insert = array(
                     'name'=>$name,
                     'mrp'=>$mrp,
                     'gst'=>$gst,
@@ -175,11 +161,10 @@ class Type extends CI_finecontrol
                         $last_id=$this->db->update('tbl_type', $data_insert);
                     }
 
-
                     if ($last_id!=0) {
                         $this->session->set_flashdata('smessage', 'Data inserted successfully');
 
-                        redirect("dcadmin/Type/view_type", "refresh");
+                        redirect("dcadmin/Type/view_type/".base64_encode($product_id), "refresh");
                     } else {
                         $this->session->set_flashdata('emessage', 'Sorry error occured');
                         redirect($_SERVER['HTTP_REFERER']);

@@ -39,9 +39,8 @@
                     <tr>
                       <td> <strong>Category Name</strong> <span style="color:red;">*</span></strong> </td>
                       <td> <select class="form-control" name="category_id" required id="category">
-                          <option value="">------Select Category---------</option>
                           <?php $i=1; foreach ($category_data->result() as $data) { ?>
-                          <option value="<?=$product_data->id?>" <?if ($data->id==$product_data->category_id) {
+                          <option value="<?=$data->id?>" <?if ($data->id==$product_data->category_id) {
                                                  echo "selected";
                                              }?>><?=$data->name?></option>
                           <?php $i++; } ?>
@@ -51,6 +50,12 @@
                       <td> <strong>Name</strong> <span style="color:red;">*</span></strong> </td>
                       <td>
                         <input type="text" name="name" class="form-control" placeholder="" required value="<?=$product_data->product_name?>" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td> <strong>Technical Name</strong> <span style="color:red;">*</span></strong> </td>
+                      <td>
+                        <input type="text" name="tech_name" class="form-control" placeholder="" required value="<?=$product_data->tech_name?>" />
                       </td>
                     </tr>
                     <tr>
@@ -95,12 +100,6 @@
                         Sorry No image Found
                         <?php } ?>
                         <input type="file" name="image4" class="form-control" placeholder="" value="" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td> <strong>Price</strong> <span style="color:red;">*</span></strong> </td>
-                      <td>
-                        <input type="text" name="price" class="form-control" placeholder="" required value="<?=$product_data->price?>" />
                       </td>
                     </tr>
                     <tr>

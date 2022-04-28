@@ -44,11 +44,11 @@
                       <th>#</th>
                       <th>Category</th>
                       <th>Name</th>
+                      <th>Technical Name</th>
                       <th>Image1</th>
                       <th>Image2</th>
                       <th>Image3</th>
                       <th>Image4</th>
-                      <th>Price</th>
                       <th>Product Description</th>
                       <th>Mode of Action</th>
                       <th>Major Crops</th>
@@ -70,6 +70,7 @@
                              echo $category_data->name;
                              ?></td>
                       <td><?php echo $data->product_name ?></td>
+                      <td><?php echo $data->tech_name ?></td>
                       <td>
                         <?php if ($data->image1!="") {  ?>
                         <img id="slide_img_path" height=50 width=100 src="<?php echo base_url().$data->image1 ?>">
@@ -98,7 +99,6 @@
                         Sorry No image Found
                         <?php } ?>
                       </td>
-                      <td><?php echo $data->price ?></td>
                       <td><?php echo $data->product_desc ?></td>
                       <td><?php echo $data->mode_of_action ?></td>
                       <td><?php echo $data->major_crops ?></td>
