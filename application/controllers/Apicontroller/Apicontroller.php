@@ -154,6 +154,12 @@ class Apicontroller extends CI_finecontrol
           'dose'=>$product_data->dose,
           'type'=>$type
         );
+        $res = array('message'=>'success',
+        'status'=>200,
+        'data'=>$product,
+        );
+
+        echo json_encode($res);
     }
     //===================Banner Images=============================
     public function get_banner_image()
