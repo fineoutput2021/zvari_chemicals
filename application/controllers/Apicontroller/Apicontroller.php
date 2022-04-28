@@ -100,10 +100,6 @@ class Apicontroller extends CI_finecontrol
           'tech_name'=>$data->tech_name,
           'image1'=>base_url().$data->image1,
           'product_desc'=>$data->product_desc,
-          'mode_of_action'=>$data->mode_of_action,
-          'major_crops'=>$data->major_crops,
-          'target_disease'=>$data->target_disease,
-          'dose'=>$data->dose,
           'type_id'=>$type_id,
           'type_name'=>$type_name,
           'type_price'=>$type_price
