@@ -86,15 +86,15 @@ class Apicontroller extends CI_finecontrol
             $this->db->from('tbl_type');
             $this->db->where('product_id', $data->id);
             $type_data= $this->db->get()->row();
-            $type=[];
-                $type[]=array('id'=>$type_data->id,
-            'name'=>$type_data->name,
-            'mrp'=>$type_data->mrp,
-            'gst'=>$type_data->gst,
-            'sp'=>$type_data->sp,
-            'gstprice'=>$type_data->gstprice,
-            'spgst'=> $type_data->spgst
-          );
+            if(!empty($type_data)){
+              $type_id=$type_data->id;
+              $type_name=$type_data->name;
+              $type_price=$type_data->sp;
+        }else{
+            $type_id="";
+            $type_name=";
+            $type_price=";
+        }
             $product[]=array('id'=>$data->id,
           'name'=>$data->product_name,
           'tech_name'=>$data->tech_name,
@@ -104,7 +104,9 @@ class Apicontroller extends CI_finecontrol
           'major_crops'=>$data->major_crops,
           'target_disease'=>$data->target_disease,
           'dose'=>$data->dose,
-          'type'=>$type
+          'type_id'=>$type_id,
+          'type_name'=>$type_name,
+          'type_price'=>$type_price
         );
         }
         $res = array('message'=>'success',

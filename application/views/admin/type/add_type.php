@@ -50,7 +50,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td> <strong>SP</strong> <span style="color:red;">*</span></strong> </td>
+                        <td> <strong>Selling Price</strong> <span style="color:red;">*</span></strong> </td>
                         <td>
                           <input type="text" name="sp" id="sp" class="form-control" placeholder="" required value="" />
                         </td>
@@ -69,7 +69,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td> <strong>SP GST</strong> <span style="color:red;">*</span></strong> </td>
+                        <td> <strong>Selling Price with GST</strong> <span style="color:red;">*</span></strong> </td>
                         <td>
                           <input type="text" name="spgst" id="spgst" class="form-control" placeholder="" required value="" READONLY />
                         </td>
