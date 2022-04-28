@@ -121,6 +121,7 @@ class Apicontroller extends CI_finecontrol
         $this->db->where('is_active', 1);
         $product_data= $this->db->get()->row();
         $product=[];
+        $image=[];
         $this->db->select('*');
         $this->db->from('tbl_type');
         $this->db->where('product_id', $product_data->id);
@@ -136,13 +137,15 @@ class Apicontroller extends CI_finecontrol
             'spgst'=> $data1->spgst
           );
         }
+        $image[]= array('image1'=>base_url().$product_data->image1,
+        'image2'=>base_url().$product_data->image2,
+        'image3'=>base_url().$product_data->image3,
+        'image4'=>base_url().$product_data->image4
+      );
         $product[]=array('id'=>$product_data->id,
           'name'=>$product_data->product_name,
           'tech_name'=>$product_data->tech_name,
-          'image1'=>base_url().$product_data->image1,
-          'image2'=>base_url().$product_data->image2,
-          'image3'=>base_url().$product_data->image3,
-          'image4'=>base_url().$product_data->image4,
+          'image'=>$image,
           'product_desc'=>$product_data->product_desc,
           'mode_of_action'=>$product_data->mode_of_action,
           'major_crops'=>$product_data->major_crops,
