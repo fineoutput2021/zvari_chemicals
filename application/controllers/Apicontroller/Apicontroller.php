@@ -157,7 +157,7 @@ class Apicontroller extends CI_finecontrol
         }else{
           $img4="";
         }
-        $image[]= array(base_url().$img1,
+        $image= array(base_url().$img1,
         base_url().$img2,
         base_url().$img3,
         base_url().$img4
