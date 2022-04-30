@@ -256,6 +256,7 @@ class Apicontroller extends CI_finecontrol
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
                 $start=date("H:i:s");
+                $auth = bin2hex(random_bytes(12));
 
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
@@ -265,16 +266,20 @@ class Apicontroller extends CI_finecontrol
                 if (!empty($emp_data)) {
                     if ($emp_data->password==md5($password)) {
                         $id=$emp_data->id;
-                        echo $id;
+                        // echo $id;
                         $data_insert = array('employee_id'=>$id,
                               'start'=>$start,
                               'attendance' =>1,
                               'date'=>$cur_date
                               );
                         $last_id=$this->base_model->insert_table("tbl_attendance", $data_insert, 1) ;
+                        $data=array('email'=>$email,
+                          'password'=>md5($password)
+                      );
                         if (!empty($last_id)) {
                             $res = array('message'=>'success',
-                                'status'=>200
+                                'status'=>200,
+                                'data'=>$data
                               );
                             echo json_encode($res);
                         } else {
@@ -391,7 +396,6 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('token_id', 'token_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('email', 'email', 'xss_clean|trim');
             $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
             $this->form_validation->set_rules('product_id', 'product_id', 'required|xss_clean|trim');
@@ -400,7 +404,6 @@ class Apicontroller extends CI_finecontrol
 
 
             if ($this->form_validation->run() == true) {
-                $token_id=$this->input->post('token_id');
                 $email=$this->input->post('email');
                 $authentication=$this->input->post('authentication');
                 $product_id=$this->input->post('product_id');
@@ -415,14 +418,14 @@ class Apicontroller extends CI_finecontrol
                 $this->db->where('email', $email);
                 $emp_data= $this->db->get()->row();
 
-
-                if (!empty($email)) {
+                if(!empty($emp_data)){
                     if ($emp_data->password==md5($authentication)) {
                         $employee_id=$emp_data->id;
 
                         $this->db->select('*');
                         $this->db->from('tbl_cart');
                         $this->db->where('product_id', $product_id);
+                        // $this->db->where('type_id', $type_id);
                         $this->db->where('employee_id', $employee_id);
                         $cart_data= $this->db->get()->row();
 
@@ -456,46 +459,20 @@ class Apicontroller extends CI_finecontrol
 
                             echo json_encode($res);
                         }
+                    } else{
+                      $res = array('message'=>'Incorrect password.',
+              'status'=>201
+              );
+
+                      echo json_encode($res);
                     }
-                }
-                //----------add_to_cart using token id--------------
-                else {
-                    $this->db->select('*');
-                    $this->db->from('tbl_cart');
-                    $this->db->where('product_id', $product_id);
-                    $this->db->where('token_id', $token_id);
-                    $cart_data= $this->db->get()->row();
-                    if (empty($cart_data)) {
-                        $data_insert = array('token_id'=>$token_id,
-                          'product_id'=>$product_id,
-                          'type_id'=>$type_id,
-                          'quantity'=>$quantity,
-                          'ip' =>$ip,
-                          'date'=>$cur_date
-    );
-
-                        $last_id=$this->base_model->insert_table("tbl_cart", $data_insert, 1) ;
-                        $res = array('message'=>"success",
-                      'status'=>200
-                      );
-
-                        echo json_encode($res);
-                        if (!empty($last_id)) {
-                        } else {
-                            $res = array('message'=>"Some error occured",
-                      'status'=>201
-                      );
-
-                            echo json_encode($res);
-                        }
-                    } else {
-                        $res = array('message'=>"Product is already in your cart",
+                  }else{
+                    $res = array('message'=>'User not found',
             'status'=>201
             );
 
-                        echo json_encode($res);
-                    }
-                }
+                    echo json_encode($res);
+                  }
             } else {
                 $res = array('message'=>validation_errors(),
             'status'=>201
@@ -519,7 +496,7 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('token_id', 'token_id', 'required|xss_clean|trim');
+            // $this->form_validation->set_rules('token_id', 'token_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('email', 'email', 'xss_clean|trim');
             $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
             $this->form_validation->set_rules('product_id', 'product_id', 'required|xss_clean|trim');
@@ -531,7 +508,7 @@ class Apicontroller extends CI_finecontrol
 
 
            // $address_id=$this->input->post('addr_id');
-                $token_id=$this->input->post('token_id');
+                // $token_id=$this->input->post('token_id');
                 $email=$this->input->post('email');
                 $authentication=$this->input->post('authentication');
                 $product_id=$this->input->post('product_id');
@@ -546,7 +523,7 @@ class Apicontroller extends CI_finecontrol
                 $this->db->where('email', $email);
                 $emp_data= $this->db->get()->row();
 
-                if (!empty($email)) {
+                if (!empty($emp_data)) {
                     $this->db->select('*');
                     $this->db->from('tbl_employee');
                     $this->db->where('email', $email);
@@ -576,34 +553,19 @@ class Apicontroller extends CI_finecontrol
 
                         echo json_encode($res);
                     }
-                }
-            }
-            //----------update_cart using token id--------------
-            else {
-                $data_insert = array('token_id'=>$token_id,
-                        'product_id'=>$product_id,
-                        'type_id'=>$type_id,
-                        'quantity'=>$quantity,
-                        'ip' =>$ip,
-                        'date'=>$cur_date
-  );
-                $this->db->where('token_id', $token_id);
-                $this->db->where('product_id', $product_id);
-                $this->db->where('type_id', $type_id);
-                $last_id=$this->db->update("tbl_cart", $data_insert) ;
-                $res = array('message'=>"Data Updated",
-                            'status'=>200
-                            );
-
-                echo json_encode($res);
-                if (!empty($last_id)) {
-                } else {
-                    $res = array('message'=>"Some error occured",
+                }else{
+                  $res = array('message'=>"User not found",
                     'status'=>201
                     );
 
-                    echo json_encode($res);
+                  echo json_encode($res);
                 }
+            }else{
+              $res = array('message'=>validation_errors(),
+                'status'=>201
+                );
+
+              echo json_encode($res);
             }
         } else {
             $res = array('message'=>"Please insert some data",
@@ -621,7 +583,6 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('token_id', 'token_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('email', 'email', 'xss_clean|trim');
             $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
             $this->form_validation->set_rules('product_id', 'product_id', 'required|xss_clean|trim');
@@ -630,7 +591,6 @@ class Apicontroller extends CI_finecontrol
 
 
             if ($this->form_validation->run()== true) {
-                $token_id=$this->input->post('token_id');
                 $email=$this->input->post('email');
                 $authentication=$this->input->post('authentication');
                 $product_id=$this->input->post('product_id');
@@ -645,7 +605,7 @@ class Apicontroller extends CI_finecontrol
                 $this->db->where('email', $email);
                 $emp_data= $this->db->get()->row();
 
-                if (!empty($email)) {
+                if (!empty($emp_data)) {
                     if ($emp_data->password==md5($authentication)) {
                         $this->db->select('*');
                         $this->db->from('tbl_employee');
@@ -678,44 +638,34 @@ class Apicontroller extends CI_finecontrol
 
                             echo json_encode($res);
                         }
+                    }else{
+                      $res = array('message'=>"Incorrect password",
+                          'status'=>201
+                          );
+
+                        echo json_encode($res);
                     }
+                }else{
+                  $res = array('message'=>"User not found",
+                          'status'=>201
+                          );
+
+                        echo json_encode($res);
                 }
-                //----------delete_cart using token id--------------
-                else {
-                    $zapak=$this->db->delete('tbl_cart', array('token_id'=>$token_id,
-                    'product_id'=>$product_id,
-                    'type_id'=>$type_id,
-                    'quantity'=>$quantity));
-                    if ($zapak!=0) {
-                        $res = array('message'=>"Data Deleted",
-                      'status'=>200
-                      );
 
-                        echo json_encode($res);
-                    } else {
-                        $res = array('message'=>"Some error occured",
-                      'status'=>201
-                      );
-
-                        echo json_encode($res);
-                    }
-
-                    if (!empty($zapak)) {
-                    } else {
-                        $res = array('message'=>"Some error occured",
-                  'status'=>201
-                  );
-
-                        echo json_encode($res);
-                    }
-                }
             } else {
-                $res = array('message'=>"Please insert some data",
+                $res = array('message'=>validation_errors(),
         'status'=>201
         );
 
                 echo json_encode($res);
             }
+        }else {
+            $res = array('message'=>"Please insert some data",
+    'status'=>201
+    );
+
+            echo json_encode($res);
         }
     }
     //================view cart==========================================
@@ -725,14 +675,12 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('token_id', 'token_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('email', 'email', 'xss_clean|trim');
             $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
 
             if ($this->form_validation->run()== true) {
 
               //-------------view_cart using email--------------------------------
-                $token_id=$this->input->post('token_id');
                 $email=$this->input->post('email');
                 $authentication=$this->input->post('authentication');
 
@@ -741,7 +689,7 @@ class Apicontroller extends CI_finecontrol
                 $this->db->where('email', $email);
                 $emp_data= $this->db->get()->row();
 
-                if (!empty($email)) {
+                if (!empty($emp_data)) {
                     if ($emp_data->password==md5($authentication)) {
                         $this->db->select('*');
                         $this->db->from('tbl_employee');
@@ -777,62 +725,34 @@ class Apicontroller extends CI_finecontrol
                         );
 
                         echo json_encode($res);
-                        if (!empty($token_id)) {
-                        } else {
-                            $res = array('message'=>"Some error occured",
-                          'status'=>201
-                          );
+                    }else {
+                $res = array('message'=>"Incorrect password",
+        'status'=>201
+        );
 
-                            echo json_encode($res);
-                        }
-                    }
-                }
-                //----------view_cart using token id--------------
-                else {
-                    $cart=[];
-                    $this->db->select('*');
-                    $this->db->from('tbl_cart');
-                    $this->db->where('token_id', $token_id);
-                    $cart_data= $this->db->get();
-                    foreach ($cart_data->result() as $data) {
-                        $this->db->select('*');
-                        $this->db->from('tbl_type');
-                        $this->db->where('id', $data->type_id);
-                        $type= $this->db->get()->row();
-                        $this->db->select('*');
-                        $this->db->from('tbl_products');
-                        $this->db->where('id', $data->product_id);
-                        $product= $this->db->get()->row();
-                        $cart[] = array('id'=>$data->id,
-                      'product name'=>$product->product_name,
-                      'type name'=>$type->name,
-                      'quantity'=>$data->quantity
-                    );
-                    }
+                echo json_encode($res);
+            }
+                }else{
+                $res = array('message'=>"User not found",
+        'status'=>201
+        );
 
+                echo json_encode($res);
+            }
 
-                    $res = array('message'=>"success",
-                  'status'=>200,
-                  'data'=>$cart,
-                  );
-
-                    echo json_encode($res);
-                    if (!empty($cart)) {
-                    } else {
-                        $res = array('message'=>"Some error occured",
-                    'status'=>201
-                    );
-
-                        echo json_encode($res);
-                    }
-                }
             } else {
-                $res = array('message'=>"Please insert some data",
+                $res = array('message'=>validation_errors(),
           'status'=>201
           );
 
                 echo json_encode($res);
             }
+        }else {
+            $res = array('message'=>"Please insert some data",
+      'status'=>201
+      );
+
+            echo json_encode($res);
         }
     }
     //================ Cart amount calculate==================================
