@@ -86,15 +86,15 @@ class Apicontroller extends CI_finecontrol
             $this->db->from('tbl_type');
             $this->db->where('product_id', $data->id);
             $type_data= $this->db->get()->row();
-            if(!empty($type_data)){
-              $type_id=$type_data->id;
-              $type_name=$type_data->name;
-              $type_price=$type_data->sp;
-        }else{
-            $type_id="";
-            $type_name=";
+            if (!empty($type_data)) {
+                $type_id=$type_data->id;
+                $type_name=$type_data->name;
+                $type_price=$type_data->sp;
+            } else {
+                $type_id="";
+                $type_name=";
             $type_price=";
-        }
+            }
             $product[]=array('id'=>$data->id,
           'name'=>$data->product_name,
           'tech_name'=>$data->tech_name,
@@ -137,25 +137,25 @@ class Apicontroller extends CI_finecontrol
             'spgst'=> $data1->spgst
           );
         }
-        if(!empty($product_data->image1)){
-          $img1=$product_data->image1;
-        }else{
-          $img1="";
+        if (!empty($product_data->image1)) {
+            $img1=$product_data->image1;
+        } else {
+            $img1="";
         }
-        if(!empty($product_data->image2)){
-          $img2=$product_data->image2;
-        }else{
-          $img2="";
+        if (!empty($product_data->image2)) {
+            $img2=$product_data->image2;
+        } else {
+            $img2="";
         }
-        if(!empty($product_data->image3)){
-          $img3=$product_data->image3;
-        }else{
-          $img3="";
+        if (!empty($product_data->image3)) {
+            $img3=$product_data->image3;
+        } else {
+            $img3="";
         }
-        if(!empty($product_data->image4)){
-          $img4=$product_data->image4;
-        }else{
-          $img4="";
+        if (!empty($product_data->image4)) {
+            $img4=$product_data->image4;
+        } else {
+            $img4="";
         }
         $image= array(base_url().$img1,
         base_url().$img2,
@@ -396,16 +396,16 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
+            $headers = apache_request_headers();
+            $email=$headers['Email'];
+            $authentication=$headers['Authentication'];
+
             $this->form_validation->set_rules('product_id', 'product_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('type_id', 'type_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('quantity', 'quantity', 'xss_clean|trim');
 
 
             if ($this->form_validation->run() == true) {
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
                 $product_id=$this->input->post('product_id');
                 $type_id=$this->input->post('type_id');
                 $quantity=$this->input->post('quantity');
@@ -418,7 +418,7 @@ class Apicontroller extends CI_finecontrol
                 $this->db->where('email', $email);
                 $emp_data= $this->db->get()->row();
 
-                if(!empty($emp_data)){
+                if (!empty($emp_data)) {
                     if ($emp_data->password==md5($authentication)) {
                         $employee_id=$emp_data->id;
 
@@ -459,20 +459,20 @@ class Apicontroller extends CI_finecontrol
 
                             echo json_encode($res);
                         }
-                    } else{
-                      $res = array('message'=>'Incorrect password.',
+                    } else {
+                        $res = array('message'=>'Incorrect password.',
               'status'=>201
               );
 
-                      echo json_encode($res);
+                        echo json_encode($res);
                     }
-                  }else{
+                } else {
                     $res = array('message'=>'User not found',
             'status'=>201
             );
 
                     echo json_encode($res);
-                  }
+                }
             } else {
                 $res = array('message'=>validation_errors(),
             'status'=>201
@@ -553,19 +553,19 @@ class Apicontroller extends CI_finecontrol
 
                         echo json_encode($res);
                     }
-                }else{
-                  $res = array('message'=>"User not found",
+                } else {
+                    $res = array('message'=>"User not found",
                     'status'=>201
                     );
 
-                  echo json_encode($res);
+                    echo json_encode($res);
                 }
-            }else{
-              $res = array('message'=>validation_errors(),
+            } else {
+                $res = array('message'=>validation_errors(),
                 'status'=>201
                 );
 
-              echo json_encode($res);
+                echo json_encode($res);
             }
         } else {
             $res = array('message'=>"Please insert some data",
@@ -638,21 +638,20 @@ class Apicontroller extends CI_finecontrol
 
                             echo json_encode($res);
                         }
-                    }else{
-                      $res = array('message'=>"Incorrect password",
+                    } else {
+                        $res = array('message'=>"Incorrect password",
                           'status'=>201
                           );
 
                         echo json_encode($res);
                     }
-                }else{
-                  $res = array('message'=>"User not found",
+                } else {
+                    $res = array('message'=>"User not found",
                           'status'=>201
                           );
 
-                        echo json_encode($res);
+                    echo json_encode($res);
                 }
-
             } else {
                 $res = array('message'=>validation_errors(),
         'status'=>201
@@ -660,7 +659,7 @@ class Apicontroller extends CI_finecontrol
 
                 echo json_encode($res);
             }
-        }else {
+        } else {
             $res = array('message'=>"Please insert some data",
     'status'=>201
     );
@@ -725,21 +724,20 @@ class Apicontroller extends CI_finecontrol
                         );
 
                         echo json_encode($res);
-                    }else {
-                $res = array('message'=>"Incorrect password",
+                    } else {
+                        $res = array('message'=>"Incorrect password",
         'status'=>201
         );
 
-                echo json_encode($res);
-            }
-                }else{
-                $res = array('message'=>"User not found",
+                        echo json_encode($res);
+                    }
+                } else {
+                    $res = array('message'=>"User not found",
         'status'=>201
         );
 
-                echo json_encode($res);
-            }
-
+                    echo json_encode($res);
+                }
             } else {
                 $res = array('message'=>validation_errors(),
           'status'=>201
@@ -747,7 +745,7 @@ class Apicontroller extends CI_finecontrol
 
                 echo json_encode($res);
             }
-        }else {
+        } else {
             $res = array('message'=>"Please insert some data",
       'status'=>201
       );
