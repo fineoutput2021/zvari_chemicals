@@ -413,6 +413,8 @@ class Apicontroller extends CI_finecontrol
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
 
+                if(!empty($email)){
+
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -473,6 +475,13 @@ class Apicontroller extends CI_finecontrol
 
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>'No email found',
+        'status'=>201
+        );
+
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
             'status'=>201
@@ -496,9 +505,10 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            // $this->form_validation->set_rules('token_id', 'token_id', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('email', 'email', 'xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
+            $headers = apache_request_headers();
+            $email=$headers['Email'];
+            $authentication=$headers['Authentication'];
+
             $this->form_validation->set_rules('product_id', 'product_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('type_id', 'type_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('quantity', 'quantity', 'xss_clean|trim');
@@ -506,11 +516,6 @@ class Apicontroller extends CI_finecontrol
 
             if ($this->form_validation->run()== true) {
 
-
-           // $address_id=$this->input->post('addr_id');
-                // $token_id=$this->input->post('token_id');
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
                 $product_id=$this->input->post('product_id');
                 $type_id=$this->input->post('type_id');
                 $quantity=$this->input->post('quantity');
@@ -518,6 +523,7 @@ class Apicontroller extends CI_finecontrol
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
 
+                if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -560,6 +566,13 @@ class Apicontroller extends CI_finecontrol
 
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"No email found",
+                'status'=>201
+                );
+
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
                 'status'=>201
@@ -583,16 +596,16 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
+            $headers = apache_request_headers();
+            $email=$headers['Email'];
+            $authentication=$headers['Authentication'];
+
             $this->form_validation->set_rules('product_id', 'product_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('type_id', 'type_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('quantity', 'quantity', 'xss_clean|trim');
 
 
             if ($this->form_validation->run()== true) {
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
                 $product_id=$this->input->post('product_id');
                 $type_id=$this->input->post('type_id');
                 $quantity=$this->input->post('quantity');
@@ -600,6 +613,7 @@ class Apicontroller extends CI_finecontrol
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
 
+                if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -629,15 +643,6 @@ class Apicontroller extends CI_finecontrol
 
                             echo json_encode($res);
                         }
-
-                        if (!empty($last_id)) {
-                        } else {
-                            $res = array('message'=>"Some error occured",
-                        'status'=>201
-                        );
-
-                            echo json_encode($res);
-                        }
                     } else {
                         $res = array('message'=>"Incorrect password",
                           'status'=>201
@@ -652,6 +657,13 @@ class Apicontroller extends CI_finecontrol
 
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"No email found",
+                      'status'=>201
+                      );
+
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
         'status'=>201
@@ -674,15 +686,13 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
+            $headers = apache_request_headers();
+            $email=$headers['Email'];
+            $authentication=$headers['Authentication'];
 
             if ($this->form_validation->run()== true) {
 
-              //-------------view_cart using email--------------------------------
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
-
+              if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -738,6 +748,13 @@ class Apicontroller extends CI_finecontrol
 
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"No email found",
+    'status'=>201
+    );
+
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
           'status'=>201
@@ -760,16 +777,16 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'required|password', 'xss_clean|trim');
+            $headers = apache_request_headers();
+            $email=$headers['Email'];
+            $authentication=$headers['Authentication'];
+
             $this->form_validation->set_rules('name', 'required', 'xss_clean|trim');
             $this->form_validation->set_rules('shop_name', 'required', 'xss_clean|trim');
             $this->form_validation->set_rules('phone', 'required', 'xss_clean|trim');
             $this->form_validation->set_rules('place', 'required', 'xss_clean|trim');
 
             if ($this->form_validation->run()== true) {
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
                 $name=$this->input->post('name');
                 $shop_name=$this->input->post('shop_name');
                 $phone=$this->input->post('phone');
@@ -778,7 +795,7 @@ class Apicontroller extends CI_finecontrol
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
 
-
+                if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -881,6 +898,13 @@ class Apicontroller extends CI_finecontrol
 
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"Email not found",
+  'status'=>201
+);
+
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
           'status'=>201
@@ -903,10 +927,16 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('txn_id', 'txn_id', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('image', 'image', 'xss_clean|trim');
+    $headers = apache_request_headers();
+    $email=$headers['Email'];
+    $authentication=$headers['Authentication'];
+
+    $this->form_validation->set_rules('txn_id', 'txn_id', 'required|xss_clean|trim');
+    $this->form_validation->set_rules('image', 'image', 'xss_clean|trim');
+
 
             if ($this->form_validation->run()== true) {
+              if(!empty($email)){
                 $txn_id=$this->input->post('txn_id');
 
                 $img1='image';
@@ -988,6 +1018,13 @@ class Apicontroller extends CI_finecontrol
 
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"Email not found",
+      'status'=>201
+    );
+
+                    echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
           'status'=>201
@@ -1008,13 +1045,13 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'xss_clean|trim');
+            $headers = apache_request_headers();
+            $email=$headers['Email'];
+            $authentication=$headers['Authentication'];
 
             if ($this->form_validation->run()== true) {
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
 
+              if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -1072,6 +1109,12 @@ class Apicontroller extends CI_finecontrol
       );
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"No email found.",
+        'status'=>201
+        );
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
         'status'=>201
@@ -1092,22 +1135,22 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('name', 'name', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('phone', 'phone', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('place', 'place', 'required|xss_clean|trim');
+              $headers = apache_request_headers();
+              $email=$headers['Email'];
+              $authentication=$headers['Authentication'];
 
+              $this->form_validation->set_rules('name', 'name', 'required|xss_clean|trim');
+              $this->form_validation->set_rules('phone', 'phone', 'required|xss_clean|trim');
+              $this->form_validation->set_rules('place', 'place', 'required|xss_clean|trim');
             if ($this->form_validation->run()== true) {
                 $name=$this->input->post('name');
                 $phone=$this->input->post('phone');
                 $place=$this->input->post('place');
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
                 $ip = $this->input->ip_address();
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d");
 
+                if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -1147,6 +1190,12 @@ class Apicontroller extends CI_finecontrol
                 );
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"No email found",
+            'status'=>201
+            );
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
     'status'=>201
@@ -1162,19 +1211,20 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
+                    $headers = apache_request_headers();
+                    $email=$headers['Email'];
+                    $authentication=$headers['Authentication'];
             $this->form_validation->set_rules('field', 'field', 'required|xss_clean|trim');
             $this->form_validation->set_rules('remarks', 'remarks', 'required|xss_clean|trim');
 
             if ($this->form_validation->run()== true) {
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
                 $field=$this->input->post('field');
                 $remarks=$this->input->post('remarks');
                 $ip = $this->input->ip_address();
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
+
+                if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -1212,6 +1262,12 @@ class Apicontroller extends CI_finecontrol
     );
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"No email fond",
+'status'=>201
+);
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
   'status'=>201
@@ -1232,19 +1288,20 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
+                    $headers = apache_request_headers();
+                    $email=$headers['Email'];
+                    $authentication=$headers['Authentication'];
             $this->form_validation->set_rules('km', 'km', 'required|xss_clean|trim');
             $this->form_validation->set_rules('vehicle', 'vehicle', 'required|xss_clean|trim');
 
             if ($this->form_validation->run()== true) {
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
                 $km=$this->input->post('km');
                 $vehicle=$this->input->post('vehicle');
                 $ip = $this->input->ip_address();
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
+
+                if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -1282,6 +1339,12 @@ class Apicontroller extends CI_finecontrol
     );
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"No email found",
+'status'=>201
+);
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
   'status'=>201
@@ -1302,21 +1365,18 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('image1', 'image1', 'xss_clean|trim');
-            $this->form_validation->set_rules('image2', 'image2', 'xss_clean|trim');
+                  $headers = apache_request_headers();
+                  $email=$headers['Email'];
+                  $authentication=$headers['Authentication'];
             $this->form_validation->set_rules('remarks', 'remarks', 'xss_clean|trim');
 
             if ($this->form_validation->run()== true) {
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
                 $remarks=$this->input->post('remarks');
-                $image1=$this->input->post('image1');
-                $image2=$this->input->post('image2');
                 $ip = $this->input->ip_address();
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
+
+                if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -1415,6 +1475,12 @@ class Apicontroller extends CI_finecontrol
     );
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"No email found",
+'status'=>201
+);
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
   'status'=>201
@@ -1435,14 +1501,13 @@ class Apicontroller extends CI_finecontrol
         $this->load->library('form_validation');
         $this->load->helper('security');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
+            $headers = apache_request_headers();
+            $email=$headers['Email'];
+            $authentication=$headers['Authentication'];
             $this->form_validation->set_rules('start', 'start', 'xss_clean|trim');
             $this->form_validation->set_rules('end', 'end', 'xss_clean|trim');
 
             if ($this->form_validation->run()== true) {
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
                 $start=$this->input->post('start');
                 $end=$this->input->post('end');
 
@@ -1454,6 +1519,8 @@ class Apicontroller extends CI_finecontrol
                 $ip = $this->input->ip_address();
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
+
+                if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -1522,6 +1589,12 @@ class Apicontroller extends CI_finecontrol
     );
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"Email not found",
+    'status'=>201
+    );
+                    echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
   'status'=>201
@@ -1541,13 +1614,11 @@ class Apicontroller extends CI_finecontrol
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
         $this->load->helper('security');
-        if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('authentication', 'authentication', 'required|xss_clean|trim');
-
-            if ($this->form_validation->run()== true) {
-                $email=$this->input->post('email');
-                $authentication=$this->input->post('authentication');
+            $headers = apache_request_headers();
+            $email=$headers['Email'];
+            $authentication=$headers['Authentication'];
+            // echo $email;die();
+                if(!empty($email)){
                 $this->db->select('*');
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
@@ -1596,17 +1667,12 @@ class Apicontroller extends CI_finecontrol
   );
                     echo json_encode($res);
                 }
-            } else {
-                $res = array('message'=>validation_errors(),
-'status'=>201
-);
-                echo json_encode($res);
-            }
-        } else {
-            $res = array('message'=>"Some error occured",
-'status'=>201
-);
-            echo json_encode($res);
-        }
+              }else{
+                $res = array('message'=>"Email not found",
+    'status'=>201
+    );
+                    echo json_encode($res);
+              }
+
     }
 }
