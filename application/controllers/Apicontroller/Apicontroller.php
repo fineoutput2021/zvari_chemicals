@@ -17,6 +17,10 @@ class Apicontroller extends CI_finecontrol
     //=============Home Page Slider======================================
     public function get_slider()
     {
+      $headers = apache_request_headers();
+      $email=$headers['Email'];
+      $authentication=$headers['Authentication'];
+      if(!empty($email)){
         $this->db->select('*');
         $this->db->from('tbl_slider_panel');
         $this->db->where('is_active', 1);
@@ -31,10 +35,21 @@ class Apicontroller extends CI_finecontrol
         );
 
         echo json_encode($res);
+    }else{
+      $res = array('message'=>'Email not found',
+      'status'=>201,
+      );
+
+      echo json_encode($res);
     }
+  }
     //=============Home Page Slider 2======================================
     public function get_slider2()
     {
+      $headers = apache_request_headers();
+      $email=$headers['Email'];
+      $authentication=$headers['Authentication'];
+      if(!empty($email)){
         $this->db->select('*');
         $this->db->from('tbl_slider_panel2');
         $this->db->where('is_active', 1);
@@ -49,10 +64,21 @@ class Apicontroller extends CI_finecontrol
         );
 
         echo json_encode($res);
+      }else{
+        $res = array('message'=>'Email not found',
+        'status'=>201,
+        );
+
+        echo json_encode($res);
+      }
     }
     //==============Category================================================
     public function get_category()
     {
+      $headers = apache_request_headers();
+      $email=$headers['Email'];
+      $authentication=$headers['Authentication'];
+      if(!empty($email)){
         $this->db->select('*');
         $this->db->from('tbl_category');
         $this->db->where('is_active', 1);
@@ -71,10 +97,21 @@ class Apicontroller extends CI_finecontrol
         );
 
         echo json_encode($res);
+      }else{
+$res = array('message'=>'Email not found',
+'status'=>201,
+);
+
+echo json_encode($res);
+}
     }
     //====================Category Product Type Details=====================
     public function get_cat_product($id)
     {
+      $headers = apache_request_headers();
+      $email=$headers['Email'];
+      $authentication=$headers['Authentication'];
+      if(!empty($email)){
         $this->db->select('*');
         $this->db->from('tbl_products');
         $this->db->where('category_id', $id);
@@ -111,10 +148,21 @@ class Apicontroller extends CI_finecontrol
         );
 
         echo json_encode($res);
+      }else{
+$res = array('message'=>'Email not found',
+'status'=>201,
+);
+
+echo json_encode($res);
+}
     }
     //=======================Product Details================================
     public function get_product_details($id)
     {
+      $headers = apache_request_headers();
+      $email=$headers['Email'];
+      $authentication=$headers['Authentication'];
+      if(!empty($email)){
         $this->db->select('*');
         $this->db->from('tbl_products');
         $this->db->where('id', $id);
@@ -179,10 +227,21 @@ class Apicontroller extends CI_finecontrol
         );
 
         echo json_encode($res);
+      }else{
+$res = array('message'=>'Email not found',
+'status'=>201,
+);
+
+echo json_encode($res);
+}
     }
     //===================Banner Images=============================
     public function get_banner_image()
     {
+      $headers = apache_request_headers();
+      $email=$headers['Email'];
+      $authentication=$headers['Authentication'];
+      if(!empty($email)){
         $this->db->select('*');
         $this->db->from('tbl_banner_image');
         $this->db->where('is_active', 1);
@@ -199,10 +258,21 @@ class Apicontroller extends CI_finecontrol
         );
 
         echo json_encode($res);
+      }else{
+$res = array('message'=>'Email not found',
+'status'=>201,
+);
+
+echo json_encode($res);
+}
     }
     //==================Employee Data=============================
     public function get_employee_data($id)
-    {
+    {  $headers = apache_request_headers();
+      $email=$headers['Email'];
+      $authentication=$headers['Authentication'];
+      if(!empty($email)){
+
         $this->db->select('*');
         $this->db->from('tbl_employee');
         $this->db->where('id', $id);
@@ -238,6 +308,13 @@ class Apicontroller extends CI_finecontrol
         );
 
         echo json_encode($res);
+      }else{
+$res = array('message'=>'Email not found',
+'status'=>201,
+);
+
+echo json_encode($res);
+}
     }
 
 
@@ -272,9 +349,16 @@ class Apicontroller extends CI_finecontrol
                               'attendance' =>1,
                               'date'=>$cur_date
                               );
-                        $last_id=$this->base_model->insert_table("tbl_attendance", $data_insert, 1) ;
+                        $last_id=$this->base_model->insert_table("tbl_attendance", $data_insert, 1);
+                        if(!empty($emp_data->image)){
+                          $image = $emp_data->image;
+                        }else{
+                          $image ='';
+                        }
                         $data=array('email'=>$email,
-                          'password'=>md5($password)
+                          'password'=>md5($password),
+                          'name'=>$emp_data->name,
+                          'image'=>$image
                       );
                         if (!empty($last_id)) {
                             $res = array('message'=>'success',
@@ -1049,15 +1133,9 @@ class Apicontroller extends CI_finecontrol
     //=================view_Order details======================================
     public function my_orders()
     {
-        $this->load->helper(array('form', 'url'));
-        $this->load->library('form_validation');
-        $this->load->helper('security');
-        if ($this->input->post()) {
             $headers = apache_request_headers();
             $email=$headers['Email'];
             $authentication=$headers['Authentication'];
-
-            if ($this->form_validation->run()== true) {
 
               if(!empty($email)){
                 $this->db->select('*');
@@ -1123,18 +1201,7 @@ class Apicontroller extends CI_finecontrol
         );
                 echo json_encode($res);
               }
-            } else {
-                $res = array('message'=>validation_errors(),
-        'status'=>201
-        );
-                echo json_encode($res);
-            }
-        } else {
-            $res = array('message'=>"Some error occured",
-    'status'=>201
-    );
-            echo json_encode($res);
-        }
+
     }
     //=============farmer_details add===========================================
     public function farmer_details()
@@ -1237,9 +1304,9 @@ class Apicontroller extends CI_finecontrol
                 $this->db->from('tbl_employee');
                 $this->db->where('email', $email);
                 $employee_data= $this->db->get()->row();
-                $id = $employee_data->id;
                 if (!empty($employee_data)) {
                     if ($employee_data->password==$authentication) {
+                      $id = $employee_data->id;
                         $data_insert = array('employee_id'=>$id,
                         'field'=>$field,
                         'remarks'=>$remarks,
@@ -1271,7 +1338,7 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>"No email fond",
+                $res = array('message'=>"Email not found",
 'status'=>201
 );
                 echo json_encode($res);
