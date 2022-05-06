@@ -340,7 +340,7 @@ class Apicontroller extends CI_finecontrol
 
                 $emp_data= $this->db->get()->row();
                 if (!empty($emp_data)) {
-                    if ($emp_data->password==md5($password)) {
+                    if ($emp_data->password==$password) {
                         $id=$emp_data->id;
                         $data_insert = array('employee_id'=>$id,
                                 'end'=>$end,
@@ -421,7 +421,7 @@ class Apicontroller extends CI_finecontrol
                 $emp_data= $this->db->get()->row();
 
                 if (!empty($emp_data)) {
-                    if ($emp_data->password==md5($authentication)) {
+                    if ($emp_data->password==$authentication) {
                         $employee_id=$emp_data->id;
 
                         $this->db->select('*');
@@ -476,7 +476,7 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>'No email found',
+                $res = array('message'=>'Email not found',
         'status'=>201
         );
 
@@ -534,6 +534,7 @@ class Apicontroller extends CI_finecontrol
                     $this->db->from('tbl_employee');
                     $this->db->where('email', $email);
                     $employee= $this->db->get()->row();
+                    if ($employee->password==$authentication) {
                     $employee_id=$employee->id;
                     $data_insert = array('employee_id'=>$employee_id,
                       'product_id'=>$product_id,
@@ -559,6 +560,13 @@ class Apicontroller extends CI_finecontrol
 
                         echo json_encode($res);
                     }
+                  }else{
+                    $res = array('message'=>"Incorrect password",
+                    'status'=>201
+                    );
+
+                    echo json_encode($res);
+                  }
                 } else {
                     $res = array('message'=>"User not found",
                     'status'=>201
@@ -567,7 +575,7 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>"No email found",
+                $res = array('message'=>"Email not found",
                 'status'=>201
                 );
 
@@ -620,7 +628,7 @@ class Apicontroller extends CI_finecontrol
                 $emp_data= $this->db->get()->row();
 
                 if (!empty($emp_data)) {
-                    if ($emp_data->password==md5($authentication)) {
+                    if ($emp_data->password==$authentication) {
                         $this->db->select('*');
                         $this->db->from('tbl_employee');
                         $this->db->where('email', $email);
@@ -658,7 +666,7 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>"No email found",
+                $res = array('message'=>"Email not found",
                       'status'=>201
                       );
 
@@ -699,7 +707,7 @@ class Apicontroller extends CI_finecontrol
                 $emp_data= $this->db->get()->row();
 
                 if (!empty($emp_data)) {
-                    if ($emp_data->password==md5($authentication)) {
+                    if ($emp_data->password==$authentication) {
                         $this->db->select('*');
                         $this->db->from('tbl_employee');
                         $this->db->where('email', $email);
@@ -749,7 +757,7 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>"No email found",
+                $res = array('message'=>"Email not found",
     'status'=>201
     );
 
@@ -801,7 +809,7 @@ class Apicontroller extends CI_finecontrol
                 $this->db->where('email', $email);
                 $employee_data= $this->db->get()->row();
                 if (!empty($employee_data)) {
-                    if ($employee_data->password==md5($authentication)) {
+                    if ($employee_data->password==$authentication) {
                         $id=$employee_data->id;
                         $order_placed=[];
                         $order1=[];
@@ -1057,7 +1065,7 @@ class Apicontroller extends CI_finecontrol
                 $this->db->where('email', $email);
                 $employee_data= $this->db->get()->row();
                 if (!empty($employee_data)) {
-                    if ($employee_data->password==md5($authentication)) {
+                    if ($employee_data->password==$authentication) {
                         $id=$employee_data->id;
                         $this->db->select('*');
                         $this->db->from('tbl_order1');
@@ -1110,7 +1118,7 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>"No email found.",
+                $res = array('message'=>"Email not found.",
         'status'=>201
         );
                 echo json_encode($res);
@@ -1191,7 +1199,7 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>"No email found",
+                $res = array('message'=>"Email not found",
             'status'=>201
             );
                 echo json_encode($res);
@@ -1231,7 +1239,7 @@ class Apicontroller extends CI_finecontrol
                 $employee_data= $this->db->get()->row();
                 $id = $employee_data->id;
                 if (!empty($employee_data)) {
-                    if ($employee_data->password==md5($authentication)) {
+                    if ($employee_data->password==$authentication) {
                         $data_insert = array('employee_id'=>$id,
                         'field'=>$field,
                         'remarks'=>$remarks,
@@ -1308,7 +1316,7 @@ class Apicontroller extends CI_finecontrol
                 $employee_data= $this->db->get()->row();
                 $id = $employee_data->id;
                 if (!empty($employee_data)) {
-                    if ($employee_data->password==md5($authentication)) {
+                    if ($employee_data->password==$authentication) {
                         $data_insert = array('employee_id'=>$id,
                           'km'=>$km,
                           'vehicle'=>$vehicle,
@@ -1340,7 +1348,7 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>"No email found",
+                $res = array('message'=>"Email not found",
 'status'=>201
 );
                 echo json_encode($res);
@@ -1383,7 +1391,7 @@ class Apicontroller extends CI_finecontrol
                 $employee_data= $this->db->get()->row();
                 $id = $employee_data->id;
                 if (!empty($employee_data)) {
-                    if ($employee_data->password==md5($authentication)) {
+                    if ($employee_data->password==$authentication) {
                         $img1='image1';
 
                         $file_check=($_FILES['image1']['error']);
@@ -1476,7 +1484,7 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>"No email found",
+                $res = array('message'=>"Email not found",
 'status'=>201
 );
                 echo json_encode($res);
@@ -1531,7 +1539,7 @@ class Apicontroller extends CI_finecontrol
                 $this->db->where('employee_id', $id);
                 $leave_req_data= $this->db->get();
                 if (!empty($employee_data)) {
-                    if ($employee_data->password==md5($authentication)) {
+                    if ($employee_data->password==$authentication) {
                         $a=0;
                         foreach ($leave_req_data->result() as $data) {
                             if ($data->start==$start || $data->end==$end) {
@@ -1625,7 +1633,7 @@ class Apicontroller extends CI_finecontrol
                 $employee_data= $this->db->get()->row();
                 $id=$employee_data->id;
                 if (!empty($employee_data)) {
-                    if ($employee_data->password==md5($authentication)) {
+                    if ($employee_data->password==$authentication) {
                         $this->db->select('*');
                         $this->db->from('tbl_leave_req');
                         $this->db->where('employee_id', $id);
