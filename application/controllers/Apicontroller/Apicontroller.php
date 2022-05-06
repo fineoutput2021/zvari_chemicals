@@ -1232,7 +1232,7 @@ echo json_encode($res);
                 $employee= $this->db->get()->row();
                 $id=$employee->id;
                 if (!empty($employee)) {
-                    if ($employee->password==md5($authentication)) {
+                    if ($employee->password==$authentication) {
                         $data_insert = array('employee_id'=>$id,
                   'name'=>$name,
                   'phone'=>$phone,
