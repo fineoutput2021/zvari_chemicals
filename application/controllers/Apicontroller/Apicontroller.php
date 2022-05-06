@@ -1750,4 +1750,38 @@ echo json_encode($res);
               }
 
     }
+    function cart_count(){
+      $headers = apache_request_headers();
+      $email=$headers['Email'];
+      $authentication=$headers['Authentication'];
+      if(!empty($email)){
+        $this->db->select('*');
+        $this->db->from('tbl_employee');
+        $this->db->where('email',$email);
+        $employee_data= $this->db->get()->row();
+        if($employee_data->password==$authentication){
+          $id= $employee_data->id;
+          $this->db->select('*');
+          $this->db->from('tbl_cart');
+          $this->db->where('employee_id', $id);
+          $cart_count= $this->db->count_all_results();
+
+          $res = array('message'=>"success",
+'status'=>200,
+'data'=>$cart_count
+);
+          echo json_encode($res);
+        }else{
+          $res = array('message'=>"Incorrect password",
+  'status'=>201
+  );
+              echo json_encode($res);
+        }
+      }else{
+        $res = array('message'=>"Email not found",
+'status'=>201
+);
+            echo json_encode($res);
+      }
+    }
 }
