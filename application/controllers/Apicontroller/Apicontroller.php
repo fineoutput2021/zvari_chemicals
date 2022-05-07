@@ -592,14 +592,12 @@ class Apicontroller extends CI_finecontrol
             $email=$headers['Email'];
             $authentication=$headers['Authentication'];
 
-            $this->form_validation->set_rules('product_id', 'product_id', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('type_id', 'type_id', 'required|xss_clean|trim');
+            $this->form_validation->set_rules('cart_id', 'cart_id', 'required|xss_clean|trim');
             $this->form_validation->set_rules('quantity', 'quantity', 'xss_clean|trim');
 
 
             if ($this->form_validation->run()== true) {
-                $product_id=$this->input->post('product_id');
-                $type_id=$this->input->post('type_id');
+                $cart_id=$this->input->post('cart_id');
                 $quantity=$this->input->post('quantity');
                 $ip = $this->input->ip_address();
                 date_default_timezone_set("Asia/Calcutta");
@@ -612,29 +610,17 @@ class Apicontroller extends CI_finecontrol
                     $emp_data= $this->db->get()->row();
 
                     if (!empty($emp_data)) {
-                        $this->db->select('*');
-                        $this->db->from('tbl_employee');
-                        $this->db->where('email', $email);
-                        $employee= $this->db->get()->row();
-                        if ($employee->password==$authentication) {
-                            $employee_id=$employee->id;
-                            $data_insert = array('employee_id'=>$employee_id,
-                      'product_id'=>$product_id,
-                      'type_id'=>$type_id,
-                      'quantity'=>$quantity,
-                      'ip' =>$ip,
-                      'date'=>$cur_date
-  );
-                            $this->db->where('employee_id', $employee_id);
-                            $this->db->where('product_id', $product_id);
-                            $this->db->where('type_id', $type_id);
-                            $last_id=$this->db->update("tbl_cart", $data_insert) ;
-                            $res = array('message'=>"success",
-                        'status'=>200
-                        );
+                        if ($emp_data->password==$authentication) {
+                            $data_update = array('quantity'=>$quantity);
+                            $this->db->where('id', $cart_id);
+                            $last_id=$this->db->update("tbl_cart", $data_update) ;
 
-                            echo json_encode($res);
                             if (!empty($last_id)) {
+                              $res = array('message'=>"success",
+                          'status'=>200
+                          );
+
+                              echo json_encode($res);
                             } else {
                                 $res = array('message'=>"Some error occured",
                           'status'=>201
@@ -685,20 +671,15 @@ class Apicontroller extends CI_finecontrol
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
         $this->load->helper('security');
+        $headers = apache_request_headers();
+        $email=$headers['Email'];
+        $authentication=$headers['Authentication'];
         if ($this->input->post()) {
-            $headers = apache_request_headers();
-            $email=$headers['Email'];
-            $authentication=$headers['Authentication'];
-
-            $this->form_validation->set_rules('product_id', 'product_id', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('type_id', 'type_id', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('quantity', 'quantity', 'xss_clean|trim');
+            $this->form_validation->set_rules('cart_id', 'cart_id', 'required|xss_clean|trim');
 
 
             if ($this->form_validation->run()== true) {
-                $product_id=$this->input->post('product_id');
-                $type_id=$this->input->post('type_id');
-                $quantity=$this->input->post('quantity');
+                $cart_id=$this->input->post('cart_id');
                 $ip = $this->input->ip_address();
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d H:i:s");
@@ -711,17 +692,9 @@ class Apicontroller extends CI_finecontrol
 
                     if (!empty($emp_data)) {
                         if ($emp_data->password==$authentication) {
-                            $this->db->select('*');
-                            $this->db->from('tbl_employee');
-                            $this->db->where('email', $email);
-                            $employee= $this->db->get()->row();
-                            $employee_id=$employee->id;
-                            $zapak=$this->db->delete('tbl_cart', array('employee_id'=>$employee_id,
-                          'product_id'=>$product_id,
-                          'type_id'=>$type_id,
-                          'quantity'=>$quantity));
-                            if ($zapak!=0) {
-                                $res = array('message'=>"Data Deleted",
+                            $delete=$this->db->delete('tbl_cart', array('id' => $cart_id));
+                            if (!empty($delete)) {
+                                $res = array('message'=>"Success",
                             'status'=>200
                             );
 
@@ -791,7 +764,9 @@ class Apicontroller extends CI_finecontrol
                     $this->db->from('tbl_cart');
                     $this->db->where('employee_id', $employee_id);
                     $cart_data= $this->db->get();
+                    $subtotal = 0;
                     foreach ($cart_data->result() as $data) {
+                      $total=0;
                         $this->db->select('*');
                         $this->db->from('tbl_type');
                         $this->db->where('id', $data->type_id);
@@ -802,16 +777,20 @@ class Apicontroller extends CI_finecontrol
                         $product= $this->db->get()->row();
                         $cart[] = array('id'=>$data->id,
                             'product_name'=>$product->product_name,
+                            'image'=>base_url().$product->image1,
                             'type_name'=>$type->name,
                             'quantity'=>$data->quantity,
                             'price'=>$type->spgst
                           );
+                          $total= $type->spgst * $data->quantity;
+                          $subtotal = $subtotal + $total;
                     }
 
 
                     $res = array('message'=>"success",
                         'status'=>200,
                         'data'=>$cart,
+                        'total'=>$subtotal
                         );
 
                     echo json_encode($res);
