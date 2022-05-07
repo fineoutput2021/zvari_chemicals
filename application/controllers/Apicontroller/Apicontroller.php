@@ -817,7 +817,7 @@ class Apicontroller extends CI_finecontrol
         }
     }
     //================ Cart amount calculate==================================
-    public function calculate()
+    public function checkout()
     {
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
@@ -869,14 +869,15 @@ class Apicontroller extends CI_finecontrol
                             }
                             $product_id = $data->product_id;
                             $type_id = $data->type_id;
-                            $txn_id = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstvwxyz"), 0, 12);
                             $order1 = array('employee_id'=>$id,
                       'total_amount'=>$final_amount,
                       'name'=>$name,
                       'phone'=>$phone,
                       'shop_name'=>$shop_name,
                       'place'=>$place,
-                      'txn_id'=>$txn_id,
+                      'payment_type'=>1,
+                      'payment_status'=>1,
+                      'order_status'=>1,
                       'ip'=>$ip,
                       'date'=>$cur_date
                     );
@@ -911,7 +912,7 @@ class Apicontroller extends CI_finecontrol
                                 echo json_encode($res);
                             }
 
-                            $order_placed = array('txn_id'=>$txn_id,
+                            $order_placed = array('order_id'=>$last_id,
                     'total_amount'=>$final_amount
 
                     );
@@ -966,124 +967,129 @@ class Apicontroller extends CI_finecontrol
             echo json_encode($res);
         }
     }
-    //===================checkout==========================================
-    public function checkout()
-    {
-        $this->load->helper(array('form', 'url'));
-        $this->load->library('form_validation');
-        $this->load->helper('security');
-        if ($this->input->post()) {
-            $headers = apache_request_headers();
-            $email=$headers['Email'];
-            $authentication=$headers['Authentication'];
-
-            $this->form_validation->set_rules('txn_id', 'txn_id', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('image', 'image', 'xss_clean|trim');
-
-
-            if ($this->form_validation->run()== true) {
-                if (!empty($email)) {
-                    $txn_id=$this->input->post('txn_id');
-
-                    $img1='image';
-                    $file_check=($_FILES['image']['error']);
-                    if ($file_check!=4) {
-                        $image_upload_folder = FCPATH . "assets/uploads/checkout/";
-                        if (!file_exists($image_upload_folder)) {
-                            mkdir($image_upload_folder, DIR_WRITE_MODE, true);
-                        }
-                        $new_file_name="transaction".date("Ymdhms");
-                        $this->upload_config = array(
-                                                'upload_path'   => $image_upload_folder,
-                                                'file_name' => $new_file_name,
-                                                'allowed_types' =>'xlsx|csv|xls|pdf|doc|docx|txt|jpg|jpeg|png',
-                                                'max_size'      => 25000
-                                        );
-                        $this->upload->initialize($this->upload_config);
-                        if (!$this->upload->do_upload($img1)) {
-                            $upload_error = $this->upload->display_errors();
-                            // echo json_encode($upload_error);
-                            echo $upload_error;
-                        } else {
-                            $file_info = $this->upload->data();
-
-                            $videoNAmePath = "assets/uploads/checkout/".$new_file_name.$file_info['file_ext'];
-                            $file_info['new_name']=$videoNAmePath;
-                            $nnnn=$file_info['file_name'];
-                        }
-                    }
-
-                    $this->db->select('*');
-                    $this->db->from('tbl_order1');
-                    $this->db->where('txn_id', $txn_id);
-                    $order= $this->db->get()->row();
-                    $check=[];
-
-                    if (!empty($nnnn)) {
-                        $data_insert = array('image'=>$nnnn,
-                              'payment_type'=>1,
-                              'payment_status'=>1,
-                              'order_status'=>1,
-          );
-
-                        $this->db->where('txn_id', $txn_id);
-                        $last_id=$this->db->update("tbl_order1", $data_insert) ;
-                        $check=array('order_id'=>$order->id,
-                      'total amount'=>$order->total_amount
-                    );
-                        $res = array('message'=>"success",
-                                'status'=>200,
-                                'data'=>$check
-                                );
-
-                        echo json_encode($res);
-                    } else {
-                        $data_insert = array(
-                              'payment_type'=>1,
-                              'payment_status'=>1,
-                              'order_status'=>1,
-          );
-
-                        $this->db->where('txn_id', $txn_id);
-                        $last_id=$this->db->update("tbl_order1", $data_insert) ;
-                        $check=array('order_id'=>$order->id,
-                      'total amount'=>$order->total_amount
-                    );
-                        $res = array('message'=>"success",
-                                'status'=>200,
-                                'data'=>$check
-                                );
-
-                        echo json_encode($res);
-                    }
-                    if (!empty($last_id)) {
-                    } else {
-                        $res = array('message'=>"Some error occured, try again.",
-                                'status'=>201
-                                );
-
-                        echo json_encode($res);
-                    }
-                } else {
-                    $res = array('message'=>"Email not found",
-      'status'=>201
-    );
-
-                    echo json_encode($res);
-                }
-            } else {
-                $res = array('message'=>validation_errors(),
-          'status'=>201
-          );
-                echo json_encode($res);
-            }
-        } else {
-            $res = array('message'=>"Some error occured",
-          'status'=>201
-          );
-            echo json_encode($res);
-        }
-    }
+    // //===================checkout==========================================
+    // public function checkout()
+    // {
+    //     $this->load->helper(array('form', 'url'));
+    //     $this->load->library('form_validation');
+    //     $this->load->helper('security');
+    //     if ($this->input->post()) {
+    //         $headers = apache_request_headers();
+    //         $email=$headers['Email'];
+    //         $authentication=$headers['Authentication'];
+    //
+    //         $this->form_validation->set_rules('name', 'required', 'xss_clean|trim');
+    //         $this->form_validation->set_rules('shop_name', 'required', 'xss_clean|trim');
+    //         $this->form_validation->set_rules('phone', 'required', 'xss_clean|trim');
+    //         $this->form_validation->set_rules('place', 'required', 'xss_clean|trim');
+    //
+    //
+    //         if ($this->form_validation->run()== true) {
+    //             if (!empty($email)) {
+    //               $name=$this->input->post('name');
+    //               $shop_name=$this->input->post('shop_name');
+    //               $phone=$this->input->post('phone');
+    //               $place=$this->input->post('place');
+    //
+    //                 $img1='image';
+    //                 $file_check=($_FILES['image']['error']);
+    //                 if ($file_check!=4) {
+    //                     $image_upload_folder = FCPATH . "assets/uploads/checkout/";
+    //                     if (!file_exists($image_upload_folder)) {
+    //                         mkdir($image_upload_folder, DIR_WRITE_MODE, true);
+    //                     }
+    //                     $new_file_name="transaction".date("Ymdhms");
+    //                     $this->upload_config = array(
+    //                                             'upload_path'   => $image_upload_folder,
+    //                                             'file_name' => $new_file_name,
+    //                                             'allowed_types' =>'xlsx|csv|xls|pdf|doc|docx|txt|jpg|jpeg|png',
+    //                                             'max_size'      => 25000
+    //                                     );
+    //                     $this->upload->initialize($this->upload_config);
+    //                     if (!$this->upload->do_upload($img1)) {
+    //                         $upload_error = $this->upload->display_errors();
+    //                         // echo json_encode($upload_error);
+    //                         echo $upload_error;
+    //                     } else {
+    //                         $file_info = $this->upload->data();
+    //
+    //                         $videoNAmePath = "assets/uploads/checkout/".$new_file_name.$file_info['file_ext'];
+    //                         $file_info['new_name']=$videoNAmePath;
+    //                         $nnnn=$file_info['file_name'];
+    //                     }
+    //                 }
+    //
+    //                 $this->db->select('*');
+    //                 $this->db->from('tbl_order1');
+    //                 $this->db->where('txn_id', $txn_id);
+    //                 $order= $this->db->get()->row();
+    //                 $check=[];
+    //
+    //                 if (!empty($nnnn)) {
+    //                     $data_insert = array('image'=>$nnnn,
+    //                           'payment_type'=>1,
+    //                           'payment_status'=>1,
+    //                           'order_status'=>1,
+    //       );
+    //
+    //                     $this->db->where('txn_id', $txn_id);
+    //                     $last_id=$this->db->update("tbl_order1", $data_insert) ;
+    //                     $check=array('order_id'=>$order->id,
+    //                   'total amount'=>$order->total_amount
+    //                 );
+    //                     $res = array('message'=>"success",
+    //                             'status'=>200,
+    //                             'data'=>$check
+    //                             );
+    //
+    //                     echo json_encode($res);
+    //                 } else {
+    //                     $data_insert = array(
+    //                           'payment_type'=>1,
+    //                           'payment_status'=>1,
+    //                           'order_status'=>1,
+    //       );
+    //
+    //                     $this->db->where('txn_id', $txn_id);
+    //                     $last_id=$this->db->update("tbl_order1", $data_insert) ;
+    //                     $check=array('order_id'=>$order->id,
+    //                   'total amount'=>$order->total_amount
+    //                 );
+    //                     $res = array('message'=>"success",
+    //                             'status'=>200,
+    //                             'data'=>$check
+    //                             );
+    //
+    //                     echo json_encode($res);
+    //                 }
+    //                 if (!empty($last_id)) {
+    //                 } else {
+    //                     $res = array('message'=>"Some error occured, try again.",
+    //                             'status'=>201
+    //                             );
+    //
+    //                     echo json_encode($res);
+    //                 }
+    //             } else {
+    //                 $res = array('message'=>"Email not found",
+    //   'status'=>201
+    // );
+    //
+    //                 echo json_encode($res);
+    //             }
+    //         } else {
+    //             $res = array('message'=>validation_errors(),
+    //       'status'=>201
+    //       );
+    //             echo json_encode($res);
+    //         }
+    //     } else {
+    //         $res = array('message'=>"Some error occured",
+    //       'status'=>201
+    //       );
+    //         echo json_encode($res);
+    //     }
+    // }
     //=================view_Order details======================================
     public function my_orders()
     {
