@@ -1537,6 +1537,10 @@ class Apicontroller extends CI_finecontrol
             if ($this->form_validation->run()== true) {
                 $start=$this->input->post('start');
                 $end=$this->input->post('end');
+                $start = date("d-m-Y", strtotime($start));
+                $end = date("d-m-Y", strtotime($end));
+                // echo $start;
+                // echo $end;die();
 
                 $start1 = date('d-m-Y', strtotime("-1 day", strtotime($start)));
 
