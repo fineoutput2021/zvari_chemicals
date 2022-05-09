@@ -404,16 +404,10 @@ class Apicontroller extends CI_finecontrol
     //==============Log out====================================================
     public function employee_logout()
     {
-        // echo "hii";
-        $this->load->helper(array('form', 'url'));
-        $this->load->library('form_validation');
-        $this->load->helper('security');
-        if ($this->input->post()) {
-            $this->form_validation->set_rules('email', 'email', 'required|xss_clean|trim');
-            $this->form_validation->set_rules('password', 'password', 'required|xss_clean|trim');
-            if ($this->form_validation->run()== true) {
-                $email=$this->input->post('email');
-                $password=$this->input->post('password');
+            $headers = apache_request_headers();
+            $email=$headers['Email'];
+            $authentication=$headers['Authentication'];
+            if(!empty($email)){
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("Y-m-d");
                 $end=date("H:i:s");
@@ -424,13 +418,19 @@ class Apicontroller extends CI_finecontrol
 
                 $emp_data= $this->db->get()->row();
                 if (!empty($emp_data)) {
-                    if ($emp_data->password==$password) {
+                    if ($emp_data->password==$authentication) {
                         $id=$emp_data->id;
+                        $this->db->select('*');
+                        $this->db->from('tbl_attendance');
+                        $this->db->order_by('date','desc');
+                        $this->db->like('date', $cur_date);
+                        $this->db->where('employee_id',$id);
+                        $attendance_data= $this->db->get()->row();
+
                         $data_insert = array('employee_id'=>$id,
                                 'end'=>$end,
                                 );
-                        $this->db->where('employee_id', $id);
-                        $this->db->like('date', $cur_date);
+                        $this->db->where('id', $attendance_data->id);
                         $last_id=$this->db->update('tbl_attendance', $data_insert);
                         if (!empty($last_id)) {
                             $res = array('message'=>'success',
@@ -457,20 +457,13 @@ class Apicontroller extends CI_finecontrol
 
                     echo json_encode($res);
                 }
-            } else {
-                $res = array('message'=>validation_errors(),
-              'status'=>201
-              );
+              }else{
+                $res = array('message'=>"Email not found",
+                'status'=>201
+                );
 
                 echo json_encode($res);
-            }
-        } else {
-            $res = array('message'=>"Please insert some data",
-              'status'=>201
-              );
-
-            echo json_encode($res);
-        }
+              }
     }
     //================add to_cart===================================
 
@@ -1741,6 +1734,86 @@ class Apicontroller extends CI_finecontrol
 'status'=>201
 );
             echo json_encode($res);
+        }
+    }
+
+    //===============================auto logout=====================================
+    public function employee_auto_logout(){
+      $headers = apache_request_headers();
+        $email=$headers['Email'];
+        $authentication=$headers['Authentication'];
+        if(!empty($email)){
+          $cur_date=date("Y-m-d");
+          $day_before = date("Y-m-d", time() - 86400);
+          // echo $day_before;die();
+          $end="00:00:00";
+          $this->db->select('*');
+          $this->db->from('tbl_employee');
+          $this->db->where('email',$email);
+          $emp_data= $this->db->get()->row();
+          if(!empty($emp_data)){
+            if($emp_data->password==$authentication){
+              $id= $emp_data->id;
+              $this->db->select('*');
+              $this->db->from('tbl_attendance');
+              $this->db->like('date',$day_before);
+              $this->db->order_by('date','desc');
+              $this->db->where('employee_id',$id);
+              $attendance_data= $this->db->get()->row();
+              if(!empty($attendance_data)){
+                if(empty($attendance_data->end)){
+                  $logout = array('end'=>$end,
+                          'auto_logout'=>1
+                            );
+                  $this->db->where('id', $attendance_data->id);
+                  $auto_logout=$this->db->update('tbl_attendance', $logout);
+                  if(!empty($auto_logout)){
+                  $res = array('message'=>"Success",
+                        'status'=>200
+                        );
+
+                        echo json_encode($res);
+                      }else{
+                        $res = array('message'=>"Some error occured",
+                              'status'=>201
+                              );
+
+                              echo json_encode($res);
+                      }
+                }else{
+                  $res = array('message'=>"Success",
+                        'status'=>200
+                        );
+
+                        echo json_encode($res);
+                }
+              }else{
+                $res = array('message'=>"Success",
+                      'status'=>200
+                      );
+
+                      echo json_encode($res);
+              }
+            }else{
+              $res = array('message'=>"Incorrect password",
+                    'status'=>201
+                    );
+
+                    echo json_encode($res);
+            }
+          }else{
+            $res = array('message'=>"Employee not found",
+                    'status'=>201
+                    );
+
+                    echo json_encode($res);
+          }
+        }else{
+          $res = array('message'=>"Email not found",
+          'status'=>201
+          );
+
+          echo json_encode($res);
         }
     }
 }
