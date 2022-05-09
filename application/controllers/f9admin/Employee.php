@@ -185,21 +185,6 @@ class Employee extends CI_finecontrol
                     if ($typ==2) {
                         $idw=base64_decode($iw);
 
-                        // $this->db->select('*');
-//     $this->db->from('tbl_minor_category');
-//    $this->db->where('name',$name);
-//     $damm= $this->db->get();
-//    foreach($damm->result() as $da) {
-//      $uid=$da->id;
-                        // if($uid==$idw)
-                        // {
-//
-                        //  }
-                        // else{
-//    echo "Multiple Entry of Same Name";
-//       exit;
-                        //  }
-//     }
                         if (!empty($nnnn)) {
                             $data_insert = array('name'=>$name,
                     'phone'=>$phone,
@@ -218,7 +203,6 @@ class Employee extends CI_finecontrol
                 'password'=>$password,
                 'state_id'=>$state,
                 'territory_id'=>$territory
-
                 );
                         }
 
@@ -229,7 +213,7 @@ class Employee extends CI_finecontrol
 
 
                     if ($last_id!=0) {
-                        $this->session->set_flashdata('emessage', 'Data updated successfully');
+                        $this->session->set_flashdata('smessage', 'Data added successfully');
 
                         redirect("dcadmin/Employee/view_employee", "refresh");
                     } else {

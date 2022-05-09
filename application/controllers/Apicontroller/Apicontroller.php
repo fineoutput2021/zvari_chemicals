@@ -351,7 +351,7 @@ class Apicontroller extends CI_finecontrol
                               );
                         $last_id=$this->base_model->insert_table("tbl_attendance", $data_insert, 1);
                         if (!empty($emp_data->image)) {
-                            $image = $emp_data->image;
+                            $image = base_url().$emp_data->image;
                         } else {
                             $image ='';
                         }
