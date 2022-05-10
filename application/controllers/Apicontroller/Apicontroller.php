@@ -860,8 +860,6 @@ class Apicontroller extends CI_finecontrol
                                 $total_amt = $quantity*$spgst;
                                 $final_amount = $final_amount + $total_amt;
                             }
-                            $product_id = $data->product_id;
-                            $type_id = $data->type_id;
                             $order1 = array('employee_id'=>$id,
                       'total_amount'=>$final_amount,
                       'name'=>$name,
@@ -897,6 +895,8 @@ class Apicontroller extends CI_finecontrol
                     );
                                     $least_id=$this->base_model->insert_table("tbl_order2", $order2, 1);
                                 }
+                                $zapak=$this->db->delete('tbl_cart', array('employee_id' => $id));
+
                             } else {
                                 $res = array('message'=>"Some error occured. Please try again",
                 'status'=>201
@@ -905,24 +905,21 @@ class Apicontroller extends CI_finecontrol
                                 echo json_encode($res);
                             }
 
-                            $order_placed = array('order_id'=>$last_id,
-                    'total_amount'=>$final_amount
 
-                    );
-                            $res = array('message'=>"success",
-                      'status'=>200,
-                      'data'=>$order_placed
-                      );
-
-                            echo json_encode($res);
-
-                            if (!empty($last_id && $least_id && $order_placed)) {
-                            } else {
-                                $res = array('message'=>"Some error occured",
-                    'status'=>201
-                    );
-
-                                echo json_encode($res);
+                            if (!empty($last_id)) {
+                                              $order_placed = array('order_id'=>$last_id,
+                                      'total_amount'=>$final_amount
+                                      );
+                                              $res = array('message'=>"success",
+                                        'status'=>200,
+                                        'data'=>$order_placed
+                                        );
+                                              echo json_encode($res);
+                                } else {
+                                    $res = array('message'=>"Some error occured",
+                        'status'=>201
+                        );
+                                    echo json_encode($res);
                             }
                         } else {
                             $res = array('message'=>"Incorrect username or Password",
@@ -1773,7 +1770,8 @@ class Apicontroller extends CI_finecontrol
                   $auto_logout=$this->db->update('tbl_attendance', $logout);
                   if(!empty($auto_logout)){
                   $res = array('message'=>"Success",
-                        'status'=>200
+                        'status'=>200,
+                        'data'=>1
                         );
 
                         echo json_encode($res);
