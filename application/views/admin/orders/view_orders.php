@@ -54,7 +54,13 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $i=1; foreach ($orders_data->result() as $data) { ?>
+                    <?php $i=1; foreach ($orders_data->result() as $data) {
+                      $this->db->select('*');
+                      $this->db->from('tbl_employee');
+                      $this->db->where('id',$data->employee_id);
+                      $emp_da= $this->db->get()->row();
+                      if($emp_da->position_id > $this->session->userdata('designation_id')){
+                       ?>
                     <tr>
                       <td><?php echo $i ?> </td>
                       <td><?php if (!empty($data->id)) {
@@ -168,7 +174,7 @@
               </div>
               </td>
               </tr>
-              <?php $i++; } ?>
+            <?php $i++;} } ?>
               </tbody>
               </table>
 

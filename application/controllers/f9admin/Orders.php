@@ -19,7 +19,8 @@ class Orders extends CI_finecontrol
     {
         if (!empty($this->session->userdata('admin_data'))) {
             $data['user_name']=$this->load->get_var('user_name');
-
+            $designation=$this->session->userdata('designation_id');
+            $data['designation'] = $designation;
             // echo SITE_NAME;
             // echo $this->session->userdata('image');
             // echo $this->session->userdata('position');
@@ -225,7 +226,6 @@ class Orders extends CI_finecontrol
                 $this->db->where('id', $id);
                 $zapak=$this->db->update('tbl_order1', $data_update);
 
-                //-------update inventory-------
                 $this->db->select('*');
                 $this->db->from('tbl_order2');
                 $this->db->where('main_id', $id);
@@ -237,11 +237,8 @@ class Orders extends CI_finecontrol
                     $this->db->where('id', $data->product_id);
                     $pro_data= $this->db->get()->row();
                     if (!empty($pro_data)) {
-                        $update_inv = $pro_data->inventory + $data->quantity;
-                        $data_update = array('inventory'=>$update_inv,
-                );
                         $this->db->where('id', $pro_data->id);
-                        $zapak=$this->db->update('tbl_products', $data_update);
+                        $zapak=$this->db->update('tbl_order1', $data_update);
                     }
                 }
 

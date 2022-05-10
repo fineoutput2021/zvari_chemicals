@@ -46,14 +46,16 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $i=1; foreach ($leave_req_data->result() as $data) { ?>
-                    <tr>
-                      <td><?php echo $i ?> </td>
-                      <td><?php
+                    <?php $i=1; foreach ($leave_req_data->result() as $data) {
                       $this->db->select('*');
                       $this->db->from('tbl_employee');
                       $this->db->where('id', $data->employee_id);
                       $employee_data= $this->db->get()->row();
+                      if($employee_data->position_id > $this->session->userdata('designation_id')){
+                       ?>
+                    <tr>
+                      <td><?php echo $i ?> </td>
+                      <td><?php
                       echo $employee_data->name;
                       ?></td>
                       <td><?php echo $data->start ?>
@@ -97,7 +99,7 @@
                         </div>
                       </td>
                     </tr>
-                    <?php $i++; } ?>
+                    <?php $i++; }} ?>
                   </tbody>
                 </table>
 

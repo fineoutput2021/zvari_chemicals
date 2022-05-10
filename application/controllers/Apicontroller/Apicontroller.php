@@ -1432,9 +1432,7 @@ class Apicontroller extends CI_finecontrol
                                     $file_info = $this->upload->data();
 
                                     $videoNAmePath = "assets/uploads/tour_photos/".$new_file_name.$file_info['file_ext'];
-                                    $file_info['new_name']=$videoNAmePath;
-                                    // $this->step6_model->updateappIconImage($imageNAmePath,$appInfoId);
-                                    $nnnn1=$file_info['file_name'];
+                                    $nnnn1=$videoNAmePath;
                                     // echo json_encode($file_info);
                                 }
                             }
@@ -1462,9 +1460,7 @@ class Apicontroller extends CI_finecontrol
                                     $file_info = $this->upload->data();
 
                                     $videoNAmePath = "assets/uploads/tour_photos/".$new_file_name.$file_info['file_ext'];
-                                    $file_info['new_name']=$videoNAmePath;
-                                    // $this->step6_model->updateappIconImage($imageNAmePath,$appInfoId);
-                                    $nnnn2=$file_info['file_name'];
+                                    $nnnn2=$videoNAmePath;
                                     // echo json_encode($file_info);
                                 }
                             }
@@ -1538,6 +1534,7 @@ class Apicontroller extends CI_finecontrol
                 $end = date("d-m-Y", strtotime($end));
                 // echo $start;
                 // echo $end;die();
+                if($start < $end){
 
                 $start1 = date('d-m-Y', strtotime("-1 day", strtotime($start)));
 
@@ -1623,6 +1620,12 @@ class Apicontroller extends CI_finecontrol
     );
                     echo json_encode($res);
                 }
+              }else{
+                $res = array('message'=>"Choose valid dates",
+'status'=>201
+);
+                echo json_encode($res);
+              }
             } else {
                 $res = array('message'=>validation_errors(),
   'status'=>201

@@ -19,9 +19,6 @@ class Employee extends CI_finecontrol
     {
         if (!empty($this->session->userdata('admin_data'))) {
             $data['employee_name']=$this->load->get_var('employee_name');
-            $designation=$this->session->userdata('designation_id');
-            $state=$this->session->userdata('state_id');
-            $territory=$this->session->userdata('territory_id');
             // echo $designation;
             // echo  $state;
             // echo $territory;
@@ -34,13 +31,13 @@ class Employee extends CI_finecontrol
             $this->db->select('*');
             $this->db->from('tbl_employee');
             //$this->db->where('id',$usr);
-            if (!empty($state)) {
-                $this->db->where('state_id', $state);
+            if (!empty($this->session->userdata('state_id'))) {
+                $this->db->where('state_id',$this->session->userdata('state_id'));
             }
-            if (!empty($territory)) {
-                $this->db->where('territory_id', $territory);
+            if (!empty($this->session->userdata('territory_id'))) {
+                $this->db->where('territory_id', $this->session->userdata('territory_id'));
             }
-            $this->db->where('position_id >', $designation);
+            $this->db->where('position_id >', $this->session->userdata('designation_id'));
             $this->db->order_by('date', 'desc');
             $data['employee_data']= $this->db->get();
 
