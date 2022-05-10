@@ -1784,14 +1784,16 @@ class Apicontroller extends CI_finecontrol
                       }
                 }else{
                   $res = array('message'=>"Success",
-                        'status'=>200
+                        'status'=>200,
+                        'data'=>0
                         );
 
                         echo json_encode($res);
                 }
               }else{
                 $res = array('message'=>"Success",
-                      'status'=>200
+                      'status'=>200,
+                      'data'=>0
                       );
 
                       echo json_encode($res);
