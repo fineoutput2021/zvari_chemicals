@@ -776,7 +776,7 @@ class Apicontroller extends CI_finecontrol
                             'price'=>$type->spgst
                           );
                           $total= $type->spgst * $data->quantity;
-                          $subtotal = $subtotal + $total;
+                          $subtotal = round($subtotal + $total,2);
                     }
 
 
@@ -861,7 +861,7 @@ class Apicontroller extends CI_finecontrol
                                 $final_amount = $final_amount + $total_amt;
                             }
                             $order1 = array('employee_id'=>$id,
-                      'total_amount'=>$final_amount,
+                      'total_amount'=>round($final_amount,2),
                       'name'=>$name,
                       'phone'=>$phone,
                       'shop_name'=>$shop_name,
@@ -887,7 +887,7 @@ class Apicontroller extends CI_finecontrol
                       'quantity'=> $data2->quantity,
                       'mrp'=> $type->mrp,
                       'selling_price'=> $type->sp,
-                      'total_amount'=> $data2->quantity * $type->sp,
+                      'total_amount'=> round($data2->quantity * $type->sp,2),
                       'type_amt_gst'=> $type->gstprice,
                       'gst_percentage'=> $type->gst,
                       'type_amt'=> $type->mrp,
@@ -908,7 +908,7 @@ class Apicontroller extends CI_finecontrol
 
                             if (!empty($last_id)) {
                                               $order_placed = array('order_id'=>$last_id,
-                                      'total_amount'=>$final_amount
+                                      'total_amount'=>round($final_amount,2)
                                       );
                                               $res = array('message'=>"success",
                                         'status'=>200,
