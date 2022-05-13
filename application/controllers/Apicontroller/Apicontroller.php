@@ -992,14 +992,18 @@ class Apicontroller extends CI_finecontrol
     //                     $this->upload_config = array(
     //                                             'upload_path'   => $image_upload_folder,
     //                                             'file_name' => $new_file_name,
-    //                                             'allowed_types' =>'xlsx|csv|xls|pdf|doc|docx|txt|jpg|jpeg|png',
+    //                                             'allowed_types' =>'jpg|jpeg|png',
     //                                             'max_size'      => 25000
     //                                     );
     //                     $this->upload->initialize($this->upload_config);
     //                     if (!$this->upload->do_upload($img1)) {
     //                         $upload_error = $this->upload->display_errors();
     //                         // echo json_encode($upload_error);
-    //                         echo $upload_error;
+                            // echo $upload_error;
+                      //       $res = array('message'=>$upload_error,
+                      // 'status'=>201
+                      // );
+                      //       echo json_encode($res);
     //                     } else {
     //                         $file_info = $this->upload->data();
     //
@@ -1420,14 +1424,18 @@ class Apicontroller extends CI_finecontrol
                                 $this->upload_config = array(
                                                         'upload_path'   => $image_upload_folder,
                                                         'file_name' => $new_file_name,
-                                                        'allowed_types' =>'xlsx|csv|xls|pdf|doc|docx|txt|jpg|jpeg|png',
+                                                        'allowed_types' =>'jpg|jpeg|png',
                                                         'max_size'      => 25000
                                                 );
                                 $this->upload->initialize($this->upload_config);
                                 if (!$this->upload->do_upload($img1)) {
                                     $upload_error = $this->upload->display_errors();
                                     // echo json_encode($upload_error);
-                                    echo $upload_error;
+                                    // echo $upload_error;
+                                    $res = array('message'=>$upload_error,
+                              'status'=>201
+                              );
+                                    echo json_encode($res);
                                 } else {
                                     $file_info = $this->upload->data();
 
@@ -1448,14 +1456,18 @@ class Apicontroller extends CI_finecontrol
                                 $this->upload_config = array(
                                                                     'upload_path'   => $image_upload_folder,
                                                                     'file_name' => $new_file_name,
-                                                                    'allowed_types' =>'xlsx|csv|xls|pdf|doc|docx|txt|jpg|jpeg|png',
+                                                                    'allowed_types' =>'jpg|jpeg|png',
                                                                     'max_size'      => 25000
                                                             );
                                 $this->upload->initialize($this->upload_config);
                                 if (!$this->upload->do_upload($img2)) {
                                     $upload_error = $this->upload->display_errors();
                                     // echo json_encode($upload_error);
-                                    echo $upload_error;
+                                    // echo $upload_error;
+                                    $res = array('message'=>$upload_error,
+                              'status'=>201
+                              );
+                                    echo json_encode($res);
                                 } else {
                                     $file_info = $this->upload->data();
 
@@ -1532,9 +1544,13 @@ class Apicontroller extends CI_finecontrol
                 $end=$this->input->post('end');
                 $start = date("d-m-Y", strtotime($start));
                 $end = date("d-m-Y", strtotime($end));
+                date_default_timezone_set("Asia/Calcutta");
+                $cur_date=date("d-m-Y");
                 // echo $start;
+                // echo $cur_date;
                 // echo $end;die();
-                if($start < $end){
+                if($start > $cur_date && $end > $cur_date){
+                if($start <= $end){
 
                 $start1 = date('d-m-Y', strtotime("-1 day", strtotime($start)));
 
@@ -1542,8 +1558,6 @@ class Apicontroller extends CI_finecontrol
                 $req_time= round($req_time / (60*60*24));
 
                 $ip = $this->input->ip_address();
-                date_default_timezone_set("Asia/Calcutta");
-                $cur_date=date("Y-m-d H:i:s");
 
                 if (!empty($email)) {
                     $this->db->select('*');
@@ -1561,16 +1575,16 @@ class Apicontroller extends CI_finecontrol
                             foreach ($leave_req_data->result() as $data) {
                                 if ($data->start==$start || $data->end==$end) {
                                     $a=1;
-                                } elseif ($data->start<=$start && $data->end>=$start) {
+                                } elseif ($data->start <= $start && $data->end >= $start) {
                                     $a=1;
-                                } elseif ($data->start<=$end && $data->end>=$end) {
+                                } elseif ($data->start <= $end && $data->end >= $end) {
                                     $a=1;
                                 } else {
                                     $a=0;
                                 }
                             }
                             if ($a==0) {
-                                if ($req_time<4) {
+                                if ($req_time < 4) {
                                     $data_insert = array('employee_id'=>$id,
                               'start'=>$start,
                               'end'=>$end,
@@ -1597,7 +1611,7 @@ class Apicontroller extends CI_finecontrol
                                     echo json_encode($res);
                                 }
                             } else {
-                                $res = array('message'=>"Leave request already sent for the following date",
+                                $res = array('message'=>"Leave request already applied for the following date",
     'status'=>201
     );
                                 echo json_encode($res);
@@ -1621,11 +1635,17 @@ class Apicontroller extends CI_finecontrol
                     echo json_encode($res);
                 }
               }else{
-                $res = array('message'=>"Choose valid dates",
+                $res = array('message'=>"Start date should fall before end date",
 'status'=>201
 );
                 echo json_encode($res);
               }
+            }else{
+              $res = array('message'=>"Can not apply for past dates",
+'status'=>201
+);
+              echo json_encode($res);
+            }
             } else {
                 $res = array('message'=>validation_errors(),
   'status'=>201
