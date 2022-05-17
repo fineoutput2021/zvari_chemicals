@@ -207,7 +207,7 @@
 
       <header class="main-header">
         <!-- Logo -->
-        <a href="<?=base_url().ADMIN_URL ?>/home" class="logo custom_header"><b><?php echo SITE_NAME ?></b></a>
+        <a href="<?=base_url().ADMIN_URL ?>/home" class="logo custom_header"> <img src="<?=base_url()?>/assets/admin/zvari.png" height="35px" width="35px"> <b><?php echo SITE_NAME ?></b></a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top custom_header" role="navigation">
           <!-- Sidebar toggle button-->
