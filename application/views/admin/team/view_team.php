@@ -3,7 +3,10 @@
     <h1>
       Team
     </h1>
-
+    <ol class="breadcrumb">
+   <li><a href="<?php echo base_url() ?>dcadmin/Home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+   <li class="active">View Team</li>
+  </ol>
   </section>
   <section class="content">
     <div class="row">
@@ -153,9 +156,9 @@
                               <?if ($this->session->userdata('position')=="Super Admin") {
                                                     ?>
                               <?php if ($data->is_active==1) { ?>
-                              <li><a href="<?php echo base_url() ?>admin/system/updateteamStatus/<?php echo base64_encode($data->id) ?>/inactive">Inactive</a></li>
+                              <li><a href="<?php echo base_url() ?>dcadmin/system/updateteamStatus/<?php echo base64_encode($data->id) ?>/inactive">Inactive</a></li>
                               <?php } else { ?>
-                              <li><a href="<?php echo base_url() ?>admin/system/updateteamStatus/<?php echo base64_encode($data->id) ?>/active">Active</a></li>
+                              <li><a href="<?php echo base_url() ?>dcadmin/system/updateteamStatus/<?php echo base64_encode($data->id) ?>/active">Active</a></li>
                               <?php		} ?>
 
                               <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete User</a></li>
@@ -169,7 +172,7 @@
 
                         <div style="display:none" id="cnfbox<?php echo $i ?>">
                           <p> Are you sure delete this </p>
-                          <a href="<?php echo base_url() ?>admin/system/delete_team/<?php echo base64_encode($data->id); ?>" class="btn btn-danger">Yes</a>
+                          <a href="<?php echo base_url() ?>dcadmin/system/delete_team/<?php echo base64_encode($data->id); ?>" class="btn btn-danger">Yes</a>
                           <a href="javasript:;" class="cans btn btn-default" mydatas="<?php echo $i ?>">No</a>
                         </div>
                       </td>

@@ -2,8 +2,12 @@
         <div class="content-wrapper">
         <section class="content-header">
         <h1>
-          View Banner_image
+          View Banner Image
         </h1>
+        <ol class="breadcrumb">
+       <li><a href="<?php echo base_url() ?>dcadmin/Home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+       <li class="active">View Banner Image</li>
+      </ol>
         </section>
         <section class="content">
         <div class="row">
@@ -12,7 +16,7 @@
         role="button" style="margin-bottom:12px;"> Add banner_image</a> -->
         <div class="panel panel-default">
         <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View banner_image</h3>
+        <h3 class="panel-title"><i class="fa fa-money fa-fw"></i>View Banner Image</h3>
         </div>
         <div class="panel panel-default">
 
@@ -105,7 +109,7 @@
         <li><a href="<?php echo base_url() ?>dcadmin/Banner_image/update_banner_image/<?php echo
         base64_encode($data->id) ?>">Edit</a></li>
         <!-- <li><a href="javascript:;" class="dCnf" mydata="<?php echo $i ?>">Delete</a></li> -->
-        <?
+        <?php
         } else {
             echo "No actions available";
         }?>

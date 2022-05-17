@@ -3,6 +3,10 @@
     <h1>
       Add New Image
     </h1>
+    <ol class="breadcrumb">
+   <li><a href="<?php echo base_url() ?>dcadmin/Home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+   <li><a href="<?php echo base_url() ?>dcadmin/Slider_panel/view_images"><i class="fa fa-dashboard"></i> View slider panel</a></li>
+  </ol>
   </section>
   <section class="content">
     <div class="row">

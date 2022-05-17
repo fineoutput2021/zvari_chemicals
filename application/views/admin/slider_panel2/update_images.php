@@ -3,7 +3,10 @@
     <h1>
       Update Image 2
     </h1>
-
+    <ol class="breadcrumb">
+   <li><a href="<?php echo base_url() ?>dcadmin/Home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+   <li><a href="<?php echo base_url() ?>dcadmin/Slider_panel2/view_images"><i class="fa fa-dashboard"></i> View slider panel 2</a></li>
+  </ol>
   </section>
   <section class="content">
     <div class="row">

@@ -3,7 +3,10 @@
     <h1>
       Add New Product
     </h1>
-
+    <ol class="breadcrumb">
+   <li><a href="<?php echo base_url() ?>dcadmin/Home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+   <li><a href="<?php echo base_url() ?>dcadmin/Products/view_products"><i class="fa fa-dashboard"></i> View Products</a></li>
+  </ol>
   </section>
   <section class="content">
     <div class="row">

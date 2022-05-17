@@ -323,7 +323,7 @@
 
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu custom_sidebar">
-            <li class="header custom_header">MAIN NAVIGATION</li>
+            <li class="header" style="background: white; color: black;">MAIN NAVIGATION</li>
 
 
             <?php

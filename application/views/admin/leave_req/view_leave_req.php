@@ -3,7 +3,10 @@
     <h1>
       Leave Requests
     </h1>
-
+    <ol class="breadcrumb">
+   <li><a href="<?php echo base_url() ?>dcadmin/Home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+   <li class="active">View Leave Requests</li>
+  </ol>
   </section>
   <section class="content">
     <div class="row">

@@ -5,10 +5,9 @@
             Profile
             </h1>
             <ol class="breadcrumb">
-             <li><a href="<?php echo base_url() ?>admin/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-              <li><a href="<?php echo base_url() ?>admin/college"><i class="fa fa-dashboard"></i> All Profile </a></li>
-
-            </ol>
+           <li><a href="<?php echo base_url() ?>dcadmin/Home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+           <li class="active">View Profile</li>
+          </ol>
           </section>
   		<section class="content">
   		<div class="row">

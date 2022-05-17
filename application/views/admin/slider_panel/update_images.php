@@ -3,7 +3,10 @@
     <h1>
       Update Image
     </h1>
-
+    <ol class="breadcrumb">
+   <li><a href="<?php echo base_url() ?>dcadmin/Home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+   <li><a href="<?php echo base_url() ?>dcadmin/Slider_panel/view_images"><i class="fa fa-dashboard"></i> View slider panel</a></li>
+  </ol>
   </section>
   <section class="content">
     <div class="row">
@@ -38,7 +41,7 @@
                     <tr>
                       <td> <strong>Image</strong> <span style="color:red;">*</span></strong> </td>
                       <td> <input type="file" name="image" class="form-control" placeholder="" />
-                        <img id="slide_img_path" height=50 width=100 src="<?php echo base_url()."assets/uploads/slider_panel/".$image_data->image ?>">
+                        <img id="slide_img_path" height=50 width=100 src="<?php echo base_url().$image_data->image ?>">
                     </tr>
 
 

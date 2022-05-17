@@ -3,6 +3,10 @@
     <h1>
       Employee details
     </h1>
+    <ol class="breadcrumb">
+   <li><a href="<?php echo base_url() ?>dcadmin/Home"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+   <li class="active">View Employee Details</li>
+  </ol>
   </section>
   <section class="content">
     <div class="row">
