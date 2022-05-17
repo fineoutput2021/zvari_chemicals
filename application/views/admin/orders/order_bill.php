@@ -15,7 +15,7 @@
 <div class="container main_container">
 	<div class="row">
 		<div class="col-sm-6">
-		<img src="<?=base_url()?>assets/frontend/assets/img/web_logo.png" class="img-fluid" style="width:150px;">
+		<img src="<?=base_url()?>assets/admin/zvari.png" class="img-fluid" style="width:150px;">
     <!-- <span style="color: #d76a46; font-size:40px !important;border-bottom: 2px solid grey ;">0</span> -->
 		</div>
 		<div class="col-sm-6 content_part">Tax Invoice/Bill of Supply/Cash Memo

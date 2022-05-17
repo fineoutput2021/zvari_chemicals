@@ -43,9 +43,6 @@ Order Details
                       <th>Product Name</th>
                       <th>Quantity</th>
                       <th>Selling Price</th>
-                      <th>Type Amount</th>
-                      <th>GST</th>
-                      <th>GST Percentage</th>
                       <th>Total Amount</th>
                         </tr>
                     </thead>
@@ -65,16 +62,6 @@ Order Details
                               } ?></td>
 <td><?php if (!empty($data->selling_price)) {
                                   echo "₹".$data->selling_price;
-                              } ?></td>
-<td><?php if (!empty($data->type_amt)) {
-                                  echo $data->type_amt;
-                              } ?></td>
-
-<td><?php if (!empty($data->gst)) {
-                                  echo $data->gst;
-                              } ?></td>
-<td><?php if (!empty($data->gst_percentage)) {
-                                  echo "₹".$data->gst_percentage;
                               } ?></td>
 <td><?php if (!empty($data->total_amount)) {
                                   echo "₹".$data->total_amount;

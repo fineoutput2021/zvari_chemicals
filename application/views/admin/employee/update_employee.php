@@ -93,7 +93,7 @@
                           <?php $i++; } ?>
                         </select> </td>
                     </tr>
-                    
+
                     <tr>
                       <td> <strong>Upload Image</strong> <span style="color:red;">*</span></strong> </td>
                       <td>
@@ -106,7 +106,7 @@
 
                     <tr>
                       <td colspan="2">
-                        <input type="submit" class="btn btn-success" value="save">
+                        <input type="submit" class="btn custom_btn" value="save">
                       </td>
                     </tr>
                   </table>

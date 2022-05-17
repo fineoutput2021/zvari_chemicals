@@ -6,9 +6,10 @@
     echo"- ".$headerTitle;
 } ?></title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link rel="icon" type="image/x-icon" href="<?=base_url()?>/assets/admin/zvari.png">
     <link href="<?php echo base_url() ?>assets/admin/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url() ?>assets/admin/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url() ?>assets/admin/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url() ?>assets/admin/plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
@@ -18,6 +19,56 @@
     <link href="<?php echo base_url() ?>assets/admin/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url() ?>assets/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
   <style>
+  /* ==============================Custom theme=========================================== */
+  .custom_btn{
+    color: black;
+    background-color: #84c34d;
+  }
+  .custom_btn:hover{
+    color: white;
+    background-color: black;
+  }
+  .custom_header{
+    color: white;
+    background-color: #84c34d !important;
+  }
+  .custom_sidebar{
+    color: white;
+    background-color: white !important;
+  }
+  .custom_header>a:hover{
+    color: black;
+    background: white !important;
+    border-left-color: white;
+  }
+  .custom_header>li>a:hover{
+    color: #fff;
+    background: #262626;
+    border-left-color: hsl(353deg 91% 53%);
+  }
+  .active>a{
+    color: #fff;
+    background: #84c34d !important;
+    border-color: #84c34d !important;
+  }
+.skin-blue .sidebar-menu>li>.treeview-menu{
+    color: black !important;;
+    background-color: #e5f7d5;
+  }
+  .skin-blue .treeview-menu>li>a:hover{
+    color: black !important;
+  }
+  .skin-blue .sidebar-menu>li>a:hover{
+    color: #fff;
+    background: #84c34d;
+    border-left-color: black;
+  }
+  .skin-blue .sidebar a{
+    color: black;
+  }
+.skin-blue .wrapper, .sidebar{
+    background-color: white !important;
+  }
   label{
   	margin:5px;
   }
@@ -156,9 +207,9 @@
 
       <header class="main-header">
         <!-- Logo -->
-        <a href="<?=base_url().ADMIN_URL ?>/home" class="logo"><b><?php echo SITE_NAME ?></b></a>
+        <a href="<?=base_url().ADMIN_URL ?>/home" class="logo custom_header"><b><?php echo SITE_NAME ?></b></a>
         <!-- Header Navbar: style can be found in header.less -->
-        <nav class="navbar navbar-static-top" role="navigation">
+        <nav class="navbar navbar-static-top custom_header" role="navigation">
           <!-- Sidebar toggle button-->
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
@@ -186,7 +237,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
-                  <li class="user-header">
+                  <li class="user-header custom_header">
 <?php
                     if (!empty($imgr)) {
                         ?>
@@ -236,7 +287,7 @@
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
           <!-- Sidebar user panel -->
-          <div class="user-panel">
+          <div class="user-panel custom_header">
             <div class="pull-left image">
             <?php
               if (!empty($imgr)) {
@@ -254,7 +305,7 @@
             <div class="pull-left info">
               <p> <?php print_r($user_name); ?></p>
 
-              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+              <!-- <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
             </div>
           </div>
 
@@ -271,8 +322,8 @@
           <!-- /.search form -->
 
           <!-- sidebar menu: : style can be found in sidebar.less -->
-          <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
+          <ul class="sidebar-menu custom_sidebar">
+            <li class="header custom_header">MAIN NAVIGATION</li>
 
 
             <?php
@@ -289,7 +340,7 @@
                 $dawwa=$dsaww->row();
                 if (empty($dawwa)) {
                     echo base_url().ADMIN_URL."/".$sd['url'].'">'; ?>
-                                <i class="fa fa-files-o"></i>
+                                <i class="fa fa-circle-o"></i>
                                 <span><?php echo $sd['name'] ?></span>
                                 <span class="label label-primary pull-right"></span>
                                 </a>
@@ -297,7 +348,7 @@
                               </li>
                               <?php
                 } else {
-                    echo '#"> <i class="fa fa-files-o"></i>
+                    echo '#"> <i class="fa fa-circle-o"></i>
                                 <span>'.$sd['name'].'</span>
                                 <span class="label label-primary pull-right"></span>
                               </a>

@@ -11,7 +11,7 @@
         <?if ($this->session->userdata('position')=="Super Admin") {
     ?>
 
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Category/add_category" role="button" style="margin-bottom:12px;"> Add Category</a>
+        <a class="btn custom_btn" href="<?php echo base_url() ?>dcadmin/Category/add_category" role="button" style="margin-bottom:12px;"> Add Category</a>
         <?php
 }?>
         <div class="panel panel-default">

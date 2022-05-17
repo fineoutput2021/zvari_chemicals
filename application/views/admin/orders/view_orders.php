@@ -59,6 +59,7 @@
                       $this->db->from('tbl_employee');
                       $this->db->where('id',$data->employee_id);
                       $emp_da= $this->db->get()->row();
+                      if(!empty($emp_da)){
                       if($emp_da->position_id > $this->session->userdata('designation_id')){
                        ?>
                     <tr>
@@ -174,7 +175,7 @@
               </div>
               </td>
               </tr>
-            <?php $i++;} } ?>
+            <?php $i++;}} } ?>
               </tbody>
               </table>
 

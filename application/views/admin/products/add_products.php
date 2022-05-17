@@ -80,7 +80,7 @@
                       <td>
                         <input type="file" name="image4" class="form-control" placeholder="" required value="" />
                       </td>
-                    </tr>                    
+                    </tr>
                     <tr>
                       <td> <strong>Product Description</strong> <span style="color:red;">*</span></strong> </td>
                       <td>
@@ -113,7 +113,7 @@
                     </tr>
                     <tr>
                       <td colspan="2">
-                        <input type="submit" class="btn btn-success" value="save">
+                        <input type="submit" class="btn custom_btn" value="save">
                       </td>
                     </tr>
                   </table>

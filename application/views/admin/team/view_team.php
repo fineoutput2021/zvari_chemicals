@@ -3,7 +3,7 @@
     <h1>
       Team
     </h1>
-    
+
   </section>
   <section class="content">
     <div class="row">
@@ -11,7 +11,7 @@
         <?if ($this->session->userdata('position')=="Super Admin") {
     ?>
 
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/System/add_team" role="button" style="margin-bottom:12px;"> Add Team</a>
+        <a class="btn custom_btn" href="<?php echo base_url() ?>dcadmin/System/add_team" role="button" style="margin-bottom:12px;"> Add Team</a>
         <?php
 }?>
         <div class="panel panel-default">

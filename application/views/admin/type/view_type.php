@@ -10,9 +10,9 @@
         <?if ($this->session->userdata('position')=="Super Admin") {
     ?>
 
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Type/add_type/<?=$id;?>" role="button" style="margin-bottom:12px;"> Add Type</a><?php
+        <a class="btn custom_btn" href="<?php echo base_url() ?>dcadmin/Type/add_type/<?=$id;?>" role="button" style="margin-bottom:12px;"> Add Type</a><?php
 }?>
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Products/view_products" role="button" style="margin-bottom:12px;"> Back</a>
+        <a class="btn custom_btn" href="<?php echo base_url() ?>dcadmin/Products/view_products" role="button" style="margin-bottom:12px;"> Back</a>
 
         <div class="panel panel-default">
           <div class="panel-heading">

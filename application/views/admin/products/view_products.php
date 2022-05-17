@@ -11,7 +11,7 @@
         <?if ($this->session->userdata('position')=="Super Admin") {
     ?>
 
-        <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Products/add_products" role="button" style="margin-bottom:12px;"> Add Products</a>
+        <a class="btn custom_btn" href="<?php echo base_url() ?>dcadmin/Products/add_products" role="button" style="margin-bottom:12px;"> Add Products</a>
         <?php
 }?>
         <div class="panel panel-default">

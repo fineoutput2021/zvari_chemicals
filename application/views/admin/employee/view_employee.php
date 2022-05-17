@@ -10,7 +10,7 @@
              <div class="col-lg-12">
                <?if ($this->session->userdata('position')=="Super Admin") {
     ?>
-      				   <a class="btn btn-info cticket" href="<?php echo base_url() ?>dcadmin/Employee/add_employee" role="button" style="margin-bottom:12px;"> Add Employee</a> <?php
+      				   <a class="btn custom_btn" href="<?php echo base_url() ?>dcadmin/Employee/add_employee" role="button" style="margin-bottom:12px;"> Add Employee</a> <?php
 }?>
                               <div class="panel panel-default">
                                   <div class="panel-heading">

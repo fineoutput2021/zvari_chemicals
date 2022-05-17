@@ -42,6 +42,7 @@ class Login extends CI_Controller
                 $da_teacher= $this->db->get();
                 $da=$da_teacher->row();
                 if (!empty($da)) {
+                  if($da->is_active==1){
                     $nnn1=$da->name;
                     $nnn2=$da->password;
 
@@ -89,12 +90,17 @@ class Login extends CI_Controller
                         // redirect("auth/login","refresh");
                         redirect($_SERVER['HTTP_REFERER']);
                     }
+                  }else{
+                    $this->session->set_flashdata('emessage', 'Your account is inactive. Please contact admin');
+                    redirect($_SERVER['HTTP_REFERER']);
+                  }
                 } else {
 
                                                     //echo $pass;
                     $this->session->set_flashdata('emessage', 'Wrong Details Entered');
                     redirect($_SERVER['HTTP_REFERER']);
                 }
+
             } else {
                 $this->session->set_flashdata('emessage', validation_errors());
                 // redirect("auth/login","refresh");
