@@ -73,7 +73,7 @@
 					</div>
 					<div class="sub-w3l">
 
-						<a href="#" id="butpas">Forgot Password?</a>
+						<!-- <a href="#" id="butpas">Forgot Password?</a> -->
 						<div class="clear"></div>
 					</div>
 					<div class="right-w3l">
