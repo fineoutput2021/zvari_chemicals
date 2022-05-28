@@ -1546,11 +1546,11 @@ class Apicontroller extends CI_finecontrol
                 $end = date("d-m-Y", strtotime($end));
                 date_default_timezone_set("Asia/Calcutta");
                 $cur_date=date("d-m-Y");
-                // echo $start;
-                // echo $cur_date;
+                // echo $start."---------";
+                // echo $cur_date."-------------";
                 // echo $end;die();
-                if($start > $cur_date && $end > $cur_date){
-                if($start <= $end){
+                if(strtotime($start) > strtotime($cur_date) && strtotime($end) > strtotime($cur_date)){
+                if(strtotime($start) <= strtotime($end)){
 
                 $start1 = date('d-m-Y', strtotime("-1 day", strtotime($start)));
 
