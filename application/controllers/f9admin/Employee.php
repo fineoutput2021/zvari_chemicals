@@ -31,12 +31,14 @@ class Employee extends CI_finecontrol
             $this->db->select('*');
             $this->db->from('tbl_employee');
             //$this->db->where('id',$usr);
+            if($this->session->userdata('designation_id') > 2){
             if (!empty($this->session->userdata('state_id'))) {
                 $this->db->where('state_id',$this->session->userdata('state_id'));
             }
             if (!empty($this->session->userdata('territory_id'))) {
                 $this->db->where('territory_id', $this->session->userdata('territory_id'));
             }
+          }
             $this->db->where('position_id >', $this->session->userdata('designation_id'));
             $this->db->order_by('date', 'desc');
             $data['employee_data']= $this->db->get();
